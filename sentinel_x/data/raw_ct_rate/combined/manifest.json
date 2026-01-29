@@ -1,0 +1,46 @@
+{
+  "created": "2026-01-29T02:06:01.599276Z",
+  "total_patients": 5,
+  "patients": [
+    {
+      "id": "train_1_a_1",
+      "folder": "train_1_a_1",
+      "fhir_path": "train_1_a_1/fhir.json",
+      "volume_path": "train_1_a_1/volume.nii.gz",
+      "patient_fhir_id": "47404aa9-00f2-66fc-1ab5-90aae241a507",
+      "conditions_count": 50
+    },
+    {
+      "id": "train_1_a_2",
+      "folder": "train_1_a_2",
+      "fhir_path": "train_1_a_2/fhir.json",
+      "volume_path": "train_1_a_2/volume.nii.gz",
+      "patient_fhir_id": "47404aa9-00f2-66fc-1ab5-90aae241a507",
+      "conditions_count": 50
+    },
+    {
+      "id": "train_2_a_1",
+      "folder": "train_2_a_1",
+      "fhir_path": "train_2_a_1/fhir.json",
+      "volume_path": "train_2_a_1/volume.nii.gz",
+      "patient_fhir_id": "47404aa9-00f2-66fc-1ab5-90aae241a507",
+      "conditions_count": 47
+    },
+    {
+      "id": "train_2_a_2",
+      "folder": "train_2_a_2",
+      "fhir_path": "train_2_a_2/fhir.json",
+      "volume_path": "train_2_a_2/volume.nii.gz",
+      "patient_fhir_id": "47404aa9-00f2-66fc-1ab5-90aae241a507",
+      "conditions_count": 47
+    },
+    {
+      "id": "train_3_a_1",
+      "folder": "train_3_a_1",
+      "fhir_path": "train_3_a_1/fhir.json",
+      "volume_path": "train_3_a_1/volume.nii.gz",
+      "patient_fhir_id": "47404aa9-00f2-66fc-1ab5-90aae241a507",
+      "conditions_count": 47
+    }
+  ]
+}
