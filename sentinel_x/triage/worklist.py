@@ -212,3 +212,9 @@ class Worklist:
             self._entries.clear()
             self._save()
             logger.info("Cleared worklist")
+
+    def reload(self) -> None:
+        """Reload worklist from disk."""
+        with self._lock:
+            self._entries.clear()
+        self._load()
