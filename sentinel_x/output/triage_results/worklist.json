@@ -1,46 +1,46 @@
 {
-  "generated_at": "2026-01-29T18:35:40.200249Z",
+  "generated_at": "2026-01-31T01:20:46.313380Z",
   "total_entries": 5,
   "entries": [
-    {
-      "patient_id": "train_1_a_2",
-      "priority_level": 2,
-      "priority_name": "HIGH RISK",
-      "findings_summary": "Multiple venous collaterals and collapsed left subclavian vein raise concern for vascular pathology. Bronchial wall thickening and peribronchial reticulonodular densities in the lower lobes suggest a possible infectious or inflammatory process.",
-      "processed_at": "2026-01-29T18:33:49.058344Z",
-      "result_path": "/workspace/sentinel_x/output/triage_results/train_1_a_2/triage_result.json"
-    },
     {
       "patient_id": "train_1_a_1",
       "priority_level": 2,
       "priority_name": "HIGH RISK",
       "findings_summary": "Multiple venous collaterals and collapsed left subclavian vein raise concern for vascular pathology. Bronchial wall thickening and peribronchial reticulonodular densities in the lower lobes suggest a possible infectious or inflammatory process.",
-      "processed_at": "2026-01-29T18:35:40.200212Z",
-      "result_path": "/workspace/sentinel_x/output/triage_results/train_1_a_1/triage_result.json"
+      "processed_at": "2026-01-31T01:18:52.859681Z",
+      "result_path": "/workspace/Sentinel-X/sentinel_x/output/triage_results/train_1_a_1/triage_result.json"
     },
     {
-      "patient_id": "train_3_a_1",
-      "priority_level": 3,
-      "priority_name": "ROUTINE",
-      "findings_summary": "Stable chronic findings with calcified plaques, reactive lymph nodes, and sequelae of fibrotic densities. No acute findings.",
-      "processed_at": "2026-01-29T18:33:15.538140Z",
-      "result_path": "/workspace/sentinel_x/output/triage_results/train_3_a_1/triage_result.json"
-    },
-    {
-      "patient_id": "train_2_a_2",
-      "priority_level": 3,
-      "priority_name": "ROUTINE",
-      "findings_summary": "Emphysema and mild bronchial thickening are present. A small, nonspecific nodule is noted. Cholelithiasis is present.",
-      "processed_at": "2026-01-29T18:34:31.283363Z",
-      "result_path": "/workspace/sentinel_x/output/triage_results/train_2_a_2/triage_result.json"
+      "patient_id": "train_1_a_2",
+      "priority_level": 2,
+      "priority_name": "HIGH RISK",
+      "findings_summary": "Multiple venous collaterals and collapsed left subclavian vein raise concern for vascular pathology. Bronchial wall thickening and peribronchial reticulonodular densities in the lower lobes suggest a possible infectious or inflammatory process.",
+      "processed_at": "2026-01-31T01:20:46.313271Z",
+      "result_path": "/workspace/Sentinel-X/sentinel_x/output/triage_results/train_1_a_2/triage_result.json"
     },
     {
       "patient_id": "train_2_a_1",
       "priority_level": 3,
       "priority_name": "ROUTINE",
       "findings_summary": "Emphysema and mild bronchial thickening are present. A small, nonspecific nodule is noted. Cholelithiasis is present.",
-      "processed_at": "2026-01-29T18:35:12.322156Z",
-      "result_path": "/workspace/sentinel_x/output/triage_results/train_2_a_1/triage_result.json"
+      "processed_at": "2026-01-31T01:19:23.065791Z",
+      "result_path": "/workspace/Sentinel-X/sentinel_x/output/triage_results/train_2_a_1/triage_result.json"
+    },
+    {
+      "patient_id": "train_2_a_2",
+      "priority_level": 3,
+      "priority_name": "ROUTINE",
+      "findings_summary": "Emphysema and mild bronchial thickening are present. A small, nonspecific nodule is noted. Cholelithiasis is present.",
+      "processed_at": "2026-01-31T01:19:49.143216Z",
+      "result_path": "/workspace/Sentinel-X/sentinel_x/output/triage_results/train_2_a_2/triage_result.json"
+    },
+    {
+      "patient_id": "train_3_a_1",
+      "priority_level": 3,
+      "priority_name": "ROUTINE",
+      "findings_summary": "Stable chronic findings with calcified plaques, reactive lymph nodes, and sequelae of fibrotic densities. No acute findings.",
+      "processed_at": "2026-01-31T01:20:17.556533Z",
+      "result_path": "/workspace/Sentinel-X/sentinel_x/output/triage_results/train_3_a_1/triage_result.json"
     }
   ]
 }

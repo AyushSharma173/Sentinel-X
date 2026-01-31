@@ -2,9 +2,9 @@
   "patient_id": "train_2_a_1",
   "priority_level": 3,
   "rationale": "Visual analysis: Emphysematous changes are present in both lungs. Segmentary-subsegmental peribrochial minimal thickening was observed in both lungs. A millimetric nonspecific subpleural nodule was observed in the posterior segment of the right lung upper lobe. No mass lesion-active infiltration with distinguishable borders was detected in both lungs. A millimetric stone was observed in the gallbladder lumen. Minimal degenerative changes were observed in the bone structure. The findings are chronic emphysema and mild bronchial thickening, which are common and generally benign. The nodule is small and nonspecific, and the cholelithiasis is a common finding. The overall picture is stable and does not suggest an acute or high-risk pathology.",
-  "key_slice_index": 163,
+  "key_slice_index": 152,
   "key_slice_thumbnail": "iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAIAAABMXPacAAACLUlEQVR4nO3VO4oqURRG4XtOBybVNQIRzMSRtZGPcQg+QJ2XQmMmqCPQstHA2jeoMegKXN8IDv+idqWfn5/H41GW5WQy6XQ6EZFS+qfXiIjb7bZer7fbbVmWz+czPx6PoiiGw6Hrv0dRFIPBoN/vV1X19fWVy7Icj8fdbreua9d/tZRSRHx/f49Go16vd7lc0ul0arfbdV3nnOnnfYrm0lRVtVqtUkR4ed6v2fx+vycvD6VpkCKCfsnnigjvPimlZACYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAWAGgBkAZgCYAUgRkSOCfsaHioiUUk4p2eD9mvXv93s+n88ppbqu6Sd9kGb9qqoWi0WeTqeHwyHnbIP3aNb/+/tbLpe73S5fLpfZbNY08Ba9WrP+9Xqdz+f7/b4sy9xqtZpv4Xg8+j94g6qqNpvN7+9vURTP5/M/cxyvESE5uY8AAAAASUVORK5CYII=",
-  "processed_at": "2026-01-29T18:35:12.320982Z",
+  "processed_at": "2026-01-31T01:19:23.065275Z",
   "conditions_considered": [
     "Emphysema",
     "Bronchitis",

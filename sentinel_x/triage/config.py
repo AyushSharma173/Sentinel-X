@@ -75,3 +75,27 @@ ACUTE_PATHOLOGY_KEYWORDS = {
 # Logging configuration
 LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 LOG_FILE = LOG_DIR / "triage.log"
+
+# =============================================================================
+# ReAct Agent Configuration
+# =============================================================================
+
+# Enable/disable the ReAct agent mode for clinical correlation
+AGENT_MODE_ENABLED = True
+
+# Maximum number of reasoning iterations before forcing conclusion
+AGENT_MAX_ITERATIONS = 5
+
+# Temperature for tool call generation (0.0 = deterministic)
+AGENT_TOOL_CALL_TEMPERATURE = 0.0
+
+# Maximum tokens per agent turn
+AGENT_MAX_TOKENS_PER_TURN = 512
+
+# Lookback period for lab values (days)
+TOOL_LAB_LOOKBACK_DAYS = 90
+
+# Risk adjustment values
+RISK_ADJUSTMENT_INCREASE = -1  # Decrease priority number = increase urgency
+RISK_ADJUSTMENT_DECREASE = 1  # Increase priority number = decrease urgency
+RISK_ADJUSTMENT_NONE = 0

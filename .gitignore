@@ -46,3 +46,8 @@ wheels/
 .DS_Store
 Thumbs.db
 .claude/
+
+# Large medical imaging data files
+*.nii.gz
+sentinel_x/data/raw_ct_rate/volumes/
+sentinel_x/inbox/volumes/
