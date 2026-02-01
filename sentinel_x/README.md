@@ -63,6 +63,37 @@ python sentinel_x/scripts/synthetic_fhir_pipeline.py
 
 Output will be in `sentinel_x/data/raw_ct_rate/combined/` with each patient having their own folder containing `fhir.json` and `volume.nii.gz`.
 
+## Running the Demo
+
+The demo consists of a FastAPI backend and a React frontend. You'll need two terminal windows.
+
+### Start the Backend
+
+```bash
+cd sentinel_x
+python run_demo.py --reload
+```
+
+The API server will start at `http://localhost:8000`. You can view the API docs at `http://localhost:8000/docs`.
+
+### Start the Frontend
+
+In a second terminal:
+
+```bash
+cd sentinel_x/frontend
+npm install   # first time only
+npm run dev
+```
+
+The frontend will start at `http://localhost:5173`.
+
+### Access the Application
+
+- **Frontend UI:** http://localhost:5173
+- **API Docs:** http://localhost:8000/docs
+- **Health Check:** http://localhost:8000/api/health
+
 ## Scripts
 
 | Script | Purpose |
@@ -106,6 +137,21 @@ Environment variables (set in `.env`):
 ## Requirements
 
 - Python 3.10+
+- Node.js 18+ (for frontend)
 - Java 11+ (for Synthea)
 - ~500MB disk space for Synthea JAR
 - CT volumes are large (~100MB each)
+
+### Python Dependencies
+
+For the demo API:
+
+```bash
+pip install -r requirements-api.txt
+```
+
+For the data pipeline:
+
+```bash
+pip install openai pydantic python-dotenv datasets huggingface_hub pandas tqdm
+```
