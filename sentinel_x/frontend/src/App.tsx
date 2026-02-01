@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { Wifi, WifiOff } from 'lucide-react';
 import { Dashboard } from '@/components/dashboard';
 import { WorklistTable, ProcessingIndicator } from '@/components/worklist';
