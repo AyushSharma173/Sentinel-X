@@ -5,6 +5,9 @@ CT Scan Simulator
 Simulates incoming CT scans by copying random .nii.gz files
 from the volumes directory to an inbox folder every 10 seconds.
 Also copies the corresponding radiology report if available.
+
+This is a standalone utility script. The demo service (demo_service.py)
+has built-in simulation capabilities, so this script is optional.
 """
 
 import random
@@ -13,12 +16,16 @@ import time
 from pathlib import Path
 
 
+# Use relative paths based on script location
+SCRIPT_DIR = Path(__file__).parent.resolve()
+PROJECT_DIR = SCRIPT_DIR.parent  # sentinel_x/
+
+
 def main():
-    # Define paths
-    script_dir = Path(__file__).parent
-    volumes_dir = script_dir / "data" / "raw_ct_rate" / "volumes"
-    reports_dir = script_dir / "data" / "raw_ct_rate" / "reports"
-    inbox_dir = script_dir / "inbox"
+    # Define paths relative to project directory
+    volumes_dir = PROJECT_DIR / "data" / "raw_ct_rate" / "volumes"
+    reports_dir = PROJECT_DIR / "data" / "raw_ct_rate" / "reports"
+    inbox_dir = PROJECT_DIR / "inbox"
 
     # Create inbox subdirectories
     inbox_volumes = inbox_dir / "volumes"

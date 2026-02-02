@@ -15,6 +15,8 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from triage.config import (
     BASE_DIR,
+    COMBINED_DIR,
+    COMBINED_MANIFEST,
     INBOX_DIR,
     INBOX_REPORTS_DIR,
     INBOX_VOLUMES_DIR,
@@ -40,7 +42,11 @@ class DemoService:
         self._patients_processed = 0
         self._loop: Optional[asyncio.AbstractEventLoop] = None
 
-        # Source data directories
+        # Source data - using combined folder (unified structure)
+        self._source_combined = COMBINED_DIR
+        self._source_manifest = COMBINED_MANIFEST
+
+        # Legacy source directories (fallback if combined folder doesn't exist)
         self._source_volumes = BASE_DIR / "data" / "raw_ct_rate" / "volumes"
         self._source_reports = BASE_DIR / "data" / "raw_ct_rate" / "reports"
 
@@ -192,57 +198,114 @@ class DemoService:
 
     def _run_simulator(self) -> None:
         """Run the simulator in a background thread."""
+        import json
         import random
         import time
 
         logger.info("Simulator thread started")
 
-        # Get available scans
-        if not self._source_volumes.exists():
-            logger.error(f"Source volumes directory not found: {self._source_volumes}")
+        # Discover patients from combined folder
+        patient_folders = self._discover_patients()
+
+        if not patient_folders:
+            logger.error("No patient data found in combined folder")
             self._simulator_running = False
             return
 
-        all_scans = list(self._source_volumes.glob("*.nii.gz"))
-        if not all_scans:
-            logger.error("No CT scans found in source directory")
-            self._simulator_running = False
-            return
+        remaining = patient_folders.copy()
+        random.shuffle(remaining)
 
-        remaining_scans = all_scans.copy()
-        random.shuffle(remaining_scans)
+        while self._simulator_running and remaining:
+            patient_folder = remaining.pop()
+            patient_id = patient_folder.name
 
-        while self._simulator_running and remaining_scans:
-            scan = remaining_scans.pop()
-            base_name = scan.stem.replace(".nii", "")
+            # Copy all patient files to inbox
+            self._copy_patient_to_inbox(patient_folder, patient_id)
 
-            # Copy volume
-            dest_volume = INBOX_VOLUMES_DIR / scan.name
-            shutil.copy2(scan, dest_volume)
+            logger.info(f"Simulator: queued {patient_id}")
 
-            # Copy report
-            report_json = self._source_reports / f"{base_name}.json"
-            report_txt = self._source_reports / f"{base_name}.txt"
-
-            if report_json.exists():
-                shutil.copy2(report_json, INBOX_REPORTS_DIR / report_json.name)
-            if report_txt.exists():
-                shutil.copy2(report_txt, INBOX_REPORTS_DIR / report_txt.name)
-
-            logger.info(f"Simulator: copied {scan.name}")
-
-            # Broadcast patient arrived event
             self._run_async(ws_manager.send_event(
                 WSEventType.PATIENT_ARRIVED,
-                {"patient_id": base_name, "remaining": len(remaining_scans)}
+                {"patient_id": patient_id, "remaining": len(remaining)}
             ))
 
-            # Wait before next scan
-            if remaining_scans and self._simulator_running:
+            if remaining and self._simulator_running:
                 time.sleep(10)
 
         self._simulator_running = False
         logger.info("Simulator thread finished")
+
+    def _discover_patients(self) -> list:
+        """Discover patient folders from combined directory."""
+        import json
+
+        patient_folders = []
+
+        # Try manifest first (more reliable)
+        if self._source_manifest.exists():
+            try:
+                with open(self._source_manifest) as f:
+                    manifest = json.load(f)
+                for patient in manifest.get("patients", []):
+                    folder = self._source_combined / patient["folder"]
+                    if folder.exists() and (folder / "fhir.json").exists():
+                        patient_folders.append(folder)
+                logger.info(f"Loaded {len(patient_folders)} patients from manifest")
+                return patient_folders
+            except Exception as e:
+                logger.warning(f"Failed to load manifest: {e}")
+
+        # Fallback: scan combined directory
+        if self._source_combined.exists():
+            for folder in self._source_combined.iterdir():
+                if folder.is_dir() and (folder / "fhir.json").exists():
+                    patient_folders.append(folder)
+            logger.info(f"Discovered {len(patient_folders)} patients by scanning")
+            return patient_folders
+
+        # Last resort: use legacy directories
+        logger.warning("Combined folder not found, falling back to legacy directories")
+        if self._source_volumes.exists():
+            for volume in self._source_volumes.glob("*.nii.gz"):
+                # Create a pseudo-folder path for legacy handling
+                patient_folders.append(volume)
+            logger.info(f"Found {len(patient_folders)} volumes in legacy directory")
+
+        return patient_folders
+
+    def _copy_patient_to_inbox(self, patient_folder: Path, patient_id: str) -> None:
+        """Copy patient files from combined folder to inbox."""
+
+        # Handle legacy mode (direct volume file instead of folder)
+        if patient_folder.is_file() and patient_folder.suffix == ".gz":
+            # Legacy mode: copying from volumes directory
+            shutil.copy2(patient_folder, INBOX_VOLUMES_DIR / f"{patient_id}.nii.gz")
+            # Try to find matching report
+            base_name = patient_folder.stem.replace(".nii", "")
+            report_json = self._source_reports / f"{base_name}.json"
+            report_txt = self._source_reports / f"{base_name}.txt"
+            if report_json.exists():
+                shutil.copy2(report_json, INBOX_REPORTS_DIR / f"{base_name}.json")
+            if report_txt.exists():
+                shutil.copy2(report_txt, INBOX_REPORTS_DIR / f"{base_name}.txt")
+            return
+
+        # Combined folder mode
+        # Copy volume (resolve symlink if needed)
+        volume_src = patient_folder / "volume.nii.gz"
+        if volume_src.exists() or volume_src.is_symlink():
+            actual = volume_src.resolve() if volume_src.is_symlink() else volume_src
+            shutil.copy2(actual, INBOX_VOLUMES_DIR / f"{patient_id}.nii.gz")
+
+        # Copy FHIR bundle as main report file
+        fhir_src = patient_folder / "fhir.json"
+        if fhir_src.exists():
+            shutil.copy2(fhir_src, INBOX_REPORTS_DIR / f"{patient_id}.json")
+
+        # Copy report.txt for debugging/display (optional)
+        report_txt = patient_folder / "report.txt"
+        if report_txt.exists():
+            shutil.copy2(report_txt, INBOX_REPORTS_DIR / f"{patient_id}.txt")
 
     def _run_agent(self) -> None:
         """Run the triage agent in a background thread."""

@@ -10,6 +10,11 @@ INBOX_REPORTS_DIR = INBOX_DIR / "reports"
 OUTPUT_DIR = BASE_DIR / "output" / "triage_results"
 LOG_DIR = BASE_DIR / "logs"
 
+# Combined folder paths (unified structure for all patient data)
+DATA_DIR = BASE_DIR / "data" / "raw_ct_rate"
+COMBINED_DIR = DATA_DIR / "combined"
+COMBINED_MANIFEST = COMBINED_DIR / "manifest.json"
+
 # Ensure directories exist
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 LOG_DIR.mkdir(parents=True, exist_ok=True)

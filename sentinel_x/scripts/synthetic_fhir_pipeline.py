@@ -822,6 +822,30 @@ async def process_single_report(
             elif volume_path:
                 logger.warning(f"Volume not found: {volume_path}")
 
+            # 10. Copy radiology report files to combined folder
+            report_json_dest = datapoint_dir / "report.json"
+            report_txt_dest = datapoint_dir / "report.txt"
+
+            # Copy the original report JSON
+            shutil.copy2(report_path, report_json_dest)
+            logger.info(f"Copied report.json: {report_json_dest}")
+
+            # Copy or generate report.txt
+            report_txt_source = report_path.with_suffix('.txt')
+            if report_txt_source.exists():
+                shutil.copy2(report_txt_source, report_txt_dest)
+                logger.info(f"Copied report.txt: {report_txt_dest}")
+            else:
+                # Generate from JSON
+                with open(report_txt_dest, 'w') as f:
+                    f.write(f"Volume: {report.get('volume_name', 'Unknown')}\n")
+                    f.write("=" * 50 + "\n\n")
+                    f.write(f"CLINICAL INFORMATION:\n{report.get('clinical_information', 'N/A')}\n\n")
+                    f.write(f"TECHNIQUE:\n{report.get('technique', 'N/A')}\n\n")
+                    f.write(f"FINDINGS:\n{report.get('findings', 'N/A')}\n\n")
+                    f.write(f"IMPRESSIONS:\n{report.get('impressions', 'N/A')}\n")
+                logger.info(f"Generated report.txt: {report_txt_dest}")
+
             # Extract patient FHIR ID for manifest
             patient_fhir_id = get_patient_fhir_id(final_bundle)
 
@@ -872,6 +896,8 @@ def generate_manifest(
                 "folder": result.report_name,
                 "fhir_path": f"{result.report_name}/fhir.json",
                 "volume_path": f"{result.report_name}/volume.nii.gz",
+                "report_json_path": f"{result.report_name}/report.json",
+                "report_txt_path": f"{result.report_name}/report.txt",
                 "patient_fhir_id": result.patient_fhir_id,
                 "conditions_count": result.conditions_count
             }

@@ -15,25 +15,38 @@ The pipeline:
 ```
 sentinel_x/
 ├── scripts/
-│   ├── fhir_creation.py           # Downloads Synthea JAR
-│   └── synthetic_fhir_pipeline.py # Main FHIR pipeline
+│   ├── data_loading.py           # Downloads CT-RATE dataset
+│   ├── fhir_creation.py          # Downloads Synthea JAR
+│   ├── synthetic_fhir_pipeline.py # Main FHIR pipeline
+│   └── simulator.py              # Standalone simulator (optional)
 ├── lib/
 │   └── synthea-with-dependencies.jar
 ├── docs/
-│   └── unified_fhir_pipeline.md   # This file
-├── data/
-│   └── raw_ct_rate/
-│       ├── volumes/               # CT volumes (.nii.gz)
-│       ├── reports/               # Radiology reports (.json)
-│       └── combined/              # Pipeline output
-├── data_loading.py                # Downloads CT-RATE data
-└── simulator.py                   # CT scan simulator
+│   └── unified_fhir_pipeline.md  # This file
+└── data/
+    └── raw_ct_rate/
+        ├── volumes/              # CT volumes (.nii.gz)
+        ├── reports/              # Radiology reports (.json)
+        └── combined/             # Pipeline output
 ```
 
 ## Prerequisites
 
 - Python 3.10+
-- Java (for Synthea)
+- **Java 11+** (required for Synthea)
+  ```bash
+  # Ubuntu/Debian (with sudo)
+  sudo apt update && sudo apt install -y openjdk-11-jdk
+
+  # Ubuntu/Debian in Docker (as root, no sudo)
+  apt update && apt install -y openjdk-11-jdk
+
+  # macOS (with Homebrew)
+  brew install openjdk@11
+
+  # Verify installation
+  java -version
+  ```
 - Synthea JAR file (run `python sentinel_x/scripts/fhir_creation.py` to download)
 - OpenAI API key set as `OPENAI_API_KEY` environment variable
 - Required Python packages: `openai`, `pydantic`, `python-dotenv`
@@ -67,10 +80,9 @@ data-dir/combined/
 ├── processing_log.json    # Detailed processing log
 ├── train_1_a_1/
 │   ├── fhir.json          # FHIR bundle (US Core R4)
-│   └── volume.nii.gz      # Symlink or copy of CT scan
-├── train_1_a_2/
-│   ├── fhir.json
-│   └── volume.nii.gz
+│   ├── volume.nii.gz      # Symlink or copy of CT scan
+│   ├── report.json        # Original radiology report
+│   └── report.txt         # Human-readable report
 └── ...
 ```
 
@@ -88,6 +100,8 @@ The manifest provides an index for easy iteration:
       "folder": "train_1_a_1",
       "fhir_path": "train_1_a_1/fhir.json",
       "volume_path": "train_1_a_1/volume.nii.gz",
+      "report_json_path": "train_1_a_1/report.json",
+      "report_txt_path": "train_1_a_1/report.txt",
       "patient_fhir_id": "uuid-from-fhir",
       "conditions_count": 8
     }
@@ -182,6 +196,8 @@ print(f"Total patients: {manifest['total_patients']}")
 for patient in manifest["patients"]:
     fhir_path = data_dir / patient["fhir_path"]
     volume_path = data_dir / patient["volume_path"]
+    report_json_path = data_dir / patient.get("report_json_path", "")
+    report_txt_path = data_dir / patient.get("report_txt_path", "")
 
     # Load FHIR bundle
     with open(fhir_path) as f:
@@ -230,6 +246,22 @@ Each `fhir.json` contains a US Core R4 compliant FHIR Bundle with:
 - Additional Synthea-generated resources (encounters, observations, etc.)
 
 ## Troubleshooting
+
+### "Java is not installed or not in PATH"
+Install Java 11 or newer:
+```bash
+# Ubuntu/Debian (with sudo)
+sudo apt update && sudo apt install -y openjdk-11-jdk
+
+# Ubuntu/Debian in Docker (as root, no sudo)
+apt update && apt install -y openjdk-11-jdk
+
+# macOS (with Homebrew)
+brew install openjdk@11
+
+# Verify installation
+java -version
+```
 
 ### "Synthea JAR not found"
 Run the fhir_creation script to download the Synthea JAR file:

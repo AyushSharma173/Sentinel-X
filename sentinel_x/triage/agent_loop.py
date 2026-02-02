@@ -282,12 +282,25 @@ class ReActAgentLoop:
         # If we hit max iterations without final assessment, force one
         if not state["should_stop"]:
             logger.warning("Max iterations reached, forcing conclusion")
-            state["messages"].append(
-                AgentMessage(
-                    role="user",
-                    content="You have reached the maximum number of iterations. Please provide your FINAL_ASSESSMENT now based on the information gathered.",
-                )
+
+            # Check if last message was already from user (observation)
+            # If so, append to it rather than creating a new user message
+            # to avoid role alternation violation
+            force_conclusion_text = (
+                "You have reached the maximum number of iterations. "
+                "Please provide your FINAL_ASSESSMENT now based on the information gathered."
             )
+
+            if state["messages"] and state["messages"][-1]["role"] == "user":
+                # Append to existing user message to avoid role alternation violation
+                state["messages"][-1]["content"] += f"\n\n{force_conclusion_text}"
+            else:
+                state["messages"].append(
+                    AgentMessage(
+                        role="user",
+                        content=force_conclusion_text,
+                    )
+                )
 
             try:
                 response = self._generate_response(state)

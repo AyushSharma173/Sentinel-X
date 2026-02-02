@@ -10,12 +10,16 @@ from tqdm import tqdm
 # --- CONFIGURATION ---
 DATASET_ID = "ibrahimhamamci/CT-RATE"
 NUM_SAMPLES = 5  # How many patients to download
-OUTPUT_DIR = Path("/workspace/sentinel_x/data/raw_ct_rate") # Updated to your GPU path
+
+# Use relative paths based on script location
+SCRIPT_DIR = Path(__file__).parent.resolve()
+PROJECT_DIR = SCRIPT_DIR.parent  # sentinel_x/
+OUTPUT_DIR = PROJECT_DIR / "data" / "raw_ct_rate"
 
 def setup_directories():
     """Create output directories."""
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    print(f"📂 Output directory: {OUTPUT_DIR}")
+    print(f"Output directory: {OUTPUT_DIR}")
 
 def parse_volume_name(volume_name: str) -> dict:
     """Parse volume name to extract IDs."""
@@ -36,7 +40,7 @@ def get_volume_repo_path(volume_name: str) -> str:
     """Construct the HF repo path for the file."""
     parsed = parse_volume_name(volume_name)
     if not parsed: return None
-    
+
     # Path: dataset/train/train_1/train_1_a/train_1_a_1.nii.gz
     folder = f"{parsed['split']}_{parsed['patient_id']}_{parsed['scan_id']}"
     return f"dataset/{parsed['split']}/{parsed['split']}_{parsed['patient_id']}/{folder}/{volume_name}"
@@ -52,7 +56,7 @@ def load_metadata(num_samples=NUM_SAMPLES):
     - Findings_EN: radiologist findings
     - Impressions_EN: radiologist impressions
     """
-    print(f"\n📥 Fetching metadata for top {num_samples} samples...")
+    print(f"\nFetching metadata for top {num_samples} samples...")
 
     # 1. Load Labels (Contains Volume Names and abnormality labels)
     ds_labels = load_dataset(DATASET_ID, name="labels", split=f"train[:{num_samples}]")
@@ -119,7 +123,7 @@ def download_volume_and_report(row, output_dir: Path):
                 shutil.rmtree(output_dir / "dataset", ignore_errors=True)
 
         except Exception as e:
-            print(f"❌ Failed to download {vol_name}: {e}")
+            print(f"Failed to download {vol_name}: {e}")
             return
 
     # 2. Save Report as structured JSON
@@ -148,22 +152,22 @@ def download_volume_and_report(row, output_dir: Path):
         f.write(f"FINDINGS:\n{report_data['findings'] or 'N/A'}\n\n")
         f.write(f"IMPRESSIONS:\n{report_data['impressions'] or 'N/A'}\n")
 
-    status = "✅" if has_report else "⚠️ "
-    print(f"{status} Saved: {vol_name} + Report")
+    status = "OK" if has_report else "WARN"
+    print(f"[{status}] Saved: {vol_name} + Report")
 
 def main():
-    print("🏥 SENTINEL-X DATA LOADER")
+    print("SENTINEL-X DATA LOADER")
     setup_directories()
-    
+
     # 1. Get the combined data
     df = load_metadata(NUM_SAMPLES)
     print(f"   Prepared {len(df)} samples.")
-    
+
     # 2. Download loop
     for _, row in tqdm(df.iterrows(), total=len(df), desc="Downloading"):
         download_volume_and_report(row, OUTPUT_DIR)
-        
-    print(f"\n🎉 Done! Check {OUTPUT_DIR}")
+
+    print(f"\nDone! Check {OUTPUT_DIR}")
 
 if __name__ == "__main__":
     main()
