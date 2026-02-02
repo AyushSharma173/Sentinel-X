@@ -41,6 +41,8 @@ wheels/
 
 # Logs
 *.log
+*.jsonl
+sentinel_x/logs/sessions/
 
 # OS
 .DS_Store

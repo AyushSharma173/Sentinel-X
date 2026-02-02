@@ -12,6 +12,7 @@ The loop follows this pattern:
 """
 
 import logging
+import time
 from typing import Any, Dict, List, Optional
 
 import torch
@@ -22,11 +23,14 @@ from .config import (
     AGENT_MAX_ITERATIONS,
     AGENT_MAX_TOKENS_PER_TURN,
     AGENT_TOOL_CALL_TEMPERATURE,
+    LOG_FULL_PROMPTS,
+    LOG_FULL_RESPONSES,
     RISK_ADJUSTMENT_DECREASE,
     RISK_ADJUSTMENT_INCREASE,
     RISK_ADJUSTMENT_NONE,
 )
 from .json_repair import extract_final_assessment, extract_tool_call
+from .logging import get_agent_trace_logger
 from .prompts import build_agent_system_prompt, build_agent_user_prompt
 from .state import AgentMessage, AgentState, create_initial_state
 from .tools import get_all_tools, get_tool, get_tool_descriptions
@@ -211,6 +215,8 @@ class ReActAgentLoop:
             Final agent state with assessment and risk adjustment
         """
         logger.info(f"Starting agent loop for patient: {self.patient_id}")
+        trace_logger = get_agent_trace_logger()
+        loop_start_time = time.time()
 
         # Initialize state
         state = create_initial_state(
@@ -229,10 +235,41 @@ class ReActAgentLoop:
             state["iteration"] += 1
             logger.info(f"Agent iteration {state['iteration']}/{self.max_iterations}")
 
+            # Log iteration start
+            trace_logger.log_iteration_start(
+                patient_id=self.patient_id,
+                iteration=state["iteration"],
+                max_iterations=self.max_iterations,
+                message_count=len(state["messages"]),
+            )
+
             try:
-                # Generate model response
+                # Generate model response with timing
+                gen_start_time = time.time()
+
+                # Log prompt if enabled
+                if LOG_FULL_PROMPTS:
+                    messages = self._build_messages(state)
+                    prompt_text = str(messages)  # Simplified for logging
+                    trace_logger.log_prompt_sent(
+                        patient_id=self.patient_id,
+                        iteration=state["iteration"],
+                        prompt=prompt_text,
+                    )
+
                 response = self._generate_response(state)
+                gen_duration_ms = int((time.time() - gen_start_time) * 1000)
+
                 logger.debug(f"Agent response: {response[:500]}...")
+
+                # Log response received
+                if LOG_FULL_RESPONSES:
+                    trace_logger.log_response_received(
+                        patient_id=self.patient_id,
+                        iteration=state["iteration"],
+                        response=response,
+                        duration_ms=gen_duration_ms,
+                    )
 
                 # Add response to history
                 state["messages"].append(
@@ -243,6 +280,16 @@ class ReActAgentLoop:
                 if "FINAL_ASSESSMENT:" in response:
                     logger.info("Agent provided final assessment")
                     self._extract_and_apply_final_assessment(response, state)
+
+                    # Log final assessment extraction
+                    trace_logger.log_final_assessment_extracted(
+                        patient_id=self.patient_id,
+                        iteration=state["iteration"],
+                        assessment=state.get("final_assessment", ""),
+                        risk_adjustment=state.get("risk_adjustment", "NONE"),
+                        critical_findings=state.get("critical_findings", []),
+                    )
+
                     state["should_stop"] = True
                     continue
 
@@ -250,6 +297,15 @@ class ReActAgentLoop:
                 tool_call = extract_tool_call(response)
                 if tool_call is None:
                     logger.warning("No tool call found in response, prompting for action")
+
+                    # Log failed extraction
+                    trace_logger.log_tool_call_failed(
+                        patient_id=self.patient_id,
+                        iteration=state["iteration"],
+                        raw_text=response[:1000],
+                        error="No TOOL_CALL pattern found",
+                    )
+
                     # Add a nudge to either call a tool or conclude
                     state["messages"].append(
                         AgentMessage(
@@ -261,18 +317,48 @@ class ReActAgentLoop:
 
                 # Record tool call
                 tool_name = tool_call["tool"]
+                tool_args = tool_call.get("arguments", {})
                 state["tools_used"].append(tool_name)
                 state["tool_calls"].append(tool_call)
 
+                # Log successful tool call extraction
+                trace_logger.log_tool_call_extracted(
+                    patient_id=self.patient_id,
+                    iteration=state["iteration"],
+                    tool_name=tool_name,
+                    tool_args=tool_args,
+                    raw_text=response[:500],
+                )
+
                 logger.info(f"Executing tool: {tool_name}")
 
-                # Execute tool
+                # Execute tool with timing
+                tool_start_time = time.time()
                 result = self._execute_tool(tool_call)
+                tool_duration_ms = int((time.time() - tool_start_time) * 1000)
+
                 state["tool_results"].append(result)
+
+                # Log tool execution
+                trace_logger.log_tool_execution(
+                    patient_id=self.patient_id,
+                    iteration=state["iteration"],
+                    tool_name=tool_name,
+                    tool_args=tool_args,
+                    tool_result=result,
+                    duration_ms=tool_duration_ms,
+                )
 
                 # Format and add observation
                 observation = self._format_observation(tool_name, result)
                 state["messages"].append(AgentMessage(role="user", content=observation))
+
+                # Log observation added
+                trace_logger.log_observation_added(
+                    patient_id=self.patient_id,
+                    iteration=state["iteration"],
+                    observation=observation,
+                )
 
             except Exception as e:
                 logger.error(f"Agent loop error: {e}", exc_info=True)
@@ -309,14 +395,36 @@ class ReActAgentLoop:
                 )
                 if "FINAL_ASSESSMENT:" in response:
                     self._extract_and_apply_final_assessment(response, state)
+
+                    # Log final assessment extraction
+                    trace_logger.log_final_assessment_extracted(
+                        patient_id=self.patient_id,
+                        iteration=state["iteration"],
+                        assessment=state.get("final_assessment", ""),
+                        risk_adjustment=state.get("risk_adjustment", "NONE"),
+                        critical_findings=state.get("critical_findings", []),
+                    )
             except Exception as e:
                 logger.error(f"Failed to get final assessment: {e}")
                 state["errors"].append(f"Failed to get final assessment: {e}")
+
+        # Calculate total duration
+        loop_duration_ms = int((time.time() - loop_start_time) * 1000)
 
         logger.info(
             f"Agent loop complete: {state['iteration']} iterations, "
             f"{len(state['tools_used'])} tools used, "
             f"risk_adjustment={state['risk_adjustment']}"
+        )
+
+        # Log agent completion
+        trace_logger.log_agent_complete(
+            patient_id=self.patient_id,
+            iterations=state["iteration"],
+            tools_used=state["tools_used"],
+            errors=state["errors"],
+            duration_ms=loop_duration_ms,
+            risk_adjustment=state.get("risk_adjustment"),
         )
 
         return state

@@ -311,10 +311,15 @@ class DemoService:
         """Run the triage agent in a background thread."""
         import time
 
-        from triage.agent import TriageAgent
+        from triage.agent import TriageAgent, initialize_trace_logging
         from triage.inbox_watcher import PatientData
 
         logger.info("Agent thread started")
+
+        # Initialize session-based logging for trace output
+        session_id = initialize_trace_logging()
+        if session_id:
+            logger.info(f"Trace logging session: {session_id}")
 
         # Create agent with callbacks
         agent = TriageAgent()

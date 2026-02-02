@@ -17,9 +17,16 @@ from .config import (
     INBOX_VOLUMES_DIR,
     LOG_FILE,
     LOG_FORMAT,
+    LOG_JSON_ENABLED,
     OUTPUT_DIR,
     PRIORITY_CRITICAL,
     PRIORITY_ROUTINE,
+)
+from .logging import (
+    SessionManager,
+    get_agent_trace_logger,
+    get_fhir_trace_logger,
+    patient_trace_context,
 )
 from .ct_processor import process_ct_volume
 from .fhir_context import format_context_for_prompt, parse_fhir_context
@@ -30,11 +37,15 @@ from .state import AgentState
 from .worklist import Worklist
 
 
-def setup_logging(verbose: bool = False) -> None:
+def setup_logging(verbose: bool = False, session_id: str = None) -> str:
     """Configure logging for the agent.
 
     Args:
         verbose: Enable verbose debug logging
+        session_id: Optional specific session ID for trace logs
+
+    Returns:
+        The session ID being used for trace logs
     """
     level = logging.DEBUG if verbose else logging.INFO
 
@@ -51,6 +62,42 @@ def setup_logging(verbose: bool = False) -> None:
     # Reduce noise from transformers
     logging.getLogger("transformers").setLevel(logging.WARNING)
     logging.getLogger("accelerate").setLevel(logging.WARNING)
+
+    # Initialize session-based trace logging
+    return initialize_trace_logging(session_id)
+
+
+def initialize_trace_logging(session_id: str = None) -> str:
+    """Initialize session-based trace logging.
+
+    This can be called independently of setup_logging() when trace logging
+    needs to be initialized without reconfiguring the root logger (e.g., when
+    running through an API server that has its own logging setup).
+
+    Args:
+        session_id: Optional specific session ID for trace logs
+
+    Returns:
+        The session ID being used for trace logs, or None if disabled
+    """
+    if not LOG_JSON_ENABLED:
+        return None
+
+    session_manager = SessionManager.get_instance()
+    session_id = session_manager.initialize(session_id)
+
+    # Initialize specialized trace loggers
+    agent_trace = get_agent_trace_logger()
+    agent_trace.initialize_session(session_id)
+
+    fhir_trace = get_fhir_trace_logger()
+    fhir_trace.initialize_session(session_id)
+
+    logging.getLogger(__name__).info(
+        f"Trace logging initialized: session={session_id}"
+    )
+
+    return session_id
 
 
 class TriageAgent:
@@ -156,6 +203,18 @@ class TriageAgent:
 
     def process_patient(self, patient_data: PatientData) -> None:
         """Process a single patient through the triage pipeline.
+
+        Args:
+            patient_data: Patient volume and report paths
+        """
+        patient_id = patient_data.patient_id
+
+        # Wrap processing in patient trace context for structured logging
+        with patient_trace_context(patient_id, self.logger):
+            self._process_patient_internal(patient_data)
+
+    def _process_patient_internal(self, patient_data: PatientData) -> None:
+        """Internal patient processing implementation.
 
         Args:
             patient_data: Patient volume and report paths
