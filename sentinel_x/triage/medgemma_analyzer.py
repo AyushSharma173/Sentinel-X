@@ -49,6 +49,18 @@ class MedGemmaAnalyzer:
 
         logger.info(f"Loading MedGemma model: {self.model_id}")
 
+        # Verify accelerate is available for device_map="auto"
+        try:
+            import accelerate
+            logger.debug(f"accelerate {accelerate.__version__} available")
+        except ImportError:
+            error_msg = (
+                "The accelerate library is required for model loading. "
+                "Install it with: pip install accelerate>=0.9.0"
+            )
+            logger.error(error_msg)
+            raise ImportError(error_msg)
+
         self.processor = AutoProcessor.from_pretrained(self.model_id)
 
         self.model = AutoModelForImageTextToText.from_pretrained(

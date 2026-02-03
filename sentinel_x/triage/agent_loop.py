@@ -318,6 +318,37 @@ class ReActAgentLoop:
                 # Record tool call
                 tool_name = tool_call["tool"]
                 tool_args = tool_call.get("arguments", {})
+
+                # Check for duplicate tool calls
+                import json
+                tool_signature = f"{tool_name}({json.dumps(tool_args, sort_keys=True)})"
+
+                if "tool_signatures" not in state:
+                    state["tool_signatures"] = set()
+
+                if tool_signature in state["tool_signatures"]:
+                    logger.warning(f"Duplicate tool call detected: {tool_signature}")
+
+                    # Add warning to conversation
+                    duplicate_msg = (
+                        f"⚠️ You already called {tool_name} with these exact arguments "
+                        f"in a previous iteration. The tool returned the same result as before. "
+                        f"Consider trying a different approach or providing your final assessment "
+                        f"if you have enough information."
+                    )
+                    state["messages"].append(AgentMessage(role="user", content=duplicate_msg))
+
+                    # Log duplicate detection
+                    trace_logger.log_tool_call_failed(
+                        patient_id=self.patient_id,
+                        iteration=state["iteration"],
+                        raw_text=tool_signature,
+                        error="Duplicate tool call detected",
+                    )
+                    continue
+
+                # Track signature
+                state["tool_signatures"].add(tool_signature)
                 state["tools_used"].append(tool_name)
                 state["tool_calls"].append(tool_call)
 

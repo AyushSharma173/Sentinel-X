@@ -8,6 +8,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 
 from .config import HIGH_RISK_CONDITIONS
 from .logging import get_fhir_trace_logger
+from .age_utils import extract_age_from_patient_resource
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +19,8 @@ class PatientContext:
     patient_id: str
     age: Optional[int] = None
     gender: Optional[str] = None
+    is_deceased: bool = False
+    deceased_date: Optional[str] = None
     conditions: List[str] = field(default_factory=list)
     risk_factors: List[str] = field(default_factory=list)
     medications: List[str] = field(default_factory=list)
@@ -31,6 +34,8 @@ class PatientContext:
             "patient_id": self.patient_id,
             "age": self.age,
             "gender": self.gender,
+            "is_deceased": self.is_deceased,
+            "deceased_date": self.deceased_date,
             "conditions": self.conditions,
             "risk_factors": self.risk_factors,
             "medications": self.medications,
@@ -63,7 +68,7 @@ def identify_risk_factors(conditions: List[str]) -> List[str]:
 
 def extract_patient_demographics(
     fhir_bundle: Dict, patient_id: str = None
-) -> Tuple[Optional[int], Optional[str], str]:
+) -> Tuple[Optional[int], Optional[str], bool, Optional[str], str]:
     """Extract age and gender from FHIR Patient resource.
 
     Args:
@@ -71,12 +76,14 @@ def extract_patient_demographics(
         patient_id: Optional patient ID for logging
 
     Returns:
-        Tuple of (age, gender, source_field)
+        Tuple of (age, gender, is_deceased, deceased_date, calculation_method)
     """
     trace_logger = get_fhir_trace_logger()
     age = None
     gender = None
-    source_field = "not_found"
+    is_deceased = False
+    deceased_date = None
+    calculation_method = "not_found"
 
     entries = fhir_bundle.get("entry", [])
 
@@ -84,27 +91,13 @@ def extract_patient_demographics(
         resource = entry.get("resource", {})
         if resource.get("resourceType") == "Patient":
             gender = resource.get("gender")
-            source_field = "Patient.gender"
 
-            # Try to get age from birthDate
-            birth_date = resource.get("birthDate")
-            if birth_date:
-                try:
-                    from datetime import datetime
-                    birth_year = int(birth_date.split("-")[0])
-                    current_year = datetime.now().year
-                    age = current_year - birth_year
-                    source_field = "Patient.birthDate"
-                except (ValueError, IndexError):
-                    pass
+            # Extract age and deceased status using centralized utility
+            age, is_deceased, calculation_method = extract_age_from_patient_resource(resource)
 
-            # Also check extensions for age
-            extensions = resource.get("extension", [])
-            for ext in extensions:
-                if "age" in ext.get("url", "").lower():
-                    age = ext.get("valueInteger", ext.get("valueDecimal"))
-                    source_field = "Patient.extension[age]"
-                    break
+            # Store deceased date if present
+            if is_deceased:
+                deceased_date = resource.get("deceasedDateTime")
 
             break
 
@@ -114,10 +107,12 @@ def extract_patient_demographics(
             patient_id=patient_id,
             age=age,
             gender=gender,
-            source_field=source_field,
+            source_field=f"Patient.{calculation_method}",
+            is_deceased=is_deceased,
+            calculation_method=calculation_method,
         )
 
-    return age, gender, source_field
+    return age, gender, is_deceased, deceased_date, calculation_method
 
 
 def extract_conditions(fhir_bundle: Dict, patient_id: str = None) -> List[str]:
@@ -255,7 +250,7 @@ def extract_report_content(
         # Check presentedForm for text content
         presented = report_data.get("presentedForm", [])
         for form in presented:
-            if form.get("contentType") == "text/plain":
+            if form.get("contentType", "").startswith("text/plain"):
                 import base64
                 data = form.get("data", "")
                 try:
@@ -345,10 +340,12 @@ def parse_fhir_context(report_path: Path, patient_id: str) -> PatientContext:
             entry_count=len(entries),
         )
 
-        # Extract demographics (updated to return source_field)
-        age, gender, _ = extract_patient_demographics(data, patient_id)
+        # Extract demographics (updated to return deceased info)
+        age, gender, is_deceased, deceased_date, _ = extract_patient_demographics(data, patient_id)
         context.age = age
         context.gender = gender
+        context.is_deceased = is_deceased
+        context.deceased_date = deceased_date
 
         # Extract conditions
         context.conditions = extract_conditions(data, patient_id)
@@ -366,14 +363,58 @@ def parse_fhir_context(report_path: Path, patient_id: str) -> PatientContext:
             count=len(context.risk_factors),
         )
 
-        # Find DiagnosticReport in bundle
+        # Find all DiagnosticReports in bundle and accumulate findings/impressions
+        all_findings = []
+        all_impressions = []
+
         for entry in data.get("entry", []):
             resource = entry.get("resource", {})
             if resource.get("resourceType") == "DiagnosticReport":
                 findings, impressions, _ = extract_report_content(resource, patient_id)
-                context.findings = findings
-                context.impressions = impressions
-                break
+                if findings:
+                    all_findings.append(findings)
+                if impressions:
+                    all_impressions.append(impressions)
+
+        # Fallback: Check DocumentReferences if no content found
+        if not all_findings and not all_impressions:
+            for entry in data.get("entry", []):
+                resource = entry.get("resource", {})
+                if resource.get("resourceType") == "DocumentReference":
+                    # Extract from content.attachment.data
+                    content = resource.get("content", [])
+                    for content_item in content:
+                        attachment = content_item.get("attachment", {})
+                        if attachment.get("contentType", "").startswith("text/plain"):
+                            import base64
+                            data_b64 = attachment.get("data", "")
+                            try:
+                                text = base64.b64decode(data_b64).decode("utf-8")
+                                if "FINDINGS:" in text.upper():
+                                    parts = text.upper().split("FINDINGS:")
+                                    if len(parts) > 1:
+                                        findings = parts[1].split("IMPRESSION")[0].strip()
+                                        all_findings.append(findings)
+                                if "IMPRESSION" in text.upper():
+                                    parts = text.upper().split("IMPRESSION")
+                                    if len(parts) > 1:
+                                        impressions = parts[1].strip()
+                                        all_impressions.append(impressions)
+
+                                # Log DocumentReference extraction
+                                if patient_id and (findings or impressions):
+                                    trace_logger.log_report_content_extracted(
+                                        patient_id=patient_id,
+                                        findings=findings if findings else "",
+                                        impressions=impressions if impressions else "",
+                                        source_field="DocumentReference.content.attachment",
+                                    )
+                            except Exception:
+                                pass
+
+        # Combine all findings and impressions
+        context.findings = "\n\n".join(all_findings)
+        context.impressions = "\n\n".join(all_impressions)
     else:
         # Handle simple report format
         findings, impressions, _ = extract_report_content(data, patient_id)
@@ -435,8 +476,11 @@ def format_context_for_prompt(context: PatientContext) -> str:
 
     # Demographics
     demo_parts = []
-    if context.age:
-        demo_parts.append(f"{context.age} year old")
+    if context.age is not None:
+        if context.is_deceased:
+            demo_parts.append(f"{context.age} year old at time of death")
+        else:
+            demo_parts.append(f"{context.age} year old")
     if context.gender:
         demo_parts.append(context.gender)
     if demo_parts:

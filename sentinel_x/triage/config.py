@@ -107,7 +107,8 @@ AGENT_TOOL_CALL_TEMPERATURE = 0.0
 AGENT_MAX_TOKENS_PER_TURN = 512
 
 # Lookback period for lab values (days)
-TOOL_LAB_LOOKBACK_DAYS = 90
+# Extended to 3650 days (10 years) to support synthetic/test data
+TOOL_LAB_LOOKBACK_DAYS = 3650
 
 # Risk adjustment values
 RISK_ADJUSTMENT_INCREASE = -1  # Decrease priority number = increase urgency

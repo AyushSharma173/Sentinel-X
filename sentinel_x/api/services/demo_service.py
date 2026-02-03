@@ -379,9 +379,22 @@ class DemoService:
             agent.analyzer.load_model()
             self._model_loaded = True
             logger.info("Model loaded successfully")
-        except Exception as e:
-            logger.error(f"Failed to load model: {e}")
+        except ImportError as e:
+            logger.error(f"Failed to load model - missing dependency: {e}")
+            logger.error("Ensure all dependencies installed: pip install -r requirements-api.txt")
             self._agent_running = False
+            self._run_async(ws_manager.send_event(
+                WSEventType.ERROR,
+                {"type": "dependency_error", "message": str(e)}
+            ))
+            return
+        except Exception as e:
+            logger.error(f"Failed to load model: {e}", exc_info=True)
+            self._agent_running = False
+            self._run_async(ws_manager.send_event(
+                WSEventType.ERROR,
+                {"type": "model_load_error", "message": str(e)}
+            ))
             return
 
         # Watch inbox

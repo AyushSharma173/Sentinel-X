@@ -13,6 +13,7 @@ from datetime import datetime, timedelta
 from typing import Any, Callable, Dict, List, Optional
 
 from .config import TOOL_LAB_LOOKBACK_DAYS
+from .age_utils import extract_age_from_patient_resource
 
 logger = logging.getLogger(__name__)
 
@@ -102,14 +103,10 @@ def get_patient_manifest(fhir_bundle: Dict[str, Any]) -> Dict[str, Any]:
             result["demographics"]["gender"] = resource.get("gender")
             result["patient_id"] = resource.get("id")
 
-            # Calculate age from birthDate
-            birth_date = resource.get("birthDate")
-            if birth_date:
-                try:
-                    birth_year = int(birth_date.split("-")[0])
-                    result["demographics"]["age"] = datetime.now().year - birth_year
-                except (ValueError, IndexError):
-                    pass
+            # Calculate age with proper handling
+            age, is_deceased, _ = extract_age_from_patient_resource(resource)
+            result["demographics"]["age"] = age
+            result["demographics"]["is_deceased"] = is_deceased
 
     # Determine available lab categories from Observation resources
     lab_categories = set()
@@ -259,11 +256,11 @@ def get_recent_labs(fhir_bundle: Dict[str, Any], category: str) -> Dict[str, Any
         }
     """
     category_keywords = {
-        "Cardiac": ["troponin", "bnp", "nt-probnp", "pro-bnp"],
+        "Cardiac": ["troponin", "bnp", "nt-probnp", "pro-bnp", "cholesterol", "ldl", "hdl", "triglyceride"],
         "Coag": ["d-dimer", "inr", "ptt", "aptt", "fibrinogen", "coag"],
-        "Renal": ["creatinine", "gfr", "bun", "urea"],
-        "CBC": ["hemoglobin", "hematocrit", "wbc", "platelet", "rbc"],
-        "Metabolic": ["glucose", "sodium", "potassium", "chloride", "bicarbonate"],
+        "Renal": ["creatinine", "gfr", "bun", "urea", "egfr"],
+        "CBC": ["hemoglobin", "hematocrit", "wbc", "platelet", "rbc", "leukocyte", "erythrocyte"],
+        "Metabolic": ["glucose", "sodium", "potassium", "chloride", "bicarbonate", "calcium"],
     }
 
     keywords = category_keywords.get(category, [])

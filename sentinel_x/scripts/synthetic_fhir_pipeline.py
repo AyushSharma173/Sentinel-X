@@ -27,6 +27,7 @@ See docs/unified_fhir_pipeline.md for full documentation.
 import argparse
 import asyncio
 import base64
+import hashlib
 import json
 import logging
 import os
@@ -278,15 +279,22 @@ class SyntheaConfig:
     modules: list[str] = field(default_factory=list)
     state: str = "Massachusetts"
     output_dir: Path = SYNTHEA_TEMP_OUTPUT
+    seed: Optional[int] = None
 
 
-def create_synthea_config(extraction: RadiologyExtraction) -> SyntheaConfig:
+def create_synthea_config(extraction: RadiologyExtraction, report_name: str) -> SyntheaConfig:
     """Create Synthea configuration from extracted data."""
+    # Generate deterministic seed from report name using SHA256
+    # This ensures reproducibility across different Python processes
+    hash_obj = hashlib.sha256(report_name.encode('utf-8'))
+    seed = int.from_bytes(hash_obj.digest()[:4], byteorder='big') & 0x7FFFFFFF  # Positive 32-bit integer
+
     return SyntheaConfig(
         age_min=extraction.demographics.estimated_age_min,
         age_max=extraction.demographics.estimated_age_max,
         gender=extraction.demographics.gender_hint,
-        modules=extraction.synthea_modules
+        modules=extraction.synthea_modules,
+        seed=seed
     )
 
 
@@ -300,9 +308,13 @@ def run_synthea(config: SyntheaConfig) -> Optional[dict]:
     # Create temp output directory
     config.output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Clear previous output from temp directory
+    # Clear previous output from temp directory (including fhir subdirectory)
     for f in config.output_dir.glob("*.json"):
         f.unlink()
+    fhir_subdir = config.output_dir / "fhir"
+    if fhir_subdir.exists():
+        for f in fhir_subdir.glob("*.json"):
+            f.unlink()
 
     # Build Synthea command with = syntax for properties
     cmd = [
@@ -322,10 +334,14 @@ def run_synthea(config: SyntheaConfig) -> Optional[dict]:
     if config.gender:
         cmd.extend(["-g", config.gender])
 
+    # Add seed if specified (use -ps for single person seed)
+    if config.seed is not None:
+        cmd.extend(["-ps", str(config.seed)])
+
     # Add state
     cmd.append(config.state)
 
-    logger.info(f"Running Synthea: age={config.age_min}-{config.age_max}, gender={config.gender or 'any'}")
+    logger.info(f"Running Synthea: age={config.age_min}-{config.age_max}, gender={config.gender or 'any'}, seed={config.seed}")
     logger.debug(f"Synthea command: {' '.join(cmd)}")
 
     try:
@@ -610,6 +626,185 @@ def get_patient_reference(bundle: dict) -> Optional[str]:
     return None
 
 
+def extract_temporal_value(resource: dict, field_path: str) -> Optional[str]:
+    """
+    Extract a temporal value from a resource given a field path.
+
+    Args:
+        resource: FHIR resource
+        field_path: Dot-separated path (e.g., 'period.start')
+
+    Returns:
+        Temporal value as string or None
+    """
+    parts = field_path.split('.')
+    value = resource
+    for part in parts:
+        if isinstance(value, dict):
+            value = value.get(part)
+        else:
+            return None
+    return value if isinstance(value, str) else None
+
+
+def has_future_date(resource: dict, scan_date: str) -> bool:
+    """
+    Check if a resource has any temporal field after the scan date.
+
+    This identifies Synthea-generated resources that represent "future" data
+    relative to the scan acquisition time, which violates temporal simulation
+    boundaries.
+
+    Args:
+        resource: FHIR resource to check
+        scan_date: Reference scan date (ISO 8601 format)
+
+    Returns:
+        True if resource has any date after scan_date
+    """
+    resource_type = resource.get('resourceType')
+
+    # Map of resource types to their temporal fields
+    temporal_fields_map = {
+        'Condition': ['onsetDateTime', 'abatementDateTime', 'recordedDate'],
+        'Encounter': ['period.start', 'period.end'],
+        'Observation': ['effectiveDateTime', 'issued'],
+        'MedicationRequest': ['authoredOn'],
+        'Procedure': ['performedDateTime', 'performedPeriod.start', 'performedPeriod.end'],
+        'DiagnosticReport': ['effectiveDateTime', 'issued'],
+        'ImagingStudy': ['started'],
+        'Immunization': ['occurrenceDateTime'],
+        'AllergyIntolerance': ['recordedDate'],
+        'CarePlan': ['period.start', 'period.end'],
+        'Claim': ['created'],
+        'ExplanationOfBenefit': ['created'],
+        'MedicationAdministration': ['effectiveDateTime', 'effectivePeriod.start', 'effectivePeriod.end'],
+        'Device': ['manufactureDate'],
+        'CareTeam': ['period.start', 'period.end'],
+        'DocumentReference': ['date'],
+        'SupplyDelivery': ['occurrenceDateTime'],
+    }
+
+    temporal_fields = temporal_fields_map.get(resource_type, [])
+
+    for field_path in temporal_fields:
+        date_value = extract_temporal_value(resource, field_path)
+        if date_value and date_value > scan_date:
+            return True
+
+    return False
+
+
+def is_manually_created(resource: dict, scan_date: str, volume_name: str) -> bool:
+    """
+    Check if a resource was manually created by the pipeline (not Synthea).
+
+    Manually created resources are:
+    - ImagingStudy with description "CT Chest - {volume_name}"
+    - DiagnosticReport with effectiveDateTime exactly matching scan_date
+    - Condition with onsetDateTime exactly matching scan_date
+
+    Args:
+        resource: FHIR resource to check
+        scan_date: Reference scan date
+        volume_name: Volume filename (e.g., "train_1_a_1.nii.gz")
+
+    Returns:
+        True if resource was manually created
+    """
+    resource_type = resource.get('resourceType')
+
+    # Check ImagingStudy by description
+    if resource_type == 'ImagingStudy':
+        desc = resource.get('description', '')
+        if desc == f"CT Chest - {volume_name}":
+            return True
+
+    # Check DiagnosticReport by temporal match and category
+    if resource_type == 'DiagnosticReport':
+        effective_dt = resource.get('effectiveDateTime')
+        if effective_dt == scan_date:
+            # Additional check: our reports have category "18748-4" (Diagnostic imaging study)
+            categories = resource.get('category', [])
+            for cat in categories:
+                codings = cat.get('coding', [])
+                for coding in codings:
+                    if coding.get('code') == '18748-4':
+                        return True
+
+    # Check Condition by temporal match and category
+    if resource_type == 'Condition':
+        onset_dt = resource.get('onsetDateTime')
+        if onset_dt == scan_date:
+            # Additional check: our conditions have category "encounter-diagnosis"
+            categories = resource.get('category', [])
+            for cat in categories:
+                codings = cat.get('coding', [])
+                for coding in codings:
+                    if coding.get('code') == 'encounter-diagnosis':
+                        return True
+
+    return False
+
+
+def filter_future_events(bundle: dict, scan_date: str, volume_name: str) -> dict:
+    """
+    Filter out Synthea-generated resources with dates after the scan date.
+
+    This enforces the temporal simulation boundary: FHIR data should only
+    represent medical history up to the scan acquisition time, not beyond it.
+
+    Args:
+        bundle: FHIR bundle to filter
+        scan_date: Reference scan date from ImagingStudy.started
+        volume_name: Volume filename for identifying manually created resources
+
+    Returns:
+        Filtered FHIR bundle with temporal violations removed
+    """
+    filtered_entries = []
+    removed_count = 0
+    removed_by_type = {}
+
+    for entry in bundle.get('entry', []):
+        resource = entry.get('resource', {})
+        resource_type = resource.get('resourceType')
+
+        # Always keep: Patient, Practitioner, Organization, Location (no temporal data)
+        if resource_type in ['Patient', 'Practitioner', 'Organization', 'Location', 'Provenance']:
+            filtered_entries.append(entry)
+            continue
+
+        # Always keep manually created resources
+        if is_manually_created(resource, scan_date, volume_name):
+            filtered_entries.append(entry)
+            continue
+
+        # Check if Synthea resource has future dates
+        if has_future_date(resource, scan_date):
+            removed_count += 1
+            removed_by_type[resource_type] = removed_by_type.get(resource_type, 0) + 1
+            continue  # Skip this resource
+
+        # Keep resource
+        filtered_entries.append(entry)
+
+    # Update bundle
+    original_count = len(bundle.get('entry', []))
+    bundle['entry'] = filtered_entries
+
+    if removed_count > 0:
+        logger.info(
+            f"Filtered {removed_count} future-dated resources from bundle "
+            f"(kept {len(filtered_entries)}/{original_count})"
+        )
+        logger.info(f"Removed by type: {removed_by_type}")
+    else:
+        logger.debug(f"No temporal violations found (all {original_count} resources valid)")
+
+    return bundle
+
+
 def merge_radiology_resources(
     synthea_bundle: dict,
     extraction: RadiologyExtraction,
@@ -677,7 +872,12 @@ def merge_radiology_resources(
         f"ImagingStudy, DiagnosticReport, {len(conditions)} Conditions"
     )
 
-    return synthea_bundle
+    # Apply temporal filtering to enforce simulation boundary
+    # This removes any Synthea-generated resources with dates after the scan
+    scan_date = now  # Use the scan date we just created
+    filtered_bundle = filter_future_events(synthea_bundle, scan_date, volume_name)
+
+    return filtered_bundle
 
 
 # -----------------------------------------------------------------------------
@@ -774,7 +974,7 @@ async def process_single_report(
             )
 
             # 3. Create Synthea config
-            config = create_synthea_config(extraction)
+            config = create_synthea_config(extraction, report_name)
 
             # 4. Run Synthea (synchronous)
             synthea_bundle = run_synthea(config)

@@ -130,6 +130,8 @@ class FHIRTraceLogger:
         age: Optional[int],
         gender: Optional[str],
         source_field: str,
+        is_deceased: bool = False,
+        calculation_method: str = "unknown",
     ) -> None:
         """Log extraction of patient demographics.
 
@@ -138,10 +140,15 @@ class FHIRTraceLogger:
             age: Extracted age
             gender: Extracted gender
             source_field: Field where data was found
+            is_deceased: Whether patient is deceased
+            calculation_method: How age was calculated
         """
         demo_str = []
         if age is not None:
-            demo_str.append(f"{age}yo")
+            age_desc = f"{age}yo"
+            if is_deceased:
+                age_desc += " (deceased)"
+            demo_str.append(age_desc)
         if gender:
             demo_str.append(gender)
 
@@ -153,6 +160,8 @@ class FHIRTraceLogger:
             age=age,
             gender=gender,
             source_field=source_field,
+            is_deceased=is_deceased,
+            calculation_method=calculation_method,
         )
 
     def log_condition_extracted(
