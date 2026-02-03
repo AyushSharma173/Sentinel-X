@@ -30,7 +30,7 @@ from .config import (
     RISK_ADJUSTMENT_NONE,
 )
 from .json_repair import extract_final_assessment, extract_tool_call
-from .logging import get_agent_trace_logger
+from .logging import get_agent_trace_logger, get_fhir_context_text_logger
 from .prompts import build_agent_system_prompt, build_agent_user_prompt
 from .state import AgentMessage, AgentState, create_initial_state
 from .tools import get_all_tools, get_tool, get_tool_descriptions
@@ -216,6 +216,8 @@ class ReActAgentLoop:
         """
         logger.info(f"Starting agent loop for patient: {self.patient_id}")
         trace_logger = get_agent_trace_logger()
+        text_logger = get_fhir_context_text_logger()
+        text_logger.start_patient(self.patient_id, visual_findings)
         loop_start_time = time.time()
 
         # Initialize state
@@ -380,6 +382,9 @@ class ReActAgentLoop:
                     duration_ms=tool_duration_ms,
                 )
 
+                # Log to text file
+                text_logger.log_query(tool_name, tool_args, result)
+
                 # Format and add observation
                 observation = self._format_observation(tool_name, result)
                 state["messages"].append(AgentMessage(role="user", content=observation))
@@ -456,6 +461,13 @@ class ReActAgentLoop:
             errors=state["errors"],
             duration_ms=loop_duration_ms,
             risk_adjustment=state.get("risk_adjustment"),
+        )
+
+        # Log final assessment to text file
+        text_logger.end_patient(
+            risk_adjustment=state.get("risk_adjustment"),
+            critical_findings=state.get("critical_findings", []),
+            assessment=state.get("final_assessment"),
         )
 
         return state

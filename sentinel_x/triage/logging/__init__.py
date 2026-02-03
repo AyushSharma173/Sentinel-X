@@ -53,6 +53,10 @@ from .fhir_trace_logger import (
     get_fhir_trace_logger,
     initialize_fhir_trace_logger,
 )
+from .fhir_context_text_logger import (
+    FHIRContextTextLogger,
+    get_fhir_context_text_logger,
+)
 
 __all__ = [
     # Formatters
@@ -89,4 +93,7 @@ __all__ = [
     "FHIRTraceLogger",
     "get_fhir_trace_logger",
     "initialize_fhir_trace_logger",
+    # Text-based context logger
+    "FHIRContextTextLogger",
+    "get_fhir_context_text_logger",
 ]

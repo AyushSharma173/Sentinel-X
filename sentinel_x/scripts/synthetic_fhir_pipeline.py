@@ -37,7 +37,7 @@ import sys
 import tempfile
 import uuid
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Literal, Optional
 
@@ -168,6 +168,519 @@ CONDITION_TO_MODULE = {
 }
 
 
+# Valid Synthea module names (verified against Synthea repository)
+# Reference: https://github.com/synthetichealth/synthea/tree/master/src/main/resources/modules
+VALID_SYNTHEA_MODULES: set[str] = {
+    # Pulmonary
+    "copd", "asthma", "bronchitis", "lung_cancer", "allergic_rhinitis",
+    # Cardiovascular
+    "atrial_fibrillation", "congestive_heart_failure", "hypertension",
+    "myocardial_infarction", "stroke", "stable_ischemic_heart_disease",
+    # Metabolic
+    "diabetes", "metabolic_syndrome_disease", "metabolic_syndrome_care",
+    "diabetic_retinopathy_treatment", "gout",
+    # Renal
+    "chronic_kidney_disease", "dialysis", "kidney_transplant",
+    # Musculoskeletal
+    "osteoarthritis", "osteoporosis", "rheumatoid_arthritis",
+    "total_joint_replacement", "fibromyalgia",
+    # Gastrointestinal
+    "gallstones", "appendicitis", "colorectal_cancer",
+    # Neurological
+    "dementia", "epilepsy", "attention_deficit_disorder", "mTBI",
+    # Cancer
+    "breast_cancer", "acute_myeloid_leukemia",
+    # Infectious
+    "covid19", "sepsis", "urinary_tract_infections", "hiv_diagnosis", "hiv_care",
+    # Other
+    "allergies", "anemia___unknown_etiology", "sleep_apnea", "sinusitis",
+    "ear_infections", "sore_throat", "dermatitis", "food_allergies",
+    "hypothyroidism", "lupus", "cystic_fibrosis", "injuries",
+    "opioid_addiction", "self_harm", "homelessness"
+}
+
+
+# -----------------------------------------------------------------------------
+# Module Override Paths for Forcing Disease Conditions
+# -----------------------------------------------------------------------------
+# Each module lists transition paths to override for forcing disease conditions.
+# Format: "module.json::JSONPath" - colons will be escaped when writing to properties file.
+# Paths are extracted from Synthea's ModuleOverrides tool.
+#
+# Strategy: Set the first distribution (disease outcome) to 1.0 to guarantee condition.
+
+MODULE_OVERRIDE_PATHS: dict[str, list[str]] = {
+    # COPD - has separate smoker/non-smoker pathways with SES splits
+    # Smoker pathway has 3 SES levels (low/middle/high), non-smoker has 1 pathway
+    # First distribution in each = Emphysema, second = Chronic Bronchitis, third = no disease
+    "copd": [
+        # Smoker pathways (Low SES, Middle SES, High SES) → force Emphysema
+        "$['states']['Potential_COPD_Smoker']['complex_transition'][0]['distributions'][0]['distribution']",
+        "$['states']['Potential_COPD_Smoker']['complex_transition'][1]['distributions'][0]['distribution']",
+        "$['states']['Potential_COPD_Smoker']['complex_transition'][2]['distributions'][0]['distribution']",
+        # Non-smoker pathway → force Emphysema
+        "$['states']['Potential_COPD_Nonsmoker']['complex_transition'][1]['distributions'][0]['distribution']",
+    ],
+
+    # Congestive Heart Failure - has gender splits (female/male) with 5 age brackets each
+    # First 4 distributions = age-based CHF onset, 5th = no CHF
+    "congestive_heart_failure": [
+        # Female pathways (all age brackets) → force CHF onset
+        "$['states']['Determine CHF']['complex_transition'][0]['distributions'][0]['distribution']",
+        "$['states']['Determine CHF']['complex_transition'][0]['distributions'][1]['distribution']",
+        "$['states']['Determine CHF']['complex_transition'][0]['distributions'][2]['distribution']",
+        "$['states']['Determine CHF']['complex_transition'][0]['distributions'][3]['distribution']",
+        # Male pathways (all age brackets) → force CHF onset
+        "$['states']['Determine CHF']['complex_transition'][1]['distributions'][0]['distribution']",
+        "$['states']['Determine CHF']['complex_transition'][1]['distributions'][1]['distribution']",
+        "$['states']['Determine CHF']['complex_transition'][1]['distributions'][2]['distribution']",
+        "$['states']['Determine CHF']['complex_transition'][1]['distributions'][3]['distribution']",
+    ],
+
+    # Osteoarthritis - has veteran/non-veteran and gender splits
+    # First distribution = OA onset, second = no OA
+    "osteoarthritis": [
+        # Non-veteran pathways (male/female)
+        "$['states']['Non_Veteran']['complex_transition'][0]['distributions'][0]['distribution']",
+        "$['states']['Non_Veteran']['complex_transition'][1]['distributions'][0]['distribution']",
+        # Veteran pathways (multiple demographics)
+        "$['states']['Veteran']['complex_transition'][0]['distributions'][0]['distribution']",
+        "$['states']['Veteran']['complex_transition'][1]['distributions'][0]['distribution']",
+        "$['states']['Veteran']['complex_transition'][2]['distributions'][0]['distribution']",
+    ],
+
+    # Chronic Kidney Disease - entry via Initial_Kidney_Health state
+    # Index 1 = early CKD onset (index 0 = normal, index 2 = late onset)
+    "chronic_kidney_disease": [
+        "$['states']['Initial_Kidney_Health']['distributed_transition'][1]['distribution']",
+    ],
+
+    # Stable Ischemic Heart Disease - entry via Chance_of_IHD state
+    # Index 0 = no IHD (set to 0), Index 1 = IHD (currently 1.0, but annual check)
+    "stable_ischemic_heart_disease": [
+        "$['states']['Chance_of_IHD']['distributed_transition'][1]['distribution']",
+    ],
+
+    # Atrial Fibrillation - entry via Chance_of_AFib state
+    # Index 1 = AFib onset (index 0 = no AFib delay)
+    "atrial_fibrillation": [
+        "$['states']['Chance_of_AFib']['distributed_transition'][1]['distribution']",
+    ],
+}
+
+
+def validate_synthea_modules(modules: list[str]) -> list[str]:
+    """Validate and normalize Synthea module names.
+
+    Filters to only valid module names and normalizes formatting.
+
+    Args:
+        modules: List of module names to validate
+
+    Returns:
+        List of valid, normalized module names
+    """
+    valid = []
+    for module in modules:
+        # Normalize: lowercase, replace spaces/hyphens with underscores
+        normalized = module.lower().strip().replace(" ", "_").replace("-", "_")
+
+        if normalized in VALID_SYNTHEA_MODULES:
+            valid.append(normalized)
+        else:
+            # Try partial matching for common mappings
+            if "cardiovascular" in normalized:
+                # Synthea doesn't have a generic "cardiovascular_disease" module
+                # Use stable_ischemic_heart_disease as the closest match
+                valid.append("stable_ischemic_heart_disease")
+                logger.info(f"Mapped '{module}' to 'stable_ischemic_heart_disease'")
+            else:
+                logger.warning(f"Unknown Synthea module: '{module}' (normalized: '{normalized}')")
+
+    # Remove duplicates while preserving order
+    seen = set()
+    unique = []
+    for m in valid:
+        if m not in seen:
+            seen.add(m)
+            unique.append(m)
+
+    return unique
+
+
+def generate_module_overrides(modules: list[str], output_dir: Path) -> Optional[Path]:
+    """
+    Generate a .properties file to force disease transitions to 100%.
+
+    Uses multi-path override strategy: ALL possible paths for each disease
+    are set to 100% to guarantee the condition regardless of Synthea's
+    random attribute assignments (smoker status, gender, age bracket, etc.)
+
+    The output format follows Synthea's ModuleOverrides format:
+    - Module filename prefix: "module.json\\:\\:"
+    - JSONPath with escaped colons and spaces
+
+    Args:
+        modules: List of validated Synthea module names
+        output_dir: Directory to write the override file
+
+    Returns:
+        Path to the generated .properties file, or None if no overrides needed
+    """
+    lines = [
+        "# Auto-generated Synthea module overrides",
+        "# Forces disease transition probabilities to 100%",
+        "# Generated by Sentinel-X synthetic_fhir_pipeline",
+        ""
+    ]
+
+    overrides_added = 0
+
+    for module in modules:
+        if module not in MODULE_OVERRIDE_PATHS:
+            logger.warning(f"No override paths defined for module: {module}")
+            continue
+
+        paths = MODULE_OVERRIDE_PATHS[module]
+        lines.append(f"# {module}")
+
+        for json_path in paths:
+            # Format: module.json\:\:JSONPath = value
+            # Escape colons with backslashes and spaces in state names
+            escaped_path = json_path.replace(" ", "\\ ")
+            full_path = f"{module}.json\\:\\:{escaped_path}"
+            lines.append(f"{full_path} = 1.0")
+            overrides_added += 1
+
+        lines.append("")
+
+    if overrides_added == 0:
+        logger.warning("No module overrides generated - no matching modules found")
+        return None
+
+    override_file = output_dir / "module_overrides.properties"
+    override_file.write_text("\n".join(lines))
+
+    logger.info(f"Generated module overrides: {overrides_added} paths for {len(modules)} modules")
+    return override_file
+
+
+# -----------------------------------------------------------------------------
+# SNOMED-CT Code Mapping for Radiology Findings
+# -----------------------------------------------------------------------------
+# Reference: SNOMED CT International Edition
+# Codes verified against https://browser.ihtsdotools.org/
+
+SNOMED_MAPPING: dict[str, tuple[str, str]] = {
+    # Pulmonary findings
+    "emphysema": ("87433001", "Pulmonary emphysema"),
+    "pulmonary emphysema": ("87433001", "Pulmonary emphysema"),
+    "centrilobular emphysema": ("195963002", "Centrilobular emphysema"),
+    "paraseptal emphysema": ("69120008", "Paraseptal emphysema"),
+    "atelectasis": ("46621007", "Atelectasis"),
+    "bronchiectasis": ("12295008", "Bronchiectasis"),
+    "pulmonary nodule": ("427359005", "Solitary nodule of lung"),
+    "lung nodule": ("427359005", "Solitary nodule of lung"),
+    "pulmonary fibrosis": ("51615001", "Pulmonary fibrosis"),
+    "interstitial lung disease": ("233703007", "Interstitial lung disease"),
+    "pleural effusion": ("60046008", "Pleural effusion"),
+    "pneumothorax": ("36118008", "Pneumothorax"),
+    "pneumonia": ("233604007", "Pneumonia"),
+    "consolidation": ("95436008", "Consolidation of lung"),
+    "ground glass": ("50196008", "Ground-glass opacity on chest X-ray"),
+    "ground-glass": ("50196008", "Ground-glass opacity on chest X-ray"),
+    "bronchial wall thickening": ("26036001", "Bronchial wall thickening"),
+    "bronchial thickening": ("26036001", "Bronchial wall thickening"),
+    "copd": ("13645005", "Chronic obstructive lung disease"),
+    "chronic obstructive": ("13645005", "Chronic obstructive lung disease"),
+    "pulmonary edema": ("19242006", "Pulmonary edema"),
+    "lung mass": ("363358000", "Malignant tumor of lung"),
+    "pulmonary mass": ("363358000", "Malignant tumor of lung"),
+    "reticulonodular": ("74853003", "Reticulonodular pattern"),
+    "peribronchial": ("26036001", "Bronchial wall thickening"),
+
+    # Cardiovascular findings
+    "atherosclerosis": ("38716007", "Atherosclerosis"),
+    "atheroma": ("38716007", "Atherosclerosis"),
+    "atheromatous": ("38716007", "Atherosclerosis"),
+    "calcific plaque": ("128305009", "Atherosclerotic plaque"),
+    "calcific atheroma": ("128305009", "Atherosclerotic plaque"),
+    "atheromatous plaque": ("128305009", "Atherosclerotic plaque"),
+    "calcified plaque": ("128305009", "Atherosclerotic plaque"),
+    "cardiomegaly": ("8186001", "Cardiomegaly"),
+    "enlarged heart": ("8186001", "Cardiomegaly"),
+    "cardiac enlargement": ("8186001", "Cardiomegaly"),
+    "pericardial effusion": ("373945007", "Pericardial effusion"),
+    "aortic aneurysm": ("67362008", "Aortic aneurysm"),
+    "thoracic aortic aneurysm": ("54160000", "Thoracic aortic aneurysm"),
+    "abdominal aortic aneurysm": ("233985008", "Abdominal aortic aneurysm"),
+    "coronary calcification": ("194842008", "Coronary artery calcification"),
+    "coronary artery calcification": ("194842008", "Coronary artery calcification"),
+    "calcification": ("82650004", "Calcification"),
+    "aortic calcification": ("440029008", "Calcification of aorta"),
+    "mitral calcification": ("253382006", "Calcification of mitral valve"),
+    "vascular calcification": ("128305009", "Atherosclerotic plaque"),
+
+    # Musculoskeletal findings
+    "spondylosis": ("75320002", "Spondylosis"),
+    "thoracic spondylosis": ("75320002", "Spondylosis"),
+    "lumbar spondylosis": ("75320002", "Spondylosis"),
+    "cervical spondylosis": ("75320002", "Spondylosis"),
+    "osteoarthritis": ("396275006", "Osteoarthritis"),
+    "degenerative changes": ("396275006", "Osteoarthritis"),
+    "degenerative change": ("396275006", "Osteoarthritis"),
+    "degenerative disc": ("77547008", "Degenerative disc disease"),
+    "disc degeneration": ("77547008", "Degenerative disc disease"),
+    "osteophyte": ("88998003", "Osteophyte"),
+    "osteophytes": ("88998003", "Osteophyte"),
+    "scoliosis": ("298382003", "Scoliosis deformity of spine"),
+    "kyphosis": ("414564002", "Kyphosis"),
+    "compression fracture": ("207957008", "Compression fracture of vertebra"),
+    "vertebral fracture": ("207957008", "Compression fracture of vertebra"),
+    "fracture": ("125605004", "Fracture of bone"),
+    "osteopenia": ("64859006", "Osteopenia"),
+    "osteoporosis": ("64859006", "Osteopenia"),
+
+    # Abdominal findings
+    "cholelithiasis": ("235919008", "Cholelithiasis"),
+    "gallstone": ("235919008", "Cholelithiasis"),
+    "gallstones": ("235919008", "Cholelithiasis"),
+    "hepatomegaly": ("80515008", "Hepatomegaly"),
+    "enlarged liver": ("80515008", "Hepatomegaly"),
+    "splenomegaly": ("16294009", "Splenomegaly"),
+    "enlarged spleen": ("16294009", "Splenomegaly"),
+    "renal cyst": ("36171008", "Renal cyst"),
+    "kidney cyst": ("36171008", "Renal cyst"),
+    "atrophic kidney": ("16395008", "Renal atrophy"),
+    "renal atrophy": ("16395008", "Renal atrophy"),
+    "kidney atrophy": ("16395008", "Renal atrophy"),
+    "chronic kidney disease": ("709044004", "Chronic kidney disease"),
+    "fatty liver": ("197321007", "Steatosis of liver"),
+    "hepatic steatosis": ("197321007", "Steatosis of liver"),
+    "steatosis": ("197321007", "Steatosis of liver"),
+    "pancreatic cyst": ("37153006", "Pancreatic cyst"),
+    "adrenal nodule": ("126873006", "Adrenal nodule"),
+    "adrenal adenoma": ("93911001", "Adrenal adenoma"),
+    "hiatal hernia": ("84089009", "Hiatal hernia"),
+    "hernia": ("414403008", "Hernia of abdominal cavity"),
+
+    # Vascular findings
+    "venous collateral": ("234042006", "Collateral vessel"),
+    "collateral vessel": ("234042006", "Collateral vessel"),
+    "collaterals": ("234042006", "Collateral vessel"),
+    "thrombosis": ("64156001", "Thrombosis"),
+    "thrombus": ("64156001", "Thrombosis"),
+    "pulmonary embolism": ("59282003", "Pulmonary embolism"),
+    "pe": ("59282003", "Pulmonary embolism"),
+    "embolism": ("414086009", "Embolism"),
+    "dvt": ("128053003", "Deep venous thrombosis"),
+    "deep vein thrombosis": ("128053003", "Deep venous thrombosis"),
+    "aneurysm": ("432119003", "Aneurysm"),
+    "subclavian": ("234044007", "Disorder of subclavian vein"),
+    "collapsed vein": ("271299006", "Vein finding"),
+
+    # Infectious/inflammatory findings
+    "lymphadenopathy": ("30746006", "Lymphadenopathy"),
+    "lymph node enlargement": ("30746006", "Lymphadenopathy"),
+    "enlarged lymph node": ("30746006", "Lymphadenopathy"),
+    "infectious process": ("40733004", "Infectious disease"),
+    "infection": ("40733004", "Infectious disease"),
+    "abscess": ("128477000", "Abscess"),
+    "granuloma": ("45647009", "Granuloma"),
+    "calcified granuloma": ("16003001", "Calcified granuloma"),
+
+    # Other common findings
+    "thyroid nodule": ("237495005", "Thyroid nodule"),
+    "thyroid mass": ("237495005", "Thyroid nodule"),
+    "breast mass": ("290078006", "Mass of breast"),
+    "cyst": ("441457006", "Cyst"),
+    "mass": ("4147007", "Mass"),
+    "lesion": ("52988006", "Lesion"),
+    "nodule": ("27925004", "Nodule"),
+    "opacity": ("263837009", "Opacification"),
+    "density": ("79365008", "Density"),
+}
+
+
+def lookup_snomed_code(condition_name: str) -> tuple[str, str] | None:
+    """Look up SNOMED-CT code with fuzzy/partial matching.
+
+    Args:
+        condition_name: The condition name to look up
+
+    Returns:
+        Tuple of (snomed_code, display_name) or None if not found
+    """
+    name_lower = condition_name.lower().strip()
+
+    # Try exact match first
+    if name_lower in SNOMED_MAPPING:
+        return SNOMED_MAPPING[name_lower]
+
+    # Try partial match (keyword in condition name)
+    # Sort by key length descending to match longer/more specific terms first
+    sorted_keywords = sorted(SNOMED_MAPPING.keys(), key=len, reverse=True)
+    for keyword in sorted_keywords:
+        if keyword in name_lower:
+            return SNOMED_MAPPING[keyword]
+
+    # No match found
+    return None
+
+
+def enrich_snomed_codes(extraction: RadiologyExtraction) -> RadiologyExtraction:
+    """Enrich extraction with SNOMED codes for conditions that are missing them.
+
+    This post-processing step attempts to fill in SNOMED codes that the LLM
+    extraction may have missed, using the local SNOMED_MAPPING dictionary.
+
+    Args:
+        extraction: The RadiologyExtraction to enrich
+
+    Returns:
+        The same extraction object with enriched SNOMED codes
+    """
+    enriched_count = 0
+
+    for condition in extraction.conditions:
+        if condition.snomed_code is None:
+            result = lookup_snomed_code(condition.condition_name)
+            if result:
+                condition.snomed_code = result[0]
+                enriched_count += 1
+                logger.debug(
+                    f"SNOMED enrichment: '{condition.condition_name}' -> "
+                    f"{result[0]} ({result[1]})"
+                )
+
+    if enriched_count > 0:
+        logger.info(f"Enriched {enriched_count} conditions with SNOMED codes")
+
+    return extraction
+
+
+# -----------------------------------------------------------------------------
+# Temporal Classification for Realistic Onset Dates
+# -----------------------------------------------------------------------------
+
+# Conditions classified by typical onset patterns relative to imaging discovery
+CONDITION_TEMPORAL_CLASS: dict[str, list[str]] = {
+    # Degenerative conditions: develop over 5-20 years
+    "degenerative": [
+        "spondylosis", "osteoarthritis", "degenerative", "osteophyte",
+        "disc disease", "stenosis", "ddd", "arthritis"
+    ],
+
+    # Chronic conditions: typically present 2-10 years before discovery
+    "chronic": [
+        "emphysema", "copd", "fibrosis", "bronchiectasis", "cardiomegaly",
+        "atherosclerosis", "atheroma", "calcification", "calcific",
+        "chronic kidney", "diabetes", "hypertension", "cirrhosis",
+        "hepatomegaly", "splenomegaly", "cholelithiasis", "gallstone",
+        "scoliosis", "kyphosis", "fatty liver", "steatosis"
+    ],
+
+    # Subacute conditions: developing over 2 weeks to 6 months
+    "subacute": [
+        "consolidation", "effusion", "nodule", "mass", "lymphadenopathy",
+        "thickening", "infiltrate", "opacity"
+    ],
+
+    # Acute conditions: recent onset, 0-14 days before scan
+    "acute": [
+        "pneumonia", "infection", "infectious", "pneumothorax", "embolism",
+        "infarct", "hemorrhage", "edema", "thrombus", "thrombosis",
+        "dissection", "fracture", "acute", "abscess"
+    ],
+
+    # Incidental findings: discovered at scan time, onset unknown
+    "incidental": [
+        "cyst", "hemangioma", "lipoma", "granuloma", "calcified granuloma",
+        "benign", "incidental"
+    ]
+}
+
+
+def classify_condition_temporality(condition_name: str) -> str:
+    """Classify a condition by its typical temporal onset pattern.
+
+    Args:
+        condition_name: The name of the condition
+
+    Returns:
+        Temporal class: "degenerative", "chronic", "subacute", "acute", or "incidental"
+    """
+    name_lower = condition_name.lower()
+
+    for temporal_class, keywords in CONDITION_TEMPORAL_CLASS.items():
+        for keyword in keywords:
+            if keyword in name_lower:
+                return temporal_class
+
+    # Default to chronic for unknown conditions (conservative assumption)
+    return "chronic"
+
+
+def calculate_onset_date(
+    scan_datetime: datetime,
+    temporal_class: str,
+    seed: int
+) -> tuple[datetime, str]:
+    """Calculate a realistic onset date based on condition temporal class.
+
+    Uses deterministic random for reproducibility.
+
+    Args:
+        scan_datetime: When the scan was performed
+        temporal_class: The temporal classification of the condition
+        seed: Seed for deterministic random number generation
+
+    Returns:
+        Tuple of (onset_datetime, clinical_note)
+    """
+    import random
+    rng = random.Random(seed)
+
+    # Define offset ranges in days for each temporal class
+    offset_ranges = {
+        "degenerative": (365 * 5, 365 * 20),    # 5-20 years before scan
+        "chronic": (365 * 2, 365 * 10),          # 2-10 years before scan
+        "subacute": (14, 180),                    # 2 weeks to 6 months before scan
+        "acute": (0, 14),                         # 0-14 days before scan
+        "incidental": (0, 0),                     # Discovered at scan time
+    }
+
+    min_days, max_days = offset_ranges.get(temporal_class, (365, 365 * 5))
+
+    if min_days == max_days == 0:
+        # Incidental: use scan date as onset
+        return scan_datetime, "Incidental finding discovered on imaging"
+
+    # Calculate random offset within range
+    days_before = rng.randint(min_days, max_days)
+    onset = scan_datetime - timedelta(days=days_before)
+
+    # Generate clinical note based on temporal class
+    if temporal_class == "degenerative":
+        years = days_before // 365
+        note = f"Degenerative condition, estimated onset {years} years prior to imaging"
+    elif temporal_class == "chronic":
+        years = days_before // 365
+        note = f"Chronic condition, estimated onset {years} years prior to imaging"
+    elif temporal_class == "subacute":
+        if days_before < 30:
+            note = f"Subacute finding, estimated onset {days_before} days prior to imaging"
+        else:
+            months = days_before // 30
+            note = f"Subacute finding, estimated onset {months} months prior to imaging"
+    elif temporal_class == "acute":
+        note = f"Acute finding, estimated onset {days_before} days prior to imaging"
+    else:
+        note = f"Estimated onset {days_before} days prior to imaging"
+
+    return onset, note
+
+
 # -----------------------------------------------------------------------------
 # OpenAI Extraction
 # -----------------------------------------------------------------------------
@@ -180,20 +693,55 @@ For each report, you must:
 3. Infer patient demographics (age range, gender if determinable) based on clinical patterns
 4. Map conditions to Synthea modules for synthetic patient generation
 
-Common SNOMED-CT codes:
+Common SNOMED-CT codes (use these whenever applicable):
+
+Pulmonary:
 - Emphysema: 87433001
 - Bronchiectasis: 12295008
-- Atherosclerosis: 38716007
-- Cardiomegaly: 8186001
 - Atelectasis: 46621007
-- Spondylosis: 75320002
-- Osteoarthritis: 396275006
-- Pleural effusion: 60046008
 - Pulmonary nodule: 427359005
-- Calcification: 82650004
-- Chronic kidney disease: 709044004
-- Cholelithiasis: 235919008
+- Pulmonary fibrosis: 51615001
+- Pleural effusion: 60046008
+- Consolidation: 95436008
+- Ground-glass opacity: 50196008
+- Bronchial wall thickening: 26036001
+- COPD: 13645005
+
+Cardiovascular:
+- Atherosclerosis/atheroma: 38716007
+- Calcified plaque: 128305009
+- Cardiomegaly: 8186001
+- Pericardial effusion: 373945007
+- Aortic aneurysm: 67362008
+- Coronary calcification: 194842008
+- Calcification (general): 82650004
+
+Musculoskeletal:
+- Spondylosis: 75320002
+- Osteoarthritis/degenerative changes: 396275006
+- Degenerative disc disease: 77547008
+- Osteophytes: 88998003
 - Scoliosis: 298382003
+
+Abdominal:
+- Cholelithiasis/gallstones: 235919008
+- Hepatomegaly: 80515008
+- Renal cyst: 36171008
+- Renal atrophy: 16395008
+- Chronic kidney disease: 709044004
+- Fatty liver/steatosis: 197321007
+
+Vascular:
+- Venous collaterals: 234042006
+- Thrombosis: 64156001
+- Lymphadenopathy: 30746006
+
+Other:
+- Granuloma: 45647009
+- Cyst: 441457006
+- Hiatal hernia: 84089009
+
+If you cannot find an exact SNOMED code, leave snomed_code as null.
 
 Synthea module mapping:
 - Pulmonary conditions (emphysema, bronchiectasis, COPD) → "copd"
@@ -246,6 +794,9 @@ Impressions: {report.get('impressions', 'Not provided')}
                     if keyword in condition_lower:
                         enhanced_modules.add(module)
             extraction.synthea_modules = list(enhanced_modules)
+
+            # Enrich missing SNOMED codes using local mapping
+            extraction = enrich_snomed_codes(extraction)
 
         return extraction
 
@@ -338,10 +889,26 @@ def run_synthea(config: SyntheaConfig) -> Optional[dict]:
     if config.seed is not None:
         cmd.extend(["-ps", str(config.seed)])
 
+    # Generate module overrides to force disease conditions
+    # This replaces the -m flag approach which broke base patient generation
+    override_file = None
+    validated_modules = []
+    if config.modules:
+        validated_modules = validate_synthea_modules(config.modules)
+        if validated_modules:
+            override_file = generate_module_overrides(
+                modules=validated_modules,
+                output_dir=config.output_dir
+            )
+            if override_file:
+                cmd.extend(["--module_override", str(override_file)])
+                logger.info(f"Using module overrides: {override_file}")
+
     # Add state
     cmd.append(config.state)
 
-    logger.info(f"Running Synthea: age={config.age_min}-{config.age_max}, gender={config.gender or 'any'}, seed={config.seed}")
+    override_str = f", overrides={len(validated_modules)} modules" if override_file else ""
+    logger.info(f"Running Synthea: age={config.age_min}-{config.age_max}, gender={config.gender or 'any'}, seed={config.seed}{override_str}")
     logger.debug(f"Synthea command: {' '.join(cmd)}")
 
     try:
@@ -458,9 +1025,19 @@ def create_diagnostic_report(
     imaging_study_ref: str,
     report: dict,
     extraction: RadiologyExtraction,
-    report_datetime: str
+    report_datetime: str,
+    result_refs: list[str] | None = None
 ) -> dict:
-    """Create a DiagnosticReport resource (US Core DiagnosticReport for Report and Note)."""
+    """Create a DiagnosticReport resource (US Core DiagnosticReport for Report and Note).
+
+    Args:
+        patient_ref: Reference to the patient
+        imaging_study_ref: Reference to the ImagingStudy
+        report: The original report dict with findings/impressions
+        extraction: Extracted clinical data
+        report_datetime: When the report was created
+        result_refs: Optional list of Observation references (findings)
+    """
 
     # Encode full report text as base64
     full_report_text = f"""
@@ -528,6 +1105,10 @@ Impressions:
     # Add imaging study reference
     diagnostic_report["imagingStudy"] = [{"reference": imaging_study_ref}]
 
+    # Add result references to finding observations
+    if result_refs:
+        diagnostic_report["result"] = [{"reference": ref} for ref in result_refs]
+
     # Add conclusion codes if available
     if conclusion_codes:
         diagnostic_report["conclusionCode"] = conclusion_codes
@@ -535,13 +1116,252 @@ Impressions:
     return diagnostic_report
 
 
+def create_smoking_observation(
+    patient_ref: str,
+    is_smoker: bool,
+    effective_datetime: str
+) -> dict:
+    """Create US Core Smoking Status Observation.
+
+    Profile: http://hl7.org/fhir/us/core/StructureDefinition/us-core-smokingstatus
+
+    Args:
+        patient_ref: Reference to the patient (e.g., "Patient/123")
+        is_smoker: Whether the patient is a smoker (True) or non-smoker (False)
+        effective_datetime: When the smoking status was assessed
+
+    Returns:
+        FHIR Observation resource dict
+    """
+    # SNOMED CT codes for smoking status
+    # Reference: http://hl7.org/fhir/us/core/ValueSet/us-core-smoking-status-observation-codes
+    if is_smoker:
+        # "Current every day smoker" - most conservative assumption when findings suggest smoking
+        snomed_code = "449868002"
+        display = "Current every day smoker"
+    else:
+        # "Never smoked tobacco"
+        snomed_code = "266919005"
+        display = "Never smoked tobacco"
+
+    return {
+        "resourceType": "Observation",
+        "id": generate_uuid(),
+        "meta": {
+            "profile": [
+                "http://hl7.org/fhir/us/core/StructureDefinition/us-core-smokingstatus"
+            ]
+        },
+        "status": "final",
+        "category": [{
+            "coding": [{
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "social-history",
+                "display": "Social History"
+            }]
+        }],
+        "code": {
+            "coding": [{
+                "system": "http://loinc.org",
+                "code": "72166-2",
+                "display": "Tobacco smoking status"
+            }],
+            "text": "Tobacco smoking status"
+        },
+        "subject": {"reference": patient_ref},
+        "effectiveDateTime": effective_datetime,
+        "valueCodeableConcept": {
+            "coding": [{
+                "system": "http://snomed.info/sct",
+                "code": snomed_code,
+                "display": display
+            }],
+            "text": display
+        }
+    }
+
+
+def create_cardiovascular_risk_assessment(
+    patient_ref: str,
+    risk_level: Literal["low", "moderate", "high"],
+    occurrence_datetime: str,
+    basis_condition_refs: list[str] | None = None
+) -> dict:
+    """Create a RiskAssessment resource for cardiovascular risk.
+
+    FHIR RiskAssessment: http://hl7.org/fhir/riskassessment.html
+
+    This captures the assessed cardiovascular risk based on imaging findings
+    such as calcified atheromas, cardiomegaly, and vascular calcifications.
+
+    Args:
+        patient_ref: Reference to the patient
+        risk_level: Assessed risk level ("low", "moderate", or "high")
+        occurrence_datetime: When the assessment was made
+        basis_condition_refs: Optional list of condition references that support the assessment
+
+    Returns:
+        FHIR RiskAssessment resource dict
+    """
+    # Map risk level to probability range
+    probability_map = {
+        "low": 0.1,
+        "moderate": 0.35,
+        "high": 0.65
+    }
+
+    risk_assessment = {
+        "resourceType": "RiskAssessment",
+        "id": generate_uuid(),
+        "status": "final",
+        "subject": {"reference": patient_ref},
+        "occurrenceDateTime": occurrence_datetime,
+        "method": {
+            "coding": [{
+                "system": "http://snomed.info/sct",
+                "code": "225338004",
+                "display": "Risk assessment"
+            }],
+            "text": "Cardiovascular risk assessment based on imaging findings"
+        },
+        "code": {
+            "coding": [{
+                "system": "http://snomed.info/sct",
+                "code": "441829007",
+                "display": "Assessment of cardiovascular system"
+            }],
+            "text": f"Cardiovascular Risk Assessment - {risk_level.upper()}"
+        },
+        "prediction": [{
+            "outcome": {
+                "coding": [{
+                    "system": "http://snomed.info/sct",
+                    "code": "49601007",
+                    "display": "Disorder of cardiovascular system"
+                }],
+                "text": "Cardiovascular disease"
+            },
+            "qualitativeRisk": {
+                "coding": [{
+                    "system": "http://terminology.hl7.org/CodeSystem/risk-probability",
+                    "code": risk_level,
+                    "display": risk_level.capitalize()
+                }],
+                "text": f"{risk_level.capitalize()} risk"
+            },
+            "probabilityDecimal": probability_map.get(risk_level, 0.35)
+        }],
+        "note": [{
+            "text": f"Cardiovascular risk assessed as {risk_level} based on CT imaging findings including vascular calcifications and cardiac morphology."
+        }]
+    }
+
+    # Add basis references if provided (conditions/observations that support the assessment)
+    if basis_condition_refs:
+        risk_assessment["basis"] = [{"reference": ref} for ref in basis_condition_refs]
+
+    return risk_assessment
+
+
+def create_finding_observation(
+    patient_ref: str,
+    condition: ExtractedCondition,
+    effective_datetime: str,
+    diagnostic_report_ref: str | None = None
+) -> dict:
+    """Create an Observation resource for an imaging finding.
+
+    This creates a discrete representation of a finding from the radiology report,
+    linking it to the DiagnosticReport it was derived from.
+
+    Args:
+        patient_ref: Reference to the patient
+        condition: The extracted condition/finding
+        effective_datetime: When the finding was observed
+        diagnostic_report_ref: Reference to the source DiagnosticReport
+
+    Returns:
+        FHIR Observation resource dict
+    """
+    observation = {
+        "resourceType": "Observation",
+        "id": generate_uuid(),
+        "status": "final",
+        "category": [{
+            "coding": [{
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "imaging",
+                "display": "Imaging"
+            }]
+        }],
+        "code": {
+            "text": condition.condition_name
+        },
+        "subject": {"reference": patient_ref},
+        "effectiveDateTime": effective_datetime
+    }
+
+    # Add SNOMED code if available
+    if condition.snomed_code:
+        observation["code"]["coding"] = [{
+            "system": "http://snomed.info/sct",
+            "code": condition.snomed_code,
+            "display": condition.condition_name
+        }]
+
+    # Add body site if available
+    if condition.body_site:
+        observation["bodySite"] = {
+            "coding": [{
+                "system": "http://snomed.info/sct",
+                "code": "51185008",  # Default to thorax for chest CT
+                "display": "Thorax"
+            }],
+            "text": condition.body_site
+        }
+
+    # Add severity as interpretation
+    if condition.severity and condition.severity != "none":
+        severity_map = {
+            "mild": ("L", "Low"),
+            "moderate": ("N", "Normal"),  # Using normal as moderate baseline
+            "severe": ("H", "High")
+        }
+        code, display = severity_map.get(condition.severity, ("N", "Normal"))
+        observation["interpretation"] = [{
+            "coding": [{
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "code": code,
+                "display": display
+            }],
+            "text": f"Severity: {condition.severity}"
+        }]
+
+    # Add derivedFrom reference to the DiagnosticReport
+    if diagnostic_report_ref:
+        observation["derivedFrom"] = [{"reference": diagnostic_report_ref}]
+
+    return observation
+
+
 def create_condition_resource(
     patient_ref: str,
     condition: ExtractedCondition,
-    onset_datetime: str
+    onset_datetime: str,
+    evidence_ref: str | None = None,
+    recorded_datetime: str | None = None,
+    onset_note: str | None = None
 ) -> dict:
-    """Create a Condition resource (US Core Condition)."""
+    """Create a Condition resource (US Core Condition).
 
+    Args:
+        patient_ref: Reference to the patient
+        condition: The extracted condition
+        onset_datetime: When the condition started (estimated onset)
+        evidence_ref: Optional reference to the supporting Observation
+        recorded_datetime: When the condition was documented (scan date)
+        onset_note: Clinical note about how onset was estimated
+    """
     condition_resource = {
         "resourceType": "Condition",
         "id": generate_uuid(),
@@ -606,6 +1426,22 @@ def create_condition_resource(
     if condition.body_site:
         condition_resource["bodySite"] = [{
             "text": condition.body_site
+        }]
+
+    # Add evidence linking to the supporting Observation
+    if evidence_ref:
+        condition_resource["evidence"] = [{
+            "detail": [{"reference": evidence_ref}]
+        }]
+
+    # Add recordedDate (when the condition was documented - typically scan date)
+    if recorded_datetime:
+        condition_resource["recordedDate"] = recorded_datetime
+
+    # Add note about onset estimation
+    if onset_note:
+        condition_resource["note"] = [{
+            "text": onset_note
         }]
 
     return condition_resource
@@ -825,20 +1661,91 @@ def merge_radiology_resources(
     imaging_study = create_imaging_study(patient_ref, volume_name, now)
     imaging_study_ref = f"ImagingStudy/{imaging_study['id']}"
 
-    # Create DiagnosticReport
+    # Step 1: Create Finding Observations for each extracted condition
+    # These will be linked from DiagnosticReport.result and to Condition.evidence
+    finding_observations = []
+    finding_obs_refs = []
+    for condition in extraction.conditions:
+        obs = create_finding_observation(
+            patient_ref,
+            condition,
+            now,
+            diagnostic_report_ref=None  # Will be updated after DiagnosticReport is created
+        )
+        finding_observations.append(obs)
+        finding_obs_refs.append(f"Observation/{obs['id']}")
+
+    # Step 2: Create DiagnosticReport with result references to finding observations
     diagnostic_report = create_diagnostic_report(
         patient_ref,
         imaging_study_ref,
         report,
         extraction,
+        now,
+        result_refs=finding_obs_refs
+    )
+    diagnostic_report_ref = f"DiagnosticReport/{diagnostic_report['id']}"
+
+    # Step 3: Update Finding Observations with derivedFrom reference to DiagnosticReport
+    for obs in finding_observations:
+        obs["derivedFrom"] = [{"reference": diagnostic_report_ref}]
+
+    # Step 4: Create Condition resources with realistic onset dates and evidence links
+    # Parse scan datetime for temporal calculations
+    scan_dt = datetime.fromisoformat(now.replace("Z", "+00:00"))
+
+    conditions = []
+    condition_refs = []  # Track refs for risk assessment basis
+    for i, condition in enumerate(extraction.conditions):
+        # Calculate realistic onset date based on condition type
+        temporal_class = classify_condition_temporality(condition.condition_name)
+
+        # Generate deterministic seed from volume_name and condition name
+        seed_str = f"{volume_name}_{condition.condition_name}_{i}"
+        seed = hash(seed_str) & 0x7FFFFFFF  # Positive 32-bit integer
+
+        onset_dt, onset_note = calculate_onset_date(scan_dt, temporal_class, seed)
+        onset_datetime_str = onset_dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+        # Link condition to its corresponding finding observation
+        evidence_ref = finding_obs_refs[i] if i < len(finding_obs_refs) else None
+        condition_resource = create_condition_resource(
+            patient_ref,
+            condition,
+            onset_datetime_str,
+            evidence_ref=evidence_ref,
+            recorded_datetime=now,  # Documented at scan time
+            onset_note=onset_note
+        )
+        conditions.append(condition_resource)
+        condition_refs.append(f"Condition/{condition_resource['id']}")
+
+        logger.debug(
+            f"Condition '{condition.condition_name}': temporal_class={temporal_class}, "
+            f"onset={onset_datetime_str}"
+        )
+
+    # Create Smoking Status Observation (uses extracted smoking_history_likely)
+    smoking_observation = create_smoking_observation(
+        patient_ref,
+        extraction.smoking_history_likely,
         now
     )
 
-    # Create Condition resources for extracted conditions
-    conditions = []
-    for condition in extraction.conditions:
-        condition_resource = create_condition_resource(patient_ref, condition, now)
-        conditions.append(condition_resource)
+    # Create Cardiovascular Risk Assessment (uses extracted cardiovascular_risk)
+    # Link to cardiovascular-related conditions as basis
+    cv_related_keywords = ["atheroma", "atherosclerosis", "calcif", "cardio", "coronary", "aortic"]
+    cv_basis_refs = [
+        ref for ref, cond in zip(condition_refs, extraction.conditions)
+        if any(kw in cond.condition_name.lower() for kw in cv_related_keywords)
+    ]
+
+    cardiovascular_risk_assessment = create_cardiovascular_risk_assessment(
+        patient_ref,
+        extraction.cardiovascular_risk,
+        now,
+        basis_condition_refs=cv_basis_refs if cv_basis_refs else None
+    )
 
     # Add new resources to bundle
     new_entries = [
@@ -851,9 +1758,28 @@ def merge_radiology_resources(
             "fullUrl": f"urn:uuid:{diagnostic_report['id']}",
             "resource": diagnostic_report,
             "request": {"method": "POST", "url": "DiagnosticReport"}
+        },
+        {
+            "fullUrl": f"urn:uuid:{smoking_observation['id']}",
+            "resource": smoking_observation,
+            "request": {"method": "POST", "url": "Observation"}
+        },
+        {
+            "fullUrl": f"urn:uuid:{cardiovascular_risk_assessment['id']}",
+            "resource": cardiovascular_risk_assessment,
+            "request": {"method": "POST", "url": "RiskAssessment"}
         }
     ]
 
+    # Add finding observations (linked to DiagnosticReport.result)
+    for obs in finding_observations:
+        new_entries.append({
+            "fullUrl": f"urn:uuid:{obs['id']}",
+            "resource": obs,
+            "request": {"method": "POST", "url": "Observation"}
+        })
+
+    # Add conditions (linked to observations via evidence)
     for condition in conditions:
         new_entries.append({
             "fullUrl": f"urn:uuid:{condition['id']}",
@@ -869,7 +1795,8 @@ def merge_radiology_resources(
 
     logger.info(
         f"Merged {len(new_entries)} resources: "
-        f"ImagingStudy, DiagnosticReport, {len(conditions)} Conditions"
+        f"ImagingStudy, DiagnosticReport, SmokingStatus, RiskAssessment, "
+        f"{len(finding_observations)} FindingObs, {len(conditions)} Conditions"
     )
 
     # Apply temporal filtering to enforce simulation boundary
@@ -884,37 +1811,299 @@ def merge_radiology_resources(
 # Bundle Validation
 # -----------------------------------------------------------------------------
 
-def validate_bundle(bundle: dict) -> bool:
-    """Perform basic validation on the FHIR bundle."""
+def validate_temporal_consistency(bundle: dict) -> list[str]:
+    """Validate temporal ordering of resources.
+
+    Checks that:
+    - Condition.onsetDateTime <= Condition.recordedDate
+    - DiagnosticReport.effectiveDateTime <= DiagnosticReport.issued
+    - All dates are valid ISO format
+
+    Args:
+        bundle: The FHIR bundle to validate
+
+    Returns:
+        List of validation error messages (empty if valid)
+    """
+    errors = []
+
+    for entry in bundle.get("entry", []):
+        resource = entry.get("resource", {})
+        resource_type = resource.get("resourceType")
+        resource_id = resource.get("id", "unknown")
+
+        if resource_type == "Condition":
+            onset = resource.get("onsetDateTime")
+            recorded = resource.get("recordedDate")
+
+            if onset and recorded:
+                try:
+                    onset_dt = datetime.fromisoformat(onset.replace("Z", "+00:00"))
+                    recorded_dt = datetime.fromisoformat(recorded.replace("Z", "+00:00"))
+
+                    if onset_dt > recorded_dt:
+                        errors.append(
+                            f"Condition/{resource_id}: onsetDateTime ({onset}) "
+                            f"is after recordedDate ({recorded})"
+                        )
+                except ValueError as e:
+                    errors.append(f"Condition/{resource_id}: invalid date format - {e}")
+
+        elif resource_type == "DiagnosticReport":
+            effective = resource.get("effectiveDateTime")
+            issued = resource.get("issued")
+
+            if effective and issued:
+                try:
+                    effective_dt = datetime.fromisoformat(effective.replace("Z", "+00:00"))
+                    issued_dt = datetime.fromisoformat(issued.replace("Z", "+00:00"))
+
+                    if effective_dt > issued_dt:
+                        errors.append(
+                            f"DiagnosticReport/{resource_id}: effectiveDateTime ({effective}) "
+                            f"is after issued ({issued})"
+                        )
+                except ValueError as e:
+                    errors.append(f"DiagnosticReport/{resource_id}: invalid date format - {e}")
+
+    return errors
+
+
+def validate_reference_integrity(bundle: dict) -> list[str]:
+    """Validate that all references resolve to existing resources.
+
+    Checks that all resource references point to resources that exist
+    within the bundle.
+
+    Args:
+        bundle: The FHIR bundle to validate
+
+    Returns:
+        List of validation error messages (empty if valid)
+    """
+    errors = []
+
+    # Build set of available resource references
+    available_refs = set()
+    for entry in bundle.get("entry", []):
+        resource = entry.get("resource", {})
+        resource_type = resource.get("resourceType")
+        resource_id = resource.get("id")
+        if resource_type and resource_id:
+            available_refs.add(f"{resource_type}/{resource_id}")
+
+    def check_reference(ref_obj: dict | None, source: str, field_name: str):
+        """Check if a reference resolves to an existing resource."""
+        if not isinstance(ref_obj, dict):
+            return
+        ref = ref_obj.get("reference", "")
+        if ref and not ref.startswith("urn:uuid:"):
+            if ref not in available_refs:
+                errors.append(f"{source}.{field_name}: unresolved reference '{ref}'")
+
+    for entry in bundle.get("entry", []):
+        resource = entry.get("resource", {})
+        resource_type = resource.get("resourceType", "Unknown")
+        resource_id = resource.get("id", "?")
+        source = f"{resource_type}/{resource_id}"
+
+        # Check common reference fields
+        check_reference(resource.get("subject"), source, "subject")
+        check_reference(resource.get("patient"), source, "patient")
+
+        # Check array references
+        for i, ref in enumerate(resource.get("result", [])):
+            check_reference(ref, source, f"result[{i}]")
+
+        for i, ref in enumerate(resource.get("derivedFrom", [])):
+            check_reference(ref, source, f"derivedFrom[{i}]")
+
+        for i, ref in enumerate(resource.get("imagingStudy", [])):
+            check_reference(ref, source, f"imagingStudy[{i}]")
+
+        for i, ref in enumerate(resource.get("basis", [])):
+            check_reference(ref, source, f"basis[{i}]")
+
+        # Check evidence references
+        for i, evidence in enumerate(resource.get("evidence", [])):
+            for j, detail in enumerate(evidence.get("detail", [])):
+                check_reference(detail, source, f"evidence[{i}].detail[{j}]")
+
+    return errors
+
+
+def validate_synthea_radiology_overlap(
+    bundle: dict,
+    radiology_conditions: list[str],
+    volume_name: str
+) -> dict:
+    """Measure overlap between Synthea-generated and radiology-extracted conditions.
+
+    Helps assess whether Synthea modules generated relevant conditions.
+
+    Args:
+        bundle: The FHIR bundle
+        radiology_conditions: List of condition names from radiology extraction
+        volume_name: The volume name (used to identify pipeline-created resources)
+
+    Returns:
+        Dict with overlap metrics
+    """
+    # Identify Synthea conditions (those NOT manually created by the pipeline)
+    synthea_conditions = []
+
+    for entry in bundle.get("entry", []):
+        resource = entry.get("resource", {})
+        if resource.get("resourceType") != "Condition":
+            continue
+
+        # Check if this is a pipeline-created condition
+        # Pipeline conditions have category "encounter-diagnosis" and were created at scan time
+        is_pipeline_created = False
+        for category in resource.get("category", []):
+            for coding in category.get("coding", []):
+                if coding.get("code") == "encounter-diagnosis":
+                    is_pipeline_created = True
+                    break
+
+        if not is_pipeline_created:
+            # This is a Synthea-generated condition
+            code = resource.get("code", {})
+            text = code.get("text", "")
+            if not text:
+                for coding in code.get("coding", []):
+                    text = coding.get("display", "")
+                    if text:
+                        break
+            if text:
+                synthea_conditions.append(text.lower())
+
+    # Normalize radiology conditions
+    radiology_normalized = [c.lower() for c in radiology_conditions]
+
+    # Find keyword overlaps (not exact match, but related terms)
+    overlap_keywords = [
+        "emphysema", "copd", "bronchi", "pulmonary", "lung",
+        "cardio", "heart", "atherosclerosis", "calcif",
+        "diabetes", "kidney", "renal",
+        "arthritis", "osteo", "spondyl", "spine"
+    ]
+
+    overlaps = []
+    for rad_cond in radiology_normalized:
+        for synth_cond in synthea_conditions:
+            # Check if they share significant keywords
+            for keyword in overlap_keywords:
+                if keyword in rad_cond and keyword in synth_cond:
+                    overlaps.append({
+                        "radiology": rad_cond,
+                        "synthea": synth_cond,
+                        "keyword": keyword
+                    })
+                    break
+
+    # Calculate overlap percentage
+    overlap_pct = (
+        len(set(o["radiology"] for o in overlaps)) / max(len(radiology_conditions), 1) * 100
+    )
+
+    return {
+        "synthea_condition_count": len(synthea_conditions),
+        "radiology_condition_count": len(radiology_conditions),
+        "overlap_count": len(overlaps),
+        "overlap_percentage": round(overlap_pct, 1),
+        "overlapping_conditions": overlaps[:10]  # Limit to first 10
+    }
+
+
+def validate_bundle(
+    bundle: dict,
+    radiology_conditions: list[str] | None = None,
+    volume_name: str | None = None
+) -> tuple[bool, dict]:
+    """Perform comprehensive validation on the FHIR bundle.
+
+    Args:
+        bundle: The FHIR bundle to validate
+        radiology_conditions: Optional list of condition names for overlap analysis
+        volume_name: Optional volume name for identifying pipeline resources
+
+    Returns:
+        Tuple of (is_valid, validation_metrics)
+    """
+    metrics = {
+        "is_valid": True,
+        "entry_count": 0,
+        "resource_types": {},
+        "temporal_errors": [],
+        "reference_errors": [],
+        "overlap_metrics": None
+    }
 
     if not isinstance(bundle, dict):
         logger.error("Bundle is not a valid JSON object")
-        return False
+        metrics["is_valid"] = False
+        return False, metrics
 
     if bundle.get("resourceType") != "Bundle":
         logger.error("Resource is not a FHIR Bundle")
-        return False
+        metrics["is_valid"] = False
+        return False, metrics
 
     entries = bundle.get("entry", [])
     if not entries:
         logger.error("Bundle has no entries")
-        return False
+        metrics["is_valid"] = False
+        return False, metrics
+
+    metrics["entry_count"] = len(entries)
+
+    # Count resource types
+    for entry in entries:
+        resource_type = entry.get("resource", {}).get("resourceType", "Unknown")
+        metrics["resource_types"][resource_type] = metrics["resource_types"].get(resource_type, 0) + 1
 
     # Check for required resources
-    resource_types = {
-        entry.get("resource", {}).get("resourceType")
-        for entry in entries
-    }
-
     required = {"Patient", "DiagnosticReport", "ImagingStudy"}
-    missing = required - resource_types
+    missing = required - set(metrics["resource_types"].keys())
 
     if missing:
         logger.warning(f"Bundle missing expected resources: {missing}")
-        return False
+        metrics["is_valid"] = False
 
-    logger.info(f"Bundle validation passed: {len(entries)} entries, resources: {resource_types}")
-    return True
+    # Temporal consistency validation
+    metrics["temporal_errors"] = validate_temporal_consistency(bundle)
+    if metrics["temporal_errors"]:
+        logger.warning(f"Temporal validation errors: {len(metrics['temporal_errors'])}")
+        for error in metrics["temporal_errors"][:3]:  # Log first 3
+            logger.warning(f"  - {error}")
+
+    # Reference integrity validation
+    metrics["reference_errors"] = validate_reference_integrity(bundle)
+    if metrics["reference_errors"]:
+        logger.warning(f"Reference integrity errors: {len(metrics['reference_errors'])}")
+        for error in metrics["reference_errors"][:3]:  # Log first 3
+            logger.warning(f"  - {error}")
+        # Reference errors make the bundle invalid
+        metrics["is_valid"] = False
+
+    # Synthea-radiology overlap analysis (informational, doesn't affect validity)
+    if radiology_conditions and volume_name:
+        metrics["overlap_metrics"] = validate_synthea_radiology_overlap(
+            bundle, radiology_conditions, volume_name
+        )
+        logger.info(
+            f"Synthea-radiology overlap: {metrics['overlap_metrics']['overlap_percentage']}% "
+            f"({metrics['overlap_metrics']['overlap_count']} matches)"
+        )
+
+    if metrics["is_valid"]:
+        logger.info(
+            f"Bundle validation passed: {metrics['entry_count']} entries, "
+            f"types: {list(metrics['resource_types'].keys())}"
+        )
+
+    return metrics["is_valid"], metrics
 
 
 # -----------------------------------------------------------------------------
@@ -931,6 +2120,7 @@ class ProcessingResult:
     error: Optional[str] = None
     patient_fhir_id: Optional[str] = None
     conditions_count: int = 0
+    validation_metrics: Optional[dict] = None
 
 
 def get_patient_fhir_id(bundle: dict) -> Optional[str]:
@@ -989,8 +2179,13 @@ async def process_single_report(
             # 5. Merge radiology resources
             final_bundle = merge_radiology_resources(synthea_bundle, extraction, report)
 
-            # 6. Validate bundle
-            is_valid = validate_bundle(final_bundle)
+            # 6. Validate bundle with comprehensive checks
+            radiology_condition_names = [c.condition_name for c in extraction.conditions]
+            is_valid, validation_metrics = validate_bundle(
+                final_bundle,
+                radiology_conditions=radiology_condition_names,
+                volume_name=report.get("volume_name", report_name)
+            )
             if not is_valid:
                 logger.warning(f"Bundle validation failed for {report_name}")
 
@@ -1055,7 +2250,8 @@ async def process_single_report(
                 output_path=datapoint_dir,
                 extraction=extraction.model_dump(),
                 patient_fhir_id=patient_fhir_id,
-                conditions_count=len(extraction.conditions)
+                conditions_count=len(extraction.conditions),
+                validation_metrics=validation_metrics
             )
 
         except Exception as e:
@@ -1205,6 +2401,21 @@ def save_processing_log(
             entry["extraction"] = result.extraction
         if result.error:
             entry["error"] = result.error
+        if result.validation_metrics:
+            # Include key validation metrics
+            entry["validation"] = {
+                "is_valid": result.validation_metrics.get("is_valid"),
+                "temporal_error_count": len(result.validation_metrics.get("temporal_errors", [])),
+                "reference_error_count": len(result.validation_metrics.get("reference_errors", [])),
+            }
+            # Include overlap metrics if available
+            overlap = result.validation_metrics.get("overlap_metrics")
+            if overlap:
+                entry["validation"]["synthea_radiology_overlap"] = {
+                    "synthea_conditions": overlap.get("synthea_condition_count"),
+                    "radiology_conditions": overlap.get("radiology_condition_count"),
+                    "overlap_percentage": overlap.get("overlap_percentage")
+                }
         log_data["results"].append(entry)
 
     log_path = output_dir / "processing_log.json"
