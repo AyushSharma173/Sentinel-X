@@ -879,6 +879,7 @@ def run_synthea(config: SyntheaConfig) -> Optional[dict]:
         "--exporter.csv.export=false",
         "--exporter.hospital.fhir.export=false",
         "--exporter.practitioner.fhir.export=false",
+        "--generate.only_alive_patients=true",
     ]
 
     # Add gender if specified
