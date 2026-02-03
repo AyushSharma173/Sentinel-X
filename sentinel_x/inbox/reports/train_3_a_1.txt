@@ -1,0 +1,14 @@
+Volume: train_3_a_1.nii.gz
+==================================================
+
+CLINICAL INFORMATION:
+Kidney transplant candidate.
+
+TECHNIQUE:
+Non-contrast images were taken in the axial plane with a section thickness of 1.5 mm.
+
+FINDINGS:
+Right thyroid lobe sizes increased. Evaluation of the mediastinal main vascular structures is suboptimal due to the lack of contrast, but their calibrations are normal. Calcific atheroma plaques are observed in the aorta and coronary arteries. Heart size increased. No pericardial effusion or thickness increase was observed. No pleural effusion or increased thickness was detected. No mass appearance was observed in the precardiac fat pad. In the mediastinum, a few sequelae calcific lymph nodes, the largest of which is 9 mm in the pretracheal area, and hypodense hiluses can be distinguished, were primarily evaluated in favor of reactive lymph nodes. There was no lymphadenopathy in pathological size and appearance in both axillae and retropectoral regions. Esophageal wall thickness is normal. When examined in the lung parenchyma window; Minimal bronchiectatic changes and peribronchial thickness increases are observed at the level of the hilum of both lungs. Linear densities, which may be compatible with pleuroparenchymal sequelae changes, are observed in the anterior segment of the right lung upper lobe. There is a sequela calcific pulmonary nodule in the posterobasal segment of the lower lobe of the right lung. Active infiltrative, consolidation was not detected in both lungs. Ventilation of both lungs is normal. There are pleural thickness increases in the lower lobe of the left lung, which are evaluated in favor of minimal sequelae in the posterior subpleural area. In both kidneys included in the examination, appearances evaluated in favor of multiple cysts are observed. In the vertebral column, osteophytes are observed in the anterior of the vertebral corpus, which are fused with each other. No fracture, lytic-sclerotic lesion was detected. Mild scoliosis with left opening is observed in the thoracic region.
+
+IMPRESSIONS:
+ Calcific atheromatous plaques in coronary arteries.  Slight increase in heart size.  Several reactive-looking lymph nodes in the mediastinal area.  Minimal bronchiectatic changes and mild peribronchial thickness increases.  Sequelae of fibrotic densities in both lungs.
