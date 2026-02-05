@@ -1,14 +1,14 @@
 ================================================================================
 FHIR CONTEXT RETRIEVAL LOG
 Patient: train_1_a_1
-Timestamp: 2026-02-03 22:59:40
+Timestamp: 2026-02-04 18:40:59
 ================================================================================
 
 VISUAL FINDINGS (Trigger):
 Multiple venous collaterals are present in the anterior left chest wall and are associated with the anterior jugular vein at the level of the right sternoclavicular junction. Left subclavian vein collapsed (chronic occlusion pathology?). Trachea, both main bronchi are open. Calcific plaques are observed in the aortic arch. Other mediastinal main vascular structures, heart contour, size are normal. Thoracic aorta diameter is normal. Pericardial effusion-thickening was not observed. Thoracic esophagus calibration was normal and no significant tumoral wall thickening was detected. No enlarged lymph nodes in prevascular, pre-paratracheal, subcarinal or bilateral hilar-axillary pathological dimensions were detected. When examined in the lung parenchyma window; linear atelectasis is present in both lung parenchyma. Subsegmental atelectasis is observed in the right middle lobe. Thickening of the bronchial wall and peribronchial budding tree-like reticulonodular densities are observed in the bilateral lower lobes. Peribronchial minimal consolidation is seen in the lower lobes in places.
 
 --------------------------------------------------------------------------------
-QUERY 1 [22:59:44]
+QUERY 1 [18:41:02]
 Tool: get_patient_manifest
 Arguments: {}
 
@@ -47,7 +47,7 @@ RESULT:
     - Renal
 
 --------------------------------------------------------------------------------
-QUERY 2 [22:59:49]
+QUERY 2 [18:41:08]
 Tool: search_clinical_history
 Arguments: {"query": "vascular"}
 
@@ -57,7 +57,7 @@ RESULT:
   conditions:
 
 --------------------------------------------------------------------------------
-QUERY 3 [22:59:53]
+QUERY 3 [18:41:12]
 Tool: check_medication_status
 Arguments: {"medication_name": "anticoag"}
 
@@ -68,7 +68,7 @@ RESULT:
   is_currently_active: False
 
 --------------------------------------------------------------------------------
-QUERY 4 [22:59:58]
+QUERY 4 [18:41:17]
 Tool: check_medication_status
 Arguments: {"medication_name": "antiplatelet"}
 
@@ -82,7 +82,7 @@ RESULT:
   is_currently_active: True
 
 --------------------------------------------------------------------------------
-QUERY 5 [23:00:03]
+QUERY 5 [18:41:23]
 Tool: get_recent_labs
 Arguments: {"category": "Coag"}
 

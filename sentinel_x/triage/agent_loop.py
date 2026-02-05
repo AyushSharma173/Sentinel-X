@@ -263,7 +263,7 @@ class ReActAgentLoop:
                 gen_duration_ms = int((time.time() - gen_start_time) * 1000)
 
                 logger.debug(f"Agent response: {response[:500]}...")
-
+                
                 # Log response received
                 if LOG_FULL_RESPONSES:
                     trace_logger.log_response_received(

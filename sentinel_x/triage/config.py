@@ -114,3 +114,28 @@ TOOL_LAB_LOOKBACK_DAYS = 3650
 RISK_ADJUSTMENT_INCREASE = -1  # Decrease priority number = increase urgency
 RISK_ADJUSTMENT_DECREASE = 1  # Increase priority number = decrease urgency
 RISK_ADJUSTMENT_NONE = 0
+
+# =============================================================================
+# FHIR Janitor Configuration
+# =============================================================================
+
+# Resource types to discard completely (noise resources)
+JANITOR_DISCARD_RESOURCES = {
+    "Provenance",
+    "Organization",
+    "PractitionerRole",
+    "Coverage",
+    "Device",
+}
+
+# Resource types to process conditionally (extract hidden diagnoses, then discard)
+JANITOR_CONDITIONAL_RESOURCES = {"Claim", "ExplanationOfBenefit"}
+
+# Label for entries without dates
+JANITOR_UNDATED_LABEL = "[Historical/Undated]"
+
+# Maximum length for narrative sections (findings, impressions)
+JANITOR_MAX_NARRATIVE_LENGTH = 500
+
+# Target maximum tokens for the entire clinical stream
+JANITOR_TARGET_MAX_TOKENS = 16000

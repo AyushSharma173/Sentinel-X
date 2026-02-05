@@ -44,16 +44,21 @@ def get_all_tools() -> Dict[str, Callable]:
 
 def get_tool_descriptions() -> str:
     """Generate tool descriptions for the system prompt.
-
-    Extracts docstrings from all registered tools and formats them
-    for inclusion in the agent's system prompt.
-
-    Returns:
-        Formatted string describing all available tools
+    
+    Filters out 'fhir_bundle' arguments so the model doesn't try to provide them.
     """
     descriptions = []
     for name, func in TOOL_REGISTRY.items():
         doc = func.__doc__ or "No description available."
+        
+        # --- NEW CODE: The Filter ---
+        # 1. Remove the specific line defining fhir_bundle in Args
+        doc = re.sub(r'\s+fhir_bundle:.*?\n', '\n', doc)
+        
+        # 2. (Optional) Remove the explicit type hint if it leaked into the docstring
+        doc = doc.replace("fhir_bundle: Dict[str, Any]", "")
+        # ----------------------------
+
         descriptions.append(f"### {name}\n{doc}")
     return "\n\n".join(descriptions)
 

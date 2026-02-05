@@ -30,6 +30,7 @@ from .logging import (
 )
 from .ct_processor import process_ct_volume
 from .fhir_context import format_context_for_prompt, parse_fhir_context
+from .fhir_janitor import FHIRJanitor
 from .inbox_watcher import InboxWatcher, PatientData
 from .medgemma_analyzer import MedGemmaAnalyzer
 from .output_generator import generate_triage_result, save_triage_result
@@ -223,13 +224,19 @@ class TriageAgent:
         self.logger.info(f"Starting triage for patient: {patient_id}")
 
         try:
-            # Step 1: Parse FHIR context
-            self.logger.info(f"[{patient_id}] Parsing clinical context")
-            context = parse_fhir_context(patient_data.report_path, patient_id)
-            context_text = format_context_for_prompt(context)
-
-            # Also load raw FHIR bundle for agent tools
+            # Step 1: Parse FHIR context using FHIRJanitor (Dense Clinical Stream)
+            self.logger.info(f"[{patient_id}] Parsing clinical context with FHIRJanitor")
             fhir_bundle = self._load_fhir_bundle(patient_data.report_path)
+            janitor = FHIRJanitor()
+            clinical_stream = janitor.process_bundle(fhir_bundle)
+            context_text = clinical_stream.narrative
+
+            # Log any extraction warnings
+            for warning in clinical_stream.extraction_warnings:
+                self.logger.warning(f"[{patient_id}] FHIR extraction: {warning}")
+
+            # Also parse legacy context for conditions list (used in output generation)
+            context = parse_fhir_context(patient_data.report_path, patient_id)
 
             # Step 2: Process CT volume
             self.logger.info(f"[{patient_id}] Processing CT volume")
