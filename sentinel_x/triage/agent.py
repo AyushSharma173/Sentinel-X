@@ -29,7 +29,6 @@ from .logging import (
     patient_trace_context,
 )
 from .ct_processor import process_ct_volume
-from .fhir_context import format_context_for_prompt, parse_fhir_context
 from .fhir_janitor import FHIRJanitor
 from .inbox_watcher import InboxWatcher, PatientData
 from .medgemma_analyzer import MedGemmaAnalyzer
@@ -235,9 +234,6 @@ class TriageAgent:
             for warning in clinical_stream.extraction_warnings:
                 self.logger.warning(f"[{patient_id}] FHIR extraction: {warning}")
 
-            # Also parse legacy context for conditions list (used in output generation)
-            context = parse_fhir_context(patient_data.report_path, patient_id)
-
             # Step 2: Process CT volume
             self.logger.info(f"[{patient_id}] Processing CT volume")
             images, slice_indices, metadata = process_ct_volume(patient_data.volume_path)
@@ -278,7 +274,7 @@ class TriageAgent:
                 analysis=analysis,
                 images=images,
                 slice_indices=slice_indices,
-                conditions_from_context=context.conditions,
+                conditions_from_context=clinical_stream.conditions,
                 agent_state=agent_state,
             )
 

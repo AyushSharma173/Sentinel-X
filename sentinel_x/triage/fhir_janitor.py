@@ -19,6 +19,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 
 from .age_utils import extract_age_from_patient_resource
 from .config import (
+    HIGH_RISK_CONDITIONS,
     JANITOR_CONDITIONAL_RESOURCES,
     JANITOR_DISCARD_RESOURCES,
     JANITOR_MAX_NARRATIVE_LENGTH,
@@ -67,6 +68,14 @@ class ClinicalStream:
     token_estimate: int  # Approx token count
     extraction_warnings: List[str] = field(default_factory=list)
     active_medications: List[str] = field(default_factory=list)
+    # Additional fields to replace PatientContext from fhir_context.py
+    conditions: List[str] = field(default_factory=list)
+    risk_factors: List[str] = field(default_factory=list)
+    medications: List[str] = field(default_factory=list)  # Just names (no dosage)
+    age: Optional[int] = None
+    gender: Optional[str] = None
+    findings: str = ""
+    impressions: str = ""
 
 
 @dataclass
@@ -310,14 +319,16 @@ class NarrativeDecoder:
 class PatientExtractor:
     """Extracts patient demographics."""
 
-    def extract(self, resource: Dict[str, Any]) -> Tuple[str, List[str]]:
+    def extract(
+        self, resource: Dict[str, Any]
+    ) -> Tuple[str, Optional[int], Optional[str], List[str]]:
         """Extract patient summary from Patient resource.
 
         Args:
             resource: Patient FHIR resource
 
         Returns:
-            Tuple of (patient_summary, warnings)
+            Tuple of (patient_summary, age, gender, warnings)
         """
         warnings = []
 
@@ -332,26 +343,28 @@ class PatientExtractor:
 
         if not parts:
             warnings.append("Unknown patient demographics")
-            return "Unknown patient demographics", warnings
+            return "Unknown patient demographics", age, gender or None, warnings
 
         summary = " ".join(parts)
         if is_deceased:
             summary += " (deceased)"
 
-        return summary, warnings
+        return summary, age, gender or None, warnings
 
 
 class ConditionExtractor:
     """Extracts conditions from Condition resources."""
 
-    def extract(self, resource: Dict[str, Any]) -> Tuple[Optional[TimelineEntry], str]:
+    def extract(
+        self, resource: Dict[str, Any]
+    ) -> Tuple[Optional[TimelineEntry], str, str]:
         """Extract a timeline entry from a Condition resource.
 
         Args:
             resource: Condition FHIR resource
 
         Returns:
-            Tuple of (TimelineEntry or None, extracted_code)
+            Tuple of (TimelineEntry or None, extracted_code, display_name)
         """
         # Get display text
         code = resource.get("code", {})
@@ -367,7 +380,7 @@ class ConditionExtractor:
                     break
 
         if not display:
-            return None, ""
+            return None, "", ""
 
         # Get clinical status
         clinical_status = "unknown"
@@ -395,6 +408,7 @@ class ConditionExtractor:
                 priority=CATEGORY_PRIORITY["Condition"],
             ),
             extracted_code,
+            display,
         )
 
     def _parse_datetime(self, dt_str: str) -> Optional[datetime]:
@@ -417,14 +431,14 @@ class MedicationExtractor:
 
     def extract(
         self, resource: Dict[str, Any]
-    ) -> Tuple[Optional[TimelineEntry], Optional[str]]:
+    ) -> Tuple[Optional[TimelineEntry], Optional[str], Optional[str]]:
         """Extract a timeline entry from a MedicationRequest resource.
 
         Args:
             resource: MedicationRequest FHIR resource
 
         Returns:
-            Tuple of (TimelineEntry or None, active_medication_string or None)
+            Tuple of (TimelineEntry or None, active_medication_string or None, medication_name or None)
         """
         # Get medication name
         med_concept = resource.get("medicationCodeableConcept", {})
@@ -438,7 +452,7 @@ class MedicationExtractor:
                     break
 
         if not name:
-            return None, None
+            return None, None, None
 
         # Get status
         status = resource.get("status", "unknown")
@@ -476,6 +490,7 @@ class MedicationExtractor:
                 priority=CATEGORY_PRIORITY["Medication"],
             ),
             active_med_str,
+            name,
         )
 
     def _extract_dosage(self, resource: Dict[str, Any]) -> str:
@@ -862,6 +877,14 @@ class FHIRJanitor:
         patient_summary = "Unknown patient demographics"
         condition_codes: Set[str] = set()
 
+        # Additional fields for replacing PatientContext
+        conditions: List[str] = []
+        medications: List[str] = []
+        age: Optional[int] = None
+        gender: Optional[str] = None
+        all_findings: List[str] = []
+        all_impressions: List[str] = []
+
         # Validate bundle
         if not fhir_bundle or fhir_bundle.get("resourceType") != "Bundle":
             warnings.append("Invalid or missing FHIR Bundle")
@@ -889,7 +912,7 @@ class FHIRJanitor:
             entries, condition_codes
         )
 
-        # Add historical diagnoses as timeline entries
+        # Add historical diagnoses as timeline entries and to conditions list
         for hd in historical_diagnoses:
             timeline_entries.append(
                 TimelineEntry(
@@ -900,6 +923,7 @@ class FHIRJanitor:
                     priority=CATEGORY_PRIORITY["Condition"],
                 )
             )
+            conditions.append(hd.display)
 
         # Process each resource type
         for entry in cleaned_entries:
@@ -907,22 +931,30 @@ class FHIRJanitor:
             resource_type = resource.get("resourceType", "")
 
             if resource_type == "Patient":
-                patient_summary, patient_warnings = self.patient_extractor.extract(
-                    resource
+                patient_summary, age, gender, patient_warnings = (
+                    self.patient_extractor.extract(resource)
                 )
                 warnings.extend(patient_warnings)
 
             elif resource_type == "Condition":
-                timeline_entry, _ = self.condition_extractor.extract(resource)
+                timeline_entry, _, display_name = self.condition_extractor.extract(
+                    resource
+                )
                 if timeline_entry:
                     timeline_entries.append(timeline_entry)
+                if display_name:
+                    conditions.append(display_name)
 
             elif resource_type == "MedicationRequest":
-                timeline_entry, active_med = self.medication_extractor.extract(resource)
+                timeline_entry, active_med, med_name = (
+                    self.medication_extractor.extract(resource)
+                )
                 if timeline_entry:
                     timeline_entries.append(timeline_entry)
                 if active_med:
                     active_medications.append(active_med)
+                if med_name:
+                    medications.append(med_name)
                 warnings.extend(self.medication_extractor.warnings)
                 self.medication_extractor.warnings.clear()
 
@@ -942,9 +974,14 @@ class FHIRJanitor:
                     timeline_entries.append(timeline_entry)
 
             elif resource_type == "DiagnosticReport":
-                findings, impression, effective_date = self.narrative_decoder.decode_report(
-                    resource
+                findings, impression, effective_date = (
+                    self.narrative_decoder.decode_report(resource)
                 )
+                if findings:
+                    all_findings.append(findings)
+                if impression:
+                    all_impressions.append(impression)
+
                 if findings or impression:
                     date_label = (
                         effective_date.strftime("%Y-%m-%d")
@@ -973,6 +1010,9 @@ class FHIRJanitor:
         # Collect decoder warnings
         warnings.extend(self.narrative_decoder.warnings)
 
+        # Identify risk factors from conditions
+        risk_factors = self._identify_risk_factors(conditions)
+
         # Serialize timeline
         narrative = self.timeline_serializer.serialize(
             patient_summary, timeline_entries, active_medications
@@ -993,4 +1033,31 @@ class FHIRJanitor:
             token_estimate=token_estimate,
             extraction_warnings=warnings,
             active_medications=active_medications,
+            conditions=conditions,
+            risk_factors=risk_factors,
+            medications=medications,
+            age=age,
+            gender=gender,
+            findings="\n\n".join(all_findings),
+            impressions="\n\n".join(all_impressions),
         )
+
+    def _identify_risk_factors(self, conditions: List[str]) -> List[str]:
+        """Identify high-risk conditions from patient history.
+
+        Args:
+            conditions: List of condition descriptions
+
+        Returns:
+            List of identified risk factors
+        """
+        risk_factors = []
+
+        for condition in conditions:
+            condition_lower = condition.lower()
+            for risk_keyword in HIGH_RISK_CONDITIONS:
+                if risk_keyword in condition_lower:
+                    risk_factors.append(condition)
+                    break
+
+        return risk_factors

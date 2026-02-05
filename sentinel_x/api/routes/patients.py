@@ -13,9 +13,11 @@ PROJECT_ROOT = Path(__file__).parent.parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
+import json
+
 from triage.config import INBOX_REPORTS_DIR, INBOX_VOLUMES_DIR, OUTPUT_DIR
 from triage.ct_processor import apply_window, extract_slice_as_image, load_nifti_volume
-from triage.fhir_context import parse_fhir_context
+from triage.fhir_janitor import FHIRJanitor
 from triage.output_generator import load_triage_result
 from api.models import (
     PRIORITY_COLORS,
@@ -91,29 +93,38 @@ async def get_patient_fhir(patient_id: str):
     if not report_path:
         raise HTTPException(status_code=404, detail="Patient report not found")
 
-    context = parse_fhir_context(report_path, patient_id)
+    # Load FHIR bundle and process with FHIRJanitor
+    try:
+        with open(report_path, "r") as f:
+            fhir_bundle = json.load(f)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to load report: {str(e)}")
+
+    janitor = FHIRJanitor()
+    clinical_stream = janitor.process_bundle(fhir_bundle)
 
     # Build conditions with risk factor flag
+    risk_factors_set = set(clinical_stream.risk_factors)
     conditions = [
         PatientCondition(
             name=cond,
-            is_risk_factor=cond in context.risk_factors
+            is_risk_factor=cond in risk_factors_set
         )
-        for cond in context.conditions
+        for cond in clinical_stream.conditions
     ]
 
     return PatientFHIRContext(
         patient_id=patient_id,
         demographics=PatientDemographics(
             patient_id=patient_id,
-            age=context.age,
-            gender=context.gender,
+            age=clinical_stream.age,
+            gender=clinical_stream.gender,
         ),
         conditions=conditions,
-        medications=context.medications,
-        risk_factors=context.risk_factors,
-        findings=context.findings,
-        impressions=context.impressions,
+        medications=clinical_stream.medications,
+        risk_factors=clinical_stream.risk_factors,
+        findings=clinical_stream.findings,
+        impressions=clinical_stream.impressions,
     )
 
 
