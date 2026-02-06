@@ -1,13 +1,12 @@
 """Logging package for Sentinel-X tracing and debugging.
 
 This package provides comprehensive logging infrastructure for debugging
-FHIR context extraction and the ReAct agent loop.
+FHIR context extraction.
 
 Components:
 - formatters: JSON and human-readable log formatters
 - handlers: Session-based file handlers
 - trace_context: Context managers for patient/iteration tracing
-- agent_trace_logger: Specialized logger for agent loop events
 - fhir_trace_logger: Specialized logger for FHIR extraction events
 - log_analyzer: Post-run analysis utilities
 """
@@ -20,7 +19,6 @@ from .formatters import (
 from .handlers import (
     SessionManager,
     SessionFileHandler,
-    AgentTraceHandler,
     FHIRTraceHandler,
     SummaryHandler,
     setup_session_handlers,
@@ -43,11 +41,6 @@ from .log_analyzer import (
     SessionSummary,
     find_latest_session,
 )
-from .agent_trace_logger import (
-    AgentTraceLogger,
-    get_agent_trace_logger,
-    initialize_agent_trace_logger,
-)
 from .fhir_trace_logger import (
     FHIRTraceLogger,
     get_fhir_trace_logger,
@@ -66,7 +59,6 @@ __all__ = [
     # Handlers
     "SessionManager",
     "SessionFileHandler",
-    "AgentTraceHandler",
     "FHIRTraceHandler",
     "SummaryHandler",
     "setup_session_handlers",
@@ -87,9 +79,6 @@ __all__ = [
     "SessionSummary",
     "find_latest_session",
     # Specialized loggers
-    "AgentTraceLogger",
-    "get_agent_trace_logger",
-    "initialize_agent_trace_logger",
     "FHIRTraceLogger",
     "get_fhir_trace_logger",
     "initialize_fhir_trace_logger",

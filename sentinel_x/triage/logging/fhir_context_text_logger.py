@@ -1,8 +1,8 @@
 """Simple text-based logger for FHIR context retrieval.
 
 This module provides a human-readable text logger that captures FHIR context
-retrieval during the ReAct agent's multi-hop reasoning. Log files are organized
-per-patient in the fhir_context_retreival_logs directory.
+retrieval. Log files are organized per-patient in the
+fhir_context_retreival_logs directory.
 """
 
 import json

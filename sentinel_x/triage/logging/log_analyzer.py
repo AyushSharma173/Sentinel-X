@@ -16,11 +16,6 @@ from typing import Any, Dict, Iterator, List, Optional, Set
 class PatientSummary:
     """Summary of processing for a single patient."""
     patient_id: str
-    iterations: int = 0
-    tools_used: List[str] = field(default_factory=list)
-    risk_adjustment: Optional[str] = None
-    final_assessment: Optional[str] = None
-    critical_findings: List[str] = field(default_factory=list)
     conditions: List[str] = field(default_factory=list)
     medications: List[str] = field(default_factory=list)
     errors: List[str] = field(default_factory=list)
@@ -34,8 +29,6 @@ class SessionSummary:
     start_time: Optional[datetime] = None
     end_time: Optional[datetime] = None
     patient_count: int = 0
-    total_iterations: int = 0
-    total_tool_calls: int = 0
     patients: Dict[str, PatientSummary] = field(default_factory=dict)
     errors: List[Dict[str, Any]] = field(default_factory=list)
 
@@ -57,12 +50,10 @@ class LogAnalyzer:
         self.session_id = self.session_dir.name
 
         # Log file paths
-        self.agent_trace_path = self.session_dir / "agent_trace.jsonl"
         self.fhir_trace_path = self.session_dir / "fhir_trace.jsonl"
         self.summary_path = self.session_dir / "summary.log"
 
         # Cached data
-        self._agent_events: Optional[List[Dict[str, Any]]] = None
         self._fhir_events: Optional[List[Dict[str, Any]]] = None
 
     def _load_jsonl(self, path: Path) -> List[Dict[str, Any]]:
@@ -87,13 +78,6 @@ class LogAnalyzer:
         return events
 
     @property
-    def agent_events(self) -> List[Dict[str, Any]]:
-        """Get all agent trace events (cached)."""
-        if self._agent_events is None:
-            self._agent_events = self._load_jsonl(self.agent_trace_path)
-        return self._agent_events
-
-    @property
     def fhir_events(self) -> List[Dict[str, Any]]:
         """Get all FHIR trace events (cached)."""
         if self._fhir_events is None:
@@ -107,7 +91,7 @@ class LogAnalyzer:
             Set of patient IDs
         """
         patients = set()
-        for event in self.agent_events + self.fhir_events:
+        for event in self.fhir_events:
             if "patient_id" in event:
                 patients.add(event["patient_id"])
         return patients
@@ -115,30 +99,19 @@ class LogAnalyzer:
     def filter_by_patient(
         self,
         patient_id: str,
-        event_source: str = "both"
     ) -> List[Dict[str, Any]]:
         """Filter events for a specific patient.
 
         Args:
             patient_id: The patient ID to filter for
-            event_source: "agent", "fhir", or "both"
 
         Returns:
             List of events for the patient
         """
-        events = []
-
-        if event_source in ("agent", "both"):
-            events.extend([
-                e for e in self.agent_events
-                if e.get("patient_id") == patient_id
-            ])
-
-        if event_source in ("fhir", "both"):
-            events.extend([
-                e for e in self.fhir_events
-                if e.get("patient_id") == patient_id
-            ])
+        events = [
+            e for e in self.fhir_events
+            if e.get("patient_id") == patient_id
+        ]
 
         # Sort by timestamp
         events.sort(key=lambda e: e.get("timestamp", ""))
@@ -147,30 +120,19 @@ class LogAnalyzer:
     def filter_by_event_type(
         self,
         event_types: List[str],
-        event_source: str = "both"
     ) -> List[Dict[str, Any]]:
         """Filter events by event type.
 
         Args:
             event_types: List of event types to include
-            event_source: "agent", "fhir", or "both"
 
         Returns:
             List of matching events
         """
-        events = []
-
-        if event_source in ("agent", "both"):
-            events.extend([
-                e for e in self.agent_events
-                if e.get("event_type") in event_types
-            ])
-
-        if event_source in ("fhir", "both"):
-            events.extend([
-                e for e in self.fhir_events
-                if e.get("event_type") in event_types
-            ])
+        events = [
+            e for e in self.fhir_events
+            if e.get("event_type") in event_types
+        ]
 
         events.sort(key=lambda e: e.get("timestamp", ""))
         return events
@@ -182,13 +144,12 @@ class LogAnalyzer:
             List of error events
         """
         failure_types = [
-            "TOOL_CALL_FAILED",
             "EXTRACTION_FAILED",
             "PARSE_ERROR",
         ]
 
         failures = []
-        for event in self.agent_events + self.fhir_events:
+        for event in self.fhir_events:
             if (
                 event.get("event_type") in failure_types
                 or "error" in event
@@ -213,78 +174,16 @@ class LogAnalyzer:
         for event in events:
             event_type = event.get("event_type", "")
 
-            if event_type == "ITERATION_START":
-                summary.iterations = max(
-                    summary.iterations,
-                    event.get("iteration", 0)
-                )
-
-            elif event_type == "TOOL_EXECUTION":
-                tool_name = event.get("tool_name")
-                if tool_name:
-                    summary.tools_used.append(tool_name)
-
-            elif event_type == "FINAL_ASSESSMENT_EXTRACTED":
-                summary.risk_adjustment = event.get("risk_adjustment")
-                summary.final_assessment = event.get("assessment")
-                summary.critical_findings = event.get("findings", [])
-
-            elif event_type == "CONDITIONS_SUMMARY":
+            if event_type == "CONDITIONS_SUMMARY":
                 summary.conditions = event.get("conditions", [])
 
             elif event_type == "MEDICATIONS_SUMMARY":
                 summary.medications = event.get("medications", [])
 
-            elif event_type == "AGENT_COMPLETE":
-                summary.duration_ms = event.get("duration_ms", 0)
-
             if "error" in event:
                 summary.errors.append(event["error"])
 
         return summary
-
-    def get_full_conversation(self, patient_id: str) -> List[Dict[str, str]]:
-        """Get the full conversation history for a patient.
-
-        This reconstructs the message history from prompt/response events.
-
-        Args:
-            patient_id: The patient ID
-
-        Returns:
-            List of message dicts with "role" and "content"
-        """
-        events = self.filter_by_patient(patient_id, event_source="agent")
-        conversation = []
-
-        for event in events:
-            event_type = event.get("event_type", "")
-
-            if event_type == "PROMPT_SENT":
-                prompt = event.get("prompt", "")
-                if prompt:
-                    conversation.append({
-                        "role": "user",
-                        "content": prompt,
-                    })
-
-            elif event_type == "RESPONSE_RECEIVED":
-                response = event.get("response", "")
-                if response:
-                    conversation.append({
-                        "role": "assistant",
-                        "content": response,
-                    })
-
-            elif event_type == "OBSERVATION_ADDED":
-                observation = event.get("observation", "")
-                if observation:
-                    conversation.append({
-                        "role": "user",
-                        "content": observation,
-                    })
-
-        return conversation
 
     def generate_summary_report(self) -> SessionSummary:
         """Generate a summary report for the entire session.
@@ -302,14 +201,12 @@ class LogAnalyzer:
         for patient_id in patients:
             patient_summary = self.get_patient_summary(patient_id)
             summary.patients[patient_id] = patient_summary
-            summary.total_iterations += patient_summary.iterations
-            summary.total_tool_calls += len(patient_summary.tools_used)
 
         # Get errors
         summary.errors = self.get_failures()
 
         # Extract timestamps
-        all_events = self.agent_events + self.fhir_events
+        all_events = self.fhir_events
         if all_events:
             timestamps = [
                 e.get("timestamp", "")
@@ -341,23 +238,11 @@ class LogAnalyzer:
         print(f"\n{'='*60}")
         print(f"Patient: {summary.patient_id}")
         print(f"{'='*60}")
-        print(f"Iterations: {summary.iterations}")
-        print(f"Tools used: {', '.join(summary.tools_used) or 'None'}")
-        print(f"Risk adjustment: {summary.risk_adjustment or 'NONE'}")
-
-        if summary.critical_findings:
-            print(f"\nCritical findings:")
-            for finding in summary.critical_findings:
-                print(f"  - {finding}")
 
         if summary.conditions:
             print(f"\nConditions:")
             for condition in summary.conditions:
                 print(f"  - {condition}")
-
-        if summary.final_assessment:
-            print(f"\nFinal assessment:")
-            print(f"  {summary.final_assessment[:500]}...")
 
         if summary.errors:
             print(f"\nErrors:")
@@ -380,18 +265,13 @@ class LogAnalyzer:
             print(f"End: {summary.end_time.isoformat()}")
 
         print(f"Patients processed: {summary.patient_count}")
-        print(f"Total iterations: {summary.total_iterations}")
-        print(f"Total tool calls: {summary.total_tool_calls}")
         print(f"Errors: {len(summary.errors)}")
 
         print(f"\nPatient summaries:")
         for patient_id, patient_summary in summary.patients.items():
-            risk = patient_summary.risk_adjustment or "NONE"
-            tools = len(patient_summary.tools_used)
             errors = len(patient_summary.errors)
             print(
-                f"  {patient_id}: {patient_summary.iterations} iters, "
-                f"{tools} tools, risk={risk}"
+                f"  {patient_id}"
                 + (f", {errors} errors" if errors else "")
             )
 

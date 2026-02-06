@@ -1,0 +1,693 @@
+================================================================================
+  PATIENT: train_2_a_2
+================================================================================
+
+--- Demographics ---
+Summary: 60-year-old male
+Age: 60
+Gender: male
+
+--- Conditions & Risk Factors ---
+All Conditions (51 items):
+  • Prediabetes
+  • Anemia (disorder)
+  • Received higher education (finding)
+  • Pulmonary emphysema (disorder)
+  • Gingivitis (disorder)
+  • Illness, unspecified
+  • Radicular cyst
+  • Osteoarthritis of hip
+  • Medication review due (situation)
+  • Dental caries, unspecified
+  • Part-time employment (finding)
+  • Limited social contact (finding)
+  • Social isolation (finding)
+  • Stress (finding)
+  • Malignant neoplasm of mandible
+  • Medication review due (situation)
+  • Acute bronchitis (disorder)
+  • Medication review due (situation)
+  • Full-time employment (finding)
+  • Viral sinusitis (disorder)
+  • Sprain (morphologic abnormality)
+  • Sprain of ankle
+  • Medication review due (situation)
+  • Medication review due (situation)
+  • Stress (finding)
+  • Viral sinusitis (disorder)
+  • Medication review due (situation)
+  • Limited social contact (finding)
+  • Medication review due (situation)
+  • Social isolation (finding)
+  • Stress (finding)
+  • Unhealthy alcohol drinking behavior (finding)
+  • Part-time employment (finding)
+  • Full-time employment (finding)
+  • Stress (finding)
+  • Victim of intimate partner abuse (finding)
+  • Acute bronchitis (disorder)
+  • Laceration - injury (disorder)
+  • Laceration of hand
+  • Medication review due (situation)
+  • Medication review due (situation)
+  • Part-time employment (finding)
+  • Limited social contact (finding)
+  • Partial loss of teeth due to other specified cause, unspecified class
+  • Emphysema
+  • Atelectasis
+  • Bronchial wall thickening
+  • Pulmonary nodule
+  • Cholelithiasis
+  • Degenerative changes
+  • Calcified atheroma
+
+Risk Factors (2 items):
+  • Prediabetes
+  • Malignant neoplasm of mandible
+
+--- Medications ---
+All Medications (30 items):
+  • Naproxen sodium 220 MG Oral Tablet
+  • albuterol 5 MG/ML Inhalation Solution
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler
+  • albuterol 5 MG/ML Inhalation Solution
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler
+  • albuterol 5 MG/ML Inhalation Solution
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler
+  • Acetaminophen 325 MG Oral Tablet
+  • albuterol 5 MG/ML Inhalation Solution
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler
+  • albuterol 5 MG/ML Inhalation Solution
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler
+  • albuterol 5 MG/ML Inhalation Solution
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler
+  • albuterol 5 MG/ML Inhalation Solution
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler
+  • albuterol 5 MG/ML Inhalation Solution
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler
+  • albuterol 5 MG/ML Inhalation Solution
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler
+  • albuterol 5 MG/ML Inhalation Solution
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler
+  • albuterol 5 MG/ML Inhalation Solution
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler
+  • Acetaminophen 325 MG Oral Tablet
+  • Naproxen sodium 220 MG Oral Tablet
+  • albuterol 5 MG/ML Inhalation Solution
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler
+  • albuterol 5 MG/ML Inhalation Solution
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler
+
+Active Medications (2 items):
+  • albuterol 5 MG/ML Inhalation Solution Take as needed. (since 2025-03-03)
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (since 2025-03-03)
+
+--- Report Content ---
+Findings (503 chars):
+Trachea and both main bronchi were in the midline and no obstructive pathology was observed in the lumen. In the non-contrast examination, the mediastinal could not be evaluated optimally. As far as can be seen; mediastinal main vascular structures, heart contour, size are normal. Pericardial effusion-thickening was not observed. Calcific atheroma plaque was observed in the descending aorta. Thoracic esophagus calibration was normal and no significant pathological wall thickening was detected. N...
+
+Impressions (284 chars):
+s:
+ Emphysematous and passive atelectatic changes in both lungs.  Minimal thickening of the segmental bronchial walls of both lungs.  Nonspecific subpleural nodule in the posterior segment of the right lung upper lobe.  Cholelithiasis.  Minimal degenerative changes in bone structure.
+
+--- Complete Clinical Narrative ---
+
+== PATIENT ==
+60-year-old male
+
+== CLINICAL TIMELINE ==
+
+1966-02-24
+- Encounter: Encounter for problem (reason: Soy bean)
+
+1966-03-10
+- Encounter: Encounter for problem (reason: Allergy to substance (finding))
+
+1983-05-16
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Prediabetes (active)
+- Diagnosis: Anemia (disorder) (active)
+- Diagnosis: Received higher education (finding) (active)
+
+1984-05-21
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Pulmonary emphysema (disorder) (active)
+
+1988-08-08
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Gingivitis (disorder) (active)
+
+2001-11-05
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Illness, unspecified (resolved)
+
+2009-12-21
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Radicular cyst (resolved)
+
+2010-01-10
+- Encounter: Encounter for problem (reason: Osteoarthritis of hip)
+- Diagnosis: Osteoarthritis of hip (active)
+- Medication: Naproxen sodium 220 MG Oral Tablet Take as needed. (stopped)
+
+2013-12-30
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+
+2014-01-13
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Dental caries, unspecified (resolved)
+
+2015-01-05
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Part-time employment (finding) (resolved)
+- Diagnosis: Limited social contact (finding) (resolved)
+
+2016-01-11
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Social isolation (finding) (resolved)
+- Diagnosis: Stress (finding) (resolved)
+- Medication: albuterol 5 MG/ML Inhalation Solution Take as needed. (stopped)
+- Medication: 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (stopped)
+
+2016-01-25
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Malignant neoplasm of mandible (resolved)
+
+2016-08-29
+- Encounter: Urgent care clinic (environment)
+- Procedure: Spirometry (procedure)
+- Procedure: Pulmonary rehabilitation (regime/therapy)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of anxiety (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Screening for drug abuse (procedure)
+- Medication: albuterol 5 MG/ML Inhalation Solution Take as needed. (stopped)
+- Medication: 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (stopped)
+- Lab: FEV1/FVC 28.45 %
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 6.30 %
+- Lab: Body Height 193.30 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 4 {score}
+- Lab: Body Weight 105.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28.18 kg/m2
+- Lab: Heart rate 81 /min
+- Lab: Respiratory rate 14 /min
+- Lab: Glucose [Mass/volume] in Blood 94.82 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 19.06 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.58 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.23 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 137.98 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.58 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 109.35 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 27.99 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Generalized anxiety disorder 7 item (GAD-7) total score [Reported.PHQ] 1 {score}
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 2 {score}
+- Lab: Total score [DAST-10] 2 {score}
+
+2016-09-05
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+- Procedure: Spirometry (procedure)
+- Procedure: Pulmonary rehabilitation (regime/therapy)
+- Procedure: Medication Reconciliation (procedure)
+- Medication: albuterol 5 MG/ML Inhalation Solution Take as needed. (stopped)
+- Medication: 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (stopped)
+- Lab: FEV1/FVC 27.70 %
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 5.99 %
+
+2016-09-12
+- Encounter: Encounter for symptom (reason: Acute bronchitis (disorder))
+- Diagnosis: Acute bronchitis (disorder) (resolved)
+- Procedure: Measurement of respiratory function (procedure)
+- Medication: Acetaminophen 325 MG Oral Tablet (stopped)
+
+2016-10-15
+- Diagnosis: Cholelithiasis (active)
+
+2016-12-02
+- Diagnosis: Emphysema (active)
+
+2017-01-16
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+- Diagnosis: Full-time employment (finding) (resolved)
+- Procedure: Spirometry (procedure)
+- Procedure: Pulmonary rehabilitation (regime/therapy)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Screening for domestic abuse (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Medication: albuterol 5 MG/ML Inhalation Solution Take as needed. (stopped)
+- Medication: 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (stopped)
+- Lab: FEV1/FVC 18.64 %
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 6.07 %
+- Lab: Body Height 193.30 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 3 {score}
+- Lab: Body Weight 105.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28.18 kg/m2
+- Lab: Heart rate 76 /min
+- Lab: Respiratory rate 15 /min
+- Lab: Glucose [Mass/volume] in Blood 86.37 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 13.36 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.30 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 8.77 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 142.53 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 3.86 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 105.66 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 24.14 mmol/L
+- Lab: Cholesterol [Mass/volume] in Serum or Plasma 138.81 mg/dL
+- Lab: Triglycerides 118.47 mg/dL
+- Lab: Low Density Lipoprotein Cholesterol 63.53 mg/dL
+- Lab: Cholesterol in HDL [Mass/volume] in Serum or Plasma 51.59 mg/dL
+- Lab: Leukocytes [#/volume] in Blood by Automated count 6.99 10*3/uL
+- Lab: Erythrocytes [#/volume] in Blood by Automated count 4.62 10*6/uL
+- Lab: Hemoglobin [Mass/volume] in Blood 15.43 g/dL
+- Lab: Hematocrit [Volume Fraction] of Blood by Automated count 48.61 %
+- Lab: MCV [Entitic volume] by Automated count 87.08 fL
+- Lab: MCH [Entitic mass] by Automated count 31.55 pg
+- Lab: MCHC [Mass/volume] by Automated count 34.75 g/dL
+- Lab: Erythrocyte distribution width [Entitic volume] by Automated count 44.42 fL
+- Lab: Platelets [#/volume] in Blood by Automated count 159.45 10*3/uL
+- Lab: Platelet distribution width [Entitic volume] in Blood by Automated count 507.73 fL
+- Lab: Platelet mean volume [Entitic volume] in Blood by Automated count 12.14 fL
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Total score [HARK] 0 {score}
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 0 {score}
+
+2017-05-12
+- Diagnosis: Degenerative changes (active)
+
+2018-01-22
+- Encounter: General examination of patient (procedure)
+- Procedure: Spirometry (procedure)
+- Procedure: Pulmonary rehabilitation (regime/therapy)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Patient referral for dental care (procedure)
+- Medication: albuterol 5 MG/ML Inhalation Solution Take as needed. (stopped)
+- Medication: 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (stopped)
+- Lab: FEV1/FVC 17.35 %
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 6.17 %
+- Lab: Body Height 193.30 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 3 {score}
+- Lab: Body Weight 105.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28.18 kg/m2
+- Lab: Heart rate 65 /min
+- Lab: Respiratory rate 15 /min
+- Lab: Glucose [Mass/volume] in Blood 64.27 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 12.56 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.29 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 8.54 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 137.89 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.40 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 102.90 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 23.20 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 2 {score}
+
+2018-02-05
+- Encounter: Encounter for check up (procedure)
+- Procedure: 3D dental surface scan - indirect
+
+2018-05-30
+- Encounter: Encounter for symptom (reason: Viral sinusitis (disorder))
+- Diagnosis: Viral sinusitis (disorder) (resolved)
+
+2018-10-22
+- Diagnosis: Atelectasis (active)
+
+2019-01-03
+- Encounter: Emergency room admission (procedure) (reason: Sprain (morphologic abnormality))
+- Diagnosis: Sprain (morphologic abnormality) (resolved)
+- Diagnosis: Sprain of ankle (resolved)
+
+2019-01-28
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+- Procedure: Spirometry (procedure)
+- Procedure: Pulmonary rehabilitation (regime/therapy)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of anxiety (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Nine Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Screening for drug abuse (procedure)
+- Medication: albuterol 5 MG/ML Inhalation Solution Take as needed. (stopped)
+- Medication: 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (stopped)
+- Lab: FEV1/FVC 18.80 %
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 5.86 %
+- Lab: Body Height 193.30 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 3 {score}
+- Lab: Body Weight 105.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28.18 kg/m2
+- Lab: Heart rate 90 /min
+- Lab: Respiratory rate 14 /min
+- Lab: Glucose [Mass/volume] in Blood 68.49 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 13.19 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.27 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 8.93 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 139.97 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 3.82 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 110.40 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 28.46 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Generalized anxiety disorder 7 item (GAD-7) total score [Reported.PHQ] 3 {score}
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 5 {score}
+- Lab: Patient Health Questionnaire 9 item (PHQ-9) total score [Reported] 9 {score}
+- Lab: Total score [DAST-10] 1 {score}
+
+2019-11-18
+- Diagnosis: Calcified atheroma (active)
+
+2020-02-03
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+- Diagnosis: Stress (finding) (resolved)
+- Procedure: Spirometry (procedure)
+- Procedure: Pulmonary rehabilitation (regime/therapy)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Medication: albuterol 5 MG/ML Inhalation Solution Take as needed. (stopped)
+- Medication: 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (stopped)
+- Lab: FEV1/FVC 25.14 %
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 6.25 %
+- Lab: Body Height 193.30 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 3 {score}
+- Lab: Body Weight 105.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28.18 kg/m2
+- Lab: Heart rate 79 /min
+- Lab: Respiratory rate 15 /min
+- Lab: Glucose [Mass/volume] in Blood 93.34 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 18.04 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.26 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.94 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 139.64 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 3.78 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 109.04 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 20.16 mmol/L
+- Lab: Cholesterol [Mass/volume] in Serum or Plasma 167.41 mg/dL
+- Lab: Triglycerides 124.26 mg/dL
+- Lab: Low Density Lipoprotein Cholesterol 84.41 mg/dL
+- Lab: Cholesterol in HDL [Mass/volume] in Serum or Plasma 58.15 mg/dL
+- Lab: Tobacco smoking status Ex-smoker (finding)
+
+2020-03-08
+- Encounter: Encounter for check up (reason: Screening for malignant neoplasm of colon (procedure))
+- Procedure: Colonoscopy
+
+2020-11-07
+- Encounter: Encounter for symptom (reason: Viral sinusitis (disorder))
+- Diagnosis: Viral sinusitis (disorder) (resolved)
+
+2021-02-08
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+- Diagnosis: Limited social contact (finding) (resolved)
+- Procedure: Spirometry (procedure)
+- Procedure: Pulmonary rehabilitation (regime/therapy)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Screening for domestic abuse (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Screening for drug abuse (procedure)
+- Procedure: Patient referral for dental care (procedure)
+- Medication: albuterol 5 MG/ML Inhalation Solution Take as needed. (stopped)
+- Medication: 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (stopped)
+- Lab: FEV1/FVC 24.51 %
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 6.34 %
+- Lab: Body Height 193.30 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 1 {score}
+- Lab: Body Weight 105.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28.18 kg/m2
+- Lab: Heart rate 76 /min
+- Lab: Respiratory rate 15 /min
+- Lab: Glucose [Mass/volume] in Blood 77.97 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 18.96 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.57 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.37 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 139.88 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.81 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 109.87 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 22.04 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Total score [HARK] 0 {score}
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 1 {score}
+- Lab: Total score [DAST-10] 1 {score}
+
+2021-02-22
+- Encounter: Encounter for check up (procedure)
+- Procedure: bone replacement graft for ridge preservation - per site
+
+2021-03-22
+- Encounter: Administration of vaccine to produce active immunity (procedure)
+
+2021-04-19
+- Encounter: Administration of vaccine to produce active immunity (procedure)
+
+2022-02-14
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+- Diagnosis: Social isolation (finding) (resolved)
+- Diagnosis: Stress (finding) (resolved)
+- Diagnosis: Unhealthy alcohol drinking behavior (finding) (active)
+- Procedure: Spirometry (procedure)
+- Procedure: Pulmonary rehabilitation (regime/therapy)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure)
+- Medication: albuterol 5 MG/ML Inhalation Solution Take as needed. (stopped)
+- Medication: 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (stopped)
+- Lab: FEV1/FVC 11.91 %
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 6.37 %
+- Lab: Body Height 193.30 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 3 {score}
+- Lab: Body Weight 105.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28.18 kg/m2
+- Lab: Heart rate 70 /min
+- Lab: Respiratory rate 15 /min
+- Lab: Glucose [Mass/volume] in Blood 93.77 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 19.05 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.23 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.55 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 140.10 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 3.70 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 108.49 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 23.08 mmol/L
+- Lab: Leukocytes [#/volume] in Blood by Automated count 6.58 10*3/uL
+- Lab: Erythrocytes [#/volume] in Blood by Automated count 3.97 10*6/uL
+- Lab: Hemoglobin [Mass/volume] in Blood 15.49 g/dL
+- Lab: Hematocrit [Volume Fraction] of Blood by Automated count 48.06 %
+- Lab: MCV [Entitic volume] by Automated count 82.28 fL
+- Lab: MCH [Entitic mass] by Automated count 31.33 pg
+- Lab: MCHC [Mass/volume] by Automated count 35.76 g/dL
+- Lab: Erythrocyte distribution width [Entitic volume] by Automated count 43.96 fL
+- Lab: Platelets [#/volume] in Blood by Automated count 289.32 10*3/uL
+- Lab: Platelet distribution width [Entitic volume] in Blood by Automated count 290.36 fL
+- Lab: Platelet mean volume [Entitic volume] in Blood by Automated count 11.07 fL
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 1 {score}
+- Lab: Total score [AUDIT-C] 8 {score}
+
+2023-02-20
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Part-time employment (finding) (resolved)
+- Procedure: Spirometry (procedure)
+- Procedure: Pulmonary rehabilitation (regime/therapy)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Medication: albuterol 5 MG/ML Inhalation Solution Take as needed. (stopped)
+- Medication: 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (stopped)
+- Lab: FEV1/FVC 24.13 %
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 5.98 %
+- Lab: Body Height 193.30 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 0 {score}
+- Lab: Body Weight 105.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28.18 kg/m2
+- Lab: Heart rate 96 /min
+- Lab: Respiratory rate 15 /min
+- Lab: Glucose [Mass/volume] in Blood 91.34 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 15.48 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.28 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.07 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 137.33 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 5.12 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 108.85 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 26.55 mmol/L
+- Lab: Cholesterol [Mass/volume] in Serum or Plasma 243.25 mg/dL
+- Lab: Triglycerides 137.16 mg/dL
+- Lab: Low Density Lipoprotein Cholesterol 158.31 mg/dL
+- Lab: Cholesterol in HDL [Mass/volume] in Serum or Plasma 57.51 mg/dL
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 0 {score}
+
+2023-05-22
+- Encounter: Urgent care clinic (environment)
+- Diagnosis: Full-time employment (finding) (resolved)
+- Diagnosis: Stress (finding) (active)
+- Diagnosis: Victim of intimate partner abuse (finding) (resolved)
+- Procedure: Spirometry (procedure)
+- Procedure: Pulmonary rehabilitation (regime/therapy)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of anxiety (procedure)
+- Procedure: Screening for domestic abuse (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure)
+- Procedure: Patient referral for dental care (procedure)
+- Medication: albuterol 5 MG/ML Inhalation Solution Take as needed. (stopped)
+- Medication: 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (stopped)
+- Lab: FEV1/FVC 12.99 %
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 6.28 %
+- Lab: Body Height 193.30 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 0 {score}
+- Lab: Body Weight 105.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28.18 kg/m2
+- Lab: Heart rate 94 /min
+- Lab: Respiratory rate 15 /min
+- Lab: Glucose [Mass/volume] in Blood 89.75 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 12.71 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.22 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.33 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 143.94 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.78 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 102.26 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 20.21 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Generalized anxiety disorder 7 item (GAD-7) total score [Reported.PHQ] 2 {score}
+- Lab: Total score [HARK] 0 {score}
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 1 {score}
+- Lab: Total score [AUDIT-C] 5 {score}
+
+2023-05-29
+- Encounter: Encounter for symptom (reason: Acute bronchitis (disorder))
+- Diagnosis: Acute bronchitis (disorder) (resolved)
+- Procedure: Sputum examination (procedure)
+- Medication: Acetaminophen 325 MG Oral Tablet (stopped)
+
+2023-06-05
+- Encounter: Encounter for check up (procedure)
+- Procedure: caries risk assessment and documentation, with a finding of high risk
+
+2024-01-03
+- Encounter: Emergency room admission (procedure) (reason: Laceration - injury (disorder))
+- Diagnosis: Laceration - injury (disorder) (resolved)
+- Diagnosis: Laceration of hand (resolved)
+- Procedure: Suture open wound
+- Procedure: Injection of tetanus antitoxin
+- Medication: Naproxen sodium 220 MG Oral Tablet Take as needed. (stopped)
+
+2024-02-26
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+- Procedure: Spirometry (procedure)
+- Procedure: Pulmonary rehabilitation (regime/therapy)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Screening for domestic abuse (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Medication: albuterol 5 MG/ML Inhalation Solution Take as needed. (stopped)
+- Medication: 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (stopped)
+- Lab: FEV1/FVC 11.14 %
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 6.12 %
+- Lab: Body Height 193.30 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 0 {score}
+- Lab: Body Weight 105.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28.18 kg/m2
+- Lab: Heart rate 95 /min
+- Lab: Respiratory rate 12 /min
+- Lab: Glucose [Mass/volume] in Blood 81.31 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 7.89 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.20 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 8.96 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 140.96 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 5.13 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 103.73 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 28.64 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Total score [HARK] 0 {score}
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 0 {score}
+
+2025-03-03
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Medication review due (situation) (active)
+- Diagnosis: Part-time employment (finding) (active)
+- Diagnosis: Limited social contact (finding) (active)
+- Procedure: Spirometry (procedure)
+- Procedure: Pulmonary rehabilitation (regime/therapy)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Screening for domestic abuse (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Patient referral for dental care (procedure)
+- Medication: albuterol 5 MG/ML Inhalation Solution Take as needed. (active)
+- Medication: 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (active)
+- Lab: FEV1/FVC 15.08 %
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 6.29 %
+- Lab: Body Height 193.30 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 0 {score}
+- Lab: Body Weight 105.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28.18 kg/m2
+- Lab: Heart rate 96 /min
+- Lab: Respiratory rate 13 /min
+- Lab: Glucose [Mass/volume] in Blood 97.68 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 10.03 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.18 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 10.18 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 141.92 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 5.10 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 106.57 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 27.68 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Total score [HARK] 0 {score}
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 0 {score}
+
+2025-03-08
+- Encounter: Encounter for check up (reason: Screening for malignant neoplasm of colon (procedure))
+- Procedure: Colonoscopy
+
+2025-03-17
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Partial loss of teeth due to other specified cause, unspecified class (resolved)
+- Procedure: incisional biopsy of oral tissue-soft
+
+2025-09-26
+- Diagnosis: Bronchial wall thickening (active)
+
+2026-01-05
+- Diagnosis: Pulmonary nodule (active)
+
+2026-02-03
+- Lab: Tobacco smoking status Current every day smoker
+- Narrative (Report):
+  FINDINGS: Trachea and both main bronchi were in the midline and no obstructive pathology was observed in the lumen. In the non-contrast examination, the mediastinal could not be evaluated optimally. As far as can be seen; mediastinal main vascular structures, heart contour, size are normal. Pericardial effusion-thickening was not observed. Calcific atheroma plaque was observed in the descending aorta. Thoracic esophagus calibration was normal and no significant pathological wall thickening was detected. N...
+  IMPRESSION: s:
+ Emphysematous and passive atelectatic changes in both lungs.  Minimal thickening of the segmental bronchial walls of both lungs.  Nonspecific subpleural nodule in the posterior segment of the right lung upper lobe.  Cholelithiasis.  Minimal degenerative changes in bone structure.
+
+== ACTIVE MEDICATIONS ==
+- albuterol 5 MG/ML Inhalation Solution Take as needed. (since 2025-03-03)
+- 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (since 2025-03-03)
+
+--- Statistics ---
+Token estimate: ~6,931 tokens
+Narrative length: 27,724 characters
+Conditions found: 51
+Medications found: 30
+Risk factors identified: 2
+
+Source: /workspace/Sentinel-X/sentinel_x/data/raw_ct_rate/combined/train_2_a_2/fhir.json

@@ -1,0 +1,2512 @@
+================================================================================
+  PATIENT: train_1_a_2
+================================================================================
+
+--- Demographics ---
+Summary: 83-year-old male
+Age: 83
+Gender: male
+
+--- Conditions & Risk Factors ---
+All Conditions (71 items):
+  • Only received primary school education (finding)
+  • Prediabetes
+  • Anemia (disorder)
+  • Essential hypertension (disorder)
+  • Localized, primary osteoarthritis of the hand
+  • Has a criminal record (finding)
+  • Ischemic heart disease (disorder)
+  • Abnormal findings diagnostic imaging heart+coronary circulat (finding)
+  • Chronic sinusitis (disorder)
+  • Chronic kidney disease stage 1 (disorder)
+  • Disorder of kidney due to diabetes mellitus (disorder)
+  • Gingivitis (disorder)
+  • Chronic kidney disease stage 2 (disorder)
+  • Microalbuminuria due to type 2 diabetes mellitus (disorder)
+  • Medication review due (situation)
+  • Full-time employment (finding)
+  • Stress (finding)
+  • Not in labor force (finding)
+  • Full-time employment (finding)
+  • Stress (finding)
+  • Part-time employment (finding)
+  • Stress (finding)
+  • Full-time employment (finding)
+  • Stress (finding)
+  • Acute viral pharyngitis (disorder)
+  • Limited social contact (finding)
+  • Not in labor force (finding)
+  • Medication review due (situation)
+  • Full-time employment (finding)
+  • Stress (finding)
+  • Unemployed (finding)
+  • Medication review due (situation)
+  • Acute bronchitis (disorder)
+  • Medication review due (situation)
+  • Stress (finding)
+  • Medication review due (situation)
+  • Limited social contact (finding)
+  • Part-time employment (finding)
+  • Victim of intimate partner abuse (finding)
+  • Medication review due (situation)
+  • Medication review due (situation)
+  • Full-time employment (finding)
+  • Medication review due (situation)
+  • Medication review due (situation)
+  • Chronic kidney disease stage 3 (disorder)
+  • Proteinuria due to type 2 diabetes mellitus (disorder)
+  • Not in labor force (finding)
+  • Acute infective cystitis (disorder)
+  • Medication review due (situation)
+  • Full-time employment (finding)
+  • Stress (finding)
+  • Part-time employment (finding)
+  • Medication review due (situation)
+  • Full-time employment (finding)
+  • Stress (finding)
+  • Victim of intimate partner abuse (finding)
+  • Medication review due (situation)
+  • Medication review due (situation)
+  • Part-time employment (finding)
+  • Limited social contact (finding)
+  • Full-time employment (finding)
+  • Stress (finding)
+  • Medication review due (situation)
+  • Venous collaterals
+  • Calcific plaques
+  • Atelectasis
+  • Bronchial wall thickening
+  • Consolidation
+  • Renal atrophy
+  • Osteophytes
+  • Spondylosis
+
+Risk Factors (6 items):
+  • Prediabetes
+  • Essential hypertension (disorder)
+  • Ischemic heart disease (disorder)
+  • Disorder of kidney due to diabetes mellitus (disorder)
+  • Microalbuminuria due to type 2 diabetes mellitus (disorder)
+  • Proteinuria due to type 2 diabetes mellitus (disorder)
+
+--- Medications ---
+All Medications (82 items):
+  • Naproxen sodium 220 MG Oral Tablet
+  • Simvastatin 20 MG Oral Tablet
+  • 24 HR metoprolol succinate 100 MG Extended Release Oral Tablet
+  • Nitroglycerin 0.4 MG/ACTUAT Mucosal Spray
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • Acetaminophen 21.7 MG/ML / Dextromethorphan Hydrobromide 1 MG/ML / doxylamine succinate 0.417 MG/ML Oral Solution
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • ciprofloxacin 500 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]
+  • Hydrochlorothiazide 25 MG Oral Tablet
+
+Active Medications (6 items):
+  • Naproxen sodium 220 MG Oral Tablet (since 1983-11-24)
+  • Simvastatin 20 MG Oral Tablet (since 1994-02-16)
+  • 24 HR metoprolol succinate 100 MG Extended Release Oral Tablet (since 1994-02-16)
+  • Nitroglycerin 0.4 MG/ACTUAT Mucosal Spray (since 1994-02-16)
+  • insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (since 2025-12-17)
+  • Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (since 2025-12-17)
+
+--- Report Content ---
+Findings (503 chars):
+Multiple venous collaterals are present in the anterior left chest wall and are associated with the anterior jugular vein at the level of the right sternoclavicular junction. Left subclavian vein collapsed (chronic occlusion pathology?). Trachea, both main bronchi are open. Calcific plaques are observed in the aortic arch. Other mediastinal main vascular structures, heart contour, size are normal. Thoracic aorta diameter is normal. Pericardial effusion-thickening was not observed. Thoracic esoph...
+
+Impressions (344 chars):
+s:
+ Multiple venous collaterals in the anterior left chest wall and collapsed appearance in the left subclavian vein (chronic occlusion?).  Thickening of the bronchial wall in both lungs.  Peribronchial reticulonodular densities in the lower lobes, minimal consolidations (infection process?).  Atelectasis in both lungs.  Thoracic spondylosis.
+
+--- Extraction Warnings ---
+  ⚠️  Narrative exceeds target token limit: ~34841 tokens
+
+--- Complete Clinical Narrative ---
+
+== PATIENT ==
+83-year-old male
+
+== CLINICAL TIMELINE ==
+
+1960-09-28
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Only received primary school education (finding) (active)
+
+1970-10-14
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Prediabetes (active)
+- Diagnosis: Anemia (disorder) (active)
+
+1973-10-17
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Essential hypertension (disorder) (active)
+
+1983-11-24
+- Encounter: Encounter for problem (reason: Localized, primary osteoarthritis of the hand)
+- Diagnosis: Localized, primary osteoarthritis of the hand (active)
+- Medication: Naproxen sodium 220 MG Oral Tablet (active)
+
+1985-12-25
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Has a criminal record (finding) (active)
+
+1994-02-09
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Ischemic heart disease (disorder) (active)
+
+1994-02-16
+- Medication: Simvastatin 20 MG Oral Tablet (active)
+- Medication: 24 HR metoprolol succinate 100 MG Extended Release Oral Tablet (active)
+- Medication: Nitroglycerin 0.4 MG/ACTUAT Mucosal Spray (active)
+
+1994-02-22
+- Encounter: Encounter for problem (procedure) (reason: Ischemic heart disease (disorder))
+- Diagnosis: Abnormal findings diagnostic imaging heart+coronary circulat (finding) (active)
+
+2002-11-07
+- Encounter: Encounter for symptom (reason: Acute bacterial sinusitis (disorder))
+- Diagnosis: Chronic sinusitis (disorder) (active)
+
+2004-10-06
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Chronic kidney disease stage 1 (disorder) (active)
+- Diagnosis: Disorder of kidney due to diabetes mellitus (disorder) (active)
+
+2007-12-19
+- Diagnosis: Spondylosis (active)
+
+2011-05-04
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Gingivitis (disorder) (active)
+
+2012-11-21
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Chronic kidney disease stage 2 (disorder) (active)
+- Diagnosis: Microalbuminuria due to type 2 diabetes mellitus (disorder) (active)
+
+2013-09-09
+- Diagnosis: Osteophytes (active)
+
+2015-06-10
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+- Diagnosis: Full-time employment (finding) (resolved)
+
+2015-08-12
+- Encounter: Encounter for check up (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+
+2016-06-15
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Stress (finding) (resolved)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 66.80 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 8.27 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.03 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 8.78 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 140.22 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 5.04 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 105.77 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 26.09 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 83.52 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 2.22 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.63 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 5.94 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.03 {nominal}
+- Lab: pH of Urine by Test strip 5.45 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 244.03 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 3.35 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 3 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 68 /min
+- Lab: Respiratory rate 14 /min
+- Lab: Glucose [Mass/volume] in Blood 66.80 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 8.27 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.66 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 8.78 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 140.22 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 5.04 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 105.77 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 26.09 mmol/L
+- Lab: Cholesterol [Mass/volume] in Serum or Plasma 171.53 mg/dL
+- Lab: Triglycerides 123.18 mg/dL
+- Lab: Low Density Lipoprotein Cholesterol 116.69 mg/dL
+- Lab: Cholesterol in HDL [Mass/volume] in Serum or Plasma 30.20 mg/dL
+- Lab: Leukocytes [#/volume] in Blood by Automated count 4.23 10*3/uL
+- Lab: Erythrocytes [#/volume] in Blood by Automated count 4.89 10*6/uL
+- Lab: Hemoglobin [Mass/volume] in Blood 13.48 g/dL
+- Lab: Hematocrit [Volume Fraction] of Blood by Automated count 46.84 %
+- Lab: MCV [Entitic volume] by Automated count 81.40 fL
+- Lab: MCH [Entitic mass] by Automated count 31.35 pg
+- Lab: MCHC [Mass/volume] by Automated count 33.26 g/dL
+- Lab: Erythrocyte distribution width [Entitic volume] by Automated count 39.78 fL
+- Lab: Platelets [#/volume] in Blood by Automated count 408.43 10*3/uL
+- Lab: Platelet distribution width [Entitic volume] in Blood by Automated count 226.01 fL
+- Lab: Platelet mean volume [Entitic volume] in Blood by Automated count 9.62 fL
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Fall risk total [Morse Fall Scale] 31 {#}
+- Lab: Fall risk level [Morse Fall Scale] Moderate Risk (MFS Score 25 - 45)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 2 {score}
+- Lab: Total score [AUDIT-C] 2 {score}
+
+2016-11-02
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Not in labor force (finding) (resolved)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of anxiety (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Screening for domestic abuse (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Screening for drug abuse (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 87.29 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 18.38 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.02 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 9.42 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 136.68 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 4.93 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 109.39 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 20.66 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 75.59 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 1.36 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.77 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 6.79 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.01 {nominal}
+- Lab: pH of Urine by Test strip 6.51 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 259.95 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 2.87 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 3 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 91 /min
+- Lab: Respiratory rate 15 /min
+- Lab: Glucose [Mass/volume] in Blood 87.29 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 18.38 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.80 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.42 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 136.68 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.93 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 109.39 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 20.66 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Generalized anxiety disorder 7 item (GAD-7) total score [Reported.PHQ] 3 {score}
+- Lab: Fall risk total [Morse Fall Scale] 22 {#}
+- Lab: Fall risk level [Morse Fall Scale] Low Risk (MFS Score 0 - 24)
+- Lab: Total score [HARK] 0 {score}
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 0 {score}
+- Lab: Total score [DAST-10] 0 {score}
+
+2017-06-21
+- Encounter: General examination of patient (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of anxiety (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Screening for drug abuse (procedure)
+- Procedure: Patient referral for dental care (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 69.37 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 7.48 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 1.94 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 8.93 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 141.39 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 4.18 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 109.74 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 20.04 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 77.25 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 1.93 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 1.48 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 9.14 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.03 {nominal}
+- Lab: pH of Urine by Test strip 5.85 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 252.72 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 3.09 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 4 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 80 /min
+- Lab: Respiratory rate 15 /min
+- Lab: Glucose [Mass/volume] in Blood 69.37 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 7.48 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.97 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 8.93 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 141.39 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.18 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 109.74 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 20.04 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Generalized anxiety disorder 7 item (GAD-7) total score [Reported.PHQ] 1 {score}
+- Lab: Fall risk total [Morse Fall Scale] 36 {#}
+- Lab: Fall risk level [Morse Fall Scale] Moderate Risk (MFS Score 25 - 45)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 1 {score}
+- Lab: Total score [DAST-10] 2 {score}
+
+2017-06-28
+- Encounter: Encounter for check up (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 76.27 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 8.81 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 1.94 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 9.84 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 140.81 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 4.64 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 106.84 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 26.67 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 73.72 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 0.68 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 1.37 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 2.24 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.04 {nominal}
+- Lab: pH of Urine by Test strip 6.62 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 326.18 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 2.82 %
+
+2017-07-05
+- Encounter: Encounter for check up (procedure)
+- Procedure: antigen testing for a public health related pathogen, including coronavirus
+
+2017-08-30
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Full-time employment (finding) (resolved)
+- Diagnosis: Stress (finding) (resolved)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Screening for domestic abuse (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure)
+- Procedure: Patient referral for dental care (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 92.41 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 12 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 1.86 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 9.28 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 143.05 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 4.72 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 105.42 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 20.15 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 83.72 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 2.06 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 1.29 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 7.23 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.01 {nominal}
+- Lab: pH of Urine by Test strip 5.42 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 245.35 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 3.30 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 0 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 88 /min
+- Lab: Respiratory rate 13 /min
+- Lab: Glucose [Mass/volume] in Blood 92.41 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 12 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 2.35 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.28 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 143.05 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.72 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 105.42 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 20.15 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Fall risk total [Morse Fall Scale] 34 {#}
+- Lab: Fall risk level [Morse Fall Scale] Moderate Risk (MFS Score 25 - 45)
+- Lab: Total score [HARK] 0 {score}
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 0 {score}
+- Lab: Total score [AUDIT-C] 3 {score}
+
+2017-09-13
+- Encounter: Encounter for check up (procedure)
+- Procedure: antigen testing for a public health related pathogen, including coronavirus
+
+2018-03-28
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Part-time employment (finding) (resolved)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of anxiety (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 91.50 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 12.75 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 1.89 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 9.03 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 140.04 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 4.83 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 110.45 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 27.33 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 79.44 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 0.95 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.87 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 16.68 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.04 {nominal}
+- Lab: pH of Urine by Test strip 5.14 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 318.11 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 3.06 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 2 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 78 /min
+- Lab: Respiratory rate 12 /min
+- Lab: Glucose [Mass/volume] in Blood 91.50 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 12.75 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 2.17 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.03 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 140.04 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.83 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 110.45 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 27.33 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Generalized anxiety disorder 7 item (GAD-7) total score [Reported.PHQ] 3 {score}
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 1 {score}
+
+2018-05-22
+- Diagnosis: Calcific plaques (active)
+
+2018-06-27
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Stress (finding) (resolved)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 74.62 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 16.13 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.05 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 9.18 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 136.77 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 4.23 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 105.37 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 26.29 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 69.36 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 1.16 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.42 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 10.45 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.03 {nominal}
+- Lab: pH of Urine by Test strip 6.93 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 317.20 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 2.89 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 0 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 62 /min
+- Lab: Respiratory rate 15 /min
+- Lab: Glucose [Mass/volume] in Blood 74.62 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 16.13 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.73 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.18 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 136.77 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.23 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 105.37 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 26.29 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Fall risk total [Morse Fall Scale] 14 {#}
+- Lab: Fall risk level [Morse Fall Scale] Low Risk (MFS Score 0 - 24)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 1 {score}
+- Lab: Total score [AUDIT-C] 1 {score}
+
+2018-09-12
+- Encounter: Urgent care clinic (environment)
+- Diagnosis: Full-time employment (finding) (resolved)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure)
+- Procedure: Patient referral for dental care (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 93.12 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 14.69 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 1.98 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 9.01 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 142.13 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 3.73 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 109.60 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 25.89 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 80.75 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 1.26 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 1.27 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 18.25 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.03 {nominal}
+- Lab: pH of Urine by Test strip 5.37 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 171.74 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 3.06 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 0 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 83 /min
+- Lab: Respiratory rate 14 /min
+- Lab: Glucose [Mass/volume] in Blood 93.12 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 14.69 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.69 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.01 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 142.13 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 3.73 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 109.60 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 25.89 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 0 {score}
+- Lab: Total score [AUDIT-C] 1 {score}
+
+2018-09-19
+- Encounter: Urgent care clinic (environment)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 97.76 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 19.48 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 1.91 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 9.57 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 143.49 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 4.69 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 110.93 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 21.09 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 72.22 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 1.67 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.86 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 14.57 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.02 {nominal}
+- Lab: pH of Urine by Test strip 6.97 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 336.56 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 3.40 %
+
+2018-09-26
+- Encounter: Urgent care clinic (environment)
+- Diagnosis: Stress (finding) (resolved)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of anxiety (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Screening for drug abuse (procedure)
+- Procedure: Patient referral for dental care (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 68.11 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 10.45 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.03 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 9.86 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 136.35 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 3.73 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 107.90 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 23.93 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 60.69 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 0.52 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 1.42 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 4.58 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.00 {nominal}
+- Lab: pH of Urine by Test strip 6.28 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 257.66 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 3.35 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 1 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 70 /min
+- Lab: Respiratory rate 13 /min
+- Lab: Glucose [Mass/volume] in Blood 68.11 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 10.45 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.96 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.86 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 136.35 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 3.73 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 107.90 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 23.93 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Generalized anxiety disorder 7 item (GAD-7) total score [Reported.PHQ] 3 {score}
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 0 {score}
+- Lab: Total score [DAST-10] 1 {score}
+
+2018-10-03
+- Encounter: Encounter for check up (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 79.01 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 16.59 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.04 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 10.16 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 143.17 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 4.68 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 103.84 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 21.96 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 70.44 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 0.63 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 1.29 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 17.21 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.02 {nominal}
+- Lab: pH of Urine by Test strip 6.48 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 186.05 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 3.33 %
+
+2018-10-10
+- Encounter: Encounter for check up (procedure)
+- Procedure: caries risk assessment and documentation, with a finding of moderate risk
+
+2018-10-17
+- Encounter: Encounter for symptom (reason: Acute viral pharyngitis (disorder))
+- Diagnosis: Acute viral pharyngitis (disorder) (resolved)
+- Lab: Body temperature 37.55 Cel
+
+2018-10-24
+- Encounter: Urgent care clinic (environment)
+- Diagnosis: Limited social contact (finding) (resolved)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Screening for domestic abuse (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 82.34 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 8.72 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 1.85 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 10.09 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 137.60 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 4.21 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 107.21 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 22.85 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 74.63 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 1.08 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.59 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 16.23 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.01 {nominal}
+- Lab: pH of Urine by Test strip 6.42 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 151.07 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 3.07 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 3 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 67 /min
+- Lab: Respiratory rate 13 /min
+- Lab: Glucose [Mass/volume] in Blood 82.34 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 8.72 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 2.65 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 10.09 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 137.60 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.21 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 107.21 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 22.85 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Fall risk total [Morse Fall Scale] 6 {#}
+- Lab: Fall risk level [Morse Fall Scale] Low Risk (MFS Score 0 - 24)
+- Lab: Total score [HARK] 0 {score}
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 1 {score}
+
+2019-04-10
+- Diagnosis: Atelectasis (active)
+
+2019-07-03
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Not in labor force (finding) (resolved)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of anxiety (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Screening for domestic abuse (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Nine Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure)
+- Procedure: Patient referral for dental care (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 90.01 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 7.80 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 1.90 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 8.74 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 141.67 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 5.13 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 110.56 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 25.39 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 76.33 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 0.52 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.73 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 8.70 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.00 {nominal}
+- Lab: pH of Urine by Test strip 5.65 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 153.49 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 3.07 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 3 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 67 /min
+- Lab: Respiratory rate 14 /min
+- Lab: Glucose [Mass/volume] in Blood 90.01 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 7.80 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 2.42 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 8.74 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 141.67 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 5.13 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 110.56 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 25.39 mmol/L
+- Lab: Cholesterol [Mass/volume] in Serum or Plasma 198.45 mg/dL
+- Lab: Triglycerides 133.79 mg/dL
+- Lab: Low Density Lipoprotein Cholesterol 139.39 mg/dL
+- Lab: Cholesterol in HDL [Mass/volume] in Serum or Plasma 32.31 mg/dL
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Generalized anxiety disorder 7 item (GAD-7) total score [Reported.PHQ] 4 {score}
+- Lab: Fall risk total [Morse Fall Scale] 4 {#}
+- Lab: Fall risk level [Morse Fall Scale] Low Risk (MFS Score 0 - 24)
+- Lab: Total score [HARK] 0 {score}
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 6 {score}
+- Lab: Patient Health Questionnaire 9 item (PHQ-9) total score [Reported] 17 {score}
+- Lab: Total score [AUDIT-C] 1 {score}
+
+2019-07-17
+- Encounter: Encounter for check up (procedure)
+- Procedure: antigen testing for a public health related pathogen, including coronavirus
+
+2019-07-31
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+- Diagnosis: Full-time employment (finding) (resolved)
+- Diagnosis: Stress (finding) (resolved)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 82.09 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 13.13 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 1.98 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 8.63 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 143.82 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 4.18 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 106.73 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 26.68 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 88.49 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 2.37 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.29 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 4.47 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.01 {nominal}
+- Lab: pH of Urine by Test strip 6.26 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 151.83 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 3.23 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 2 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 87 /min
+- Lab: Respiratory rate 16 /min
+- Lab: Glucose [Mass/volume] in Blood 82.09 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 13.13 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.53 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 8.63 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 143.82 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.18 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 106.73 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 26.68 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Fall risk total [Morse Fall Scale] 111 {#}
+- Lab: Fall risk level [Morse Fall Scale] High Risk (MFS Score 50+)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 2 {score}
+- Lab: Total score [AUDIT-C] 2 {score}
+
+2019-12-18
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Unemployed (finding) (resolved)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure)
+- Procedure: Patient referral for dental care (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 95.31 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 19.25 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.06 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 9.87 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 139.30 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 3.99 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 101.20 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 22.39 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 63.00 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 1.71 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.66 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 3.00 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.01 {nominal}
+- Lab: pH of Urine by Test strip 6.29 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 302.34 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 2.86 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 4 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 65 /min
+- Lab: Respiratory rate 14 /min
+- Lab: Glucose [Mass/volume] in Blood 95.31 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 19.25 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 2.78 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.87 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 139.30 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 3.99 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 101.20 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 22.39 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 0 {score}
+- Lab: Total score [AUDIT-C] 1 {score}
+
+2019-12-25
+- Encounter: Encounter for check up (procedure)
+- Encounter: Encounter for check up (procedure)
+- Procedure: extraction, erupted tooth or exposed root (elevation and/or forceps removal)
+- Procedure: extraction, erupted tooth or exposed root (elevation and/or forceps removal)
+- Procedure: extraction, erupted tooth or exposed root (elevation and/or forceps removal)
+- Procedure: extraction, erupted tooth or exposed root (elevation and/or forceps removal)
+- Procedure: extraction, erupted tooth or exposed root (elevation and/or forceps removal)
+- Procedure: extraction, erupted tooth or exposed root (elevation and/or forceps removal)
+- Procedure: extraction, erupted tooth or exposed root (elevation and/or forceps removal)
+- Procedure: extraction, erupted tooth or exposed root (elevation and/or forceps removal)
+- Procedure: extraction, erupted tooth or exposed root (elevation and/or forceps removal)
+- Procedure: antigen testing for a public health related pathogen, including coronavirus
+
+2020-01-15
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Screening for drug abuse (procedure)
+- Procedure: Patient referral for dental care (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 84.52 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 8.11 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 1.92 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 10.10 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 139.04 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 5.20 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 108.06 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 20.72 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 78.14 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 2.43 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.93 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 13.56 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.03 {nominal}
+- Lab: pH of Urine by Test strip 6.40 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 241.07 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 2.85 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 1 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 78 /min
+- Lab: Respiratory rate 14 /min
+- Lab: Glucose [Mass/volume] in Blood 84.52 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 8.11 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.74 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 10.10 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 139.04 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 5.20 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 108.06 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 20.72 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 0 {score}
+- Lab: Total score [DAST-10] 2 {score}
+
+2020-01-27
+- Encounter: Encounter for symptom (reason: Acute bronchitis (disorder))
+- Diagnosis: Acute bronchitis (disorder) (resolved)
+- Medication: Acetaminophen 21.7 MG/ML / Dextromethorphan Hydrobromide 1 MG/ML / doxylamine succinate 0.417 MG/ML Oral Solution (stopped)
+
+2020-01-29
+- Encounter: Encounter for check up (procedure)
+- Procedure: extraction, erupted tooth or exposed root (elevation and/or forceps removal)
+
+2020-02-12
+- Encounter: Urgent care clinic (environment)
+- Diagnosis: Medication review due (situation) (resolved)
+- Diagnosis: Stress (finding) (resolved)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of anxiety (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 68.22 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 14.24 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 1.89 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 9.52 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 139.99 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 3.75 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 110.49 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 20.81 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 84.12 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 1.50 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.62 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 3.71 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.04 {nominal}
+- Lab: pH of Urine by Test strip 5.29 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 335.90 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 3.38 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 2 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 92 /min
+- Lab: Respiratory rate 15 /min
+- Lab: Glucose [Mass/volume] in Blood 68.22 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 14.24 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.69 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.52 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 139.99 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 3.75 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 110.49 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 20.81 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Generalized anxiety disorder 7 item (GAD-7) total score [Reported.PHQ] 0 {score}
+- Lab: Fall risk total [Morse Fall Scale] 16 {#}
+- Lab: Fall risk level [Morse Fall Scale] Low Risk (MFS Score 0 - 24)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 2 {score}
+- Lab: Total score [AUDIT-C] 0 {score}
+
+2020-02-19
+- Encounter: Urgent care clinic (environment)
+- Diagnosis: Medication review due (situation) (resolved)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 99.51 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 9.14 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.00 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 8.86 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 137.11 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 3.82 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 104.42 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 23.74 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 76.82 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 1.71 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.52 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 17.73 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.02 {nominal}
+- Lab: pH of Urine by Test strip 6.94 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 278.59 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 2.84 %
+
+2020-04-15
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Limited social contact (finding) (resolved)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of anxiety (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 85.81 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 12.99 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.02 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 10.02 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 143.97 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 4.27 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 108.48 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 25.40 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 83.93 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 1.50 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.82 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 1.71 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.00 {nominal}
+- Lab: pH of Urine by Test strip 6.80 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 310.20 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 3.34 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 0 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 91 /min
+- Lab: Respiratory rate 15 /min
+- Lab: Glucose [Mass/volume] in Blood 85.81 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 12.99 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 2.58 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 10.02 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 143.97 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.27 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 108.48 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 25.40 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Generalized anxiety disorder 7 item (GAD-7) total score [Reported.PHQ] 2 {score}
+- Lab: Fall risk total [Morse Fall Scale] 114 {#}
+- Lab: Fall risk level [Morse Fall Scale] High Risk (MFS Score 50+)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 2 {score}
+
+2020-05-13
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Part-time employment (finding) (resolved)
+- Diagnosis: Victim of intimate partner abuse (finding) (resolved)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Screening for drug abuse (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 64.06 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 9.02 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.05 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 8.99 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 142.24 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 3.78 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 104.33 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 21.16 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 78.73 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 0.58 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.75 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 3.51 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.01 {nominal}
+- Lab: pH of Urine by Test strip 5.74 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 285.49 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 3.10 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 2 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 86 /min
+- Lab: Respiratory rate 13 /min
+- Lab: Glucose [Mass/volume] in Blood 64.06 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 9.02 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 2.55 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 8.99 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 142.24 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 3.78 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 104.33 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 21.16 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Fall risk total [Morse Fall Scale] 43 {#}
+- Lab: Fall risk level [Morse Fall Scale] Moderate Risk (MFS Score 25 - 45)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 1 {score}
+- Lab: Total score [DAST-10] 1 {score}
+
+2020-05-20
+- Encounter: Encounter for check up (procedure)
+- Procedure: caries risk assessment and documentation, with a finding of high risk
+
+2020-07-08
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 64.57 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 15.96 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.00 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 8.65 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 137.32 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 3.79 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 102.08 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 28.66 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 73.91 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 2.44 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.57 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 1.00 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.02 {nominal}
+- Lab: pH of Urine by Test strip 5.56 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 175.02 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 2.82 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 1 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 83 /min
+- Lab: Respiratory rate 16 /min
+- Lab: Glucose [Mass/volume] in Blood 64.57 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 15.96 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 2.31 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 8.65 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 137.32 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 3.79 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 102.08 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 28.66 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Total score [AUDIT-C] 2 {score}
+
+2020-07-29
+- Diagnosis: Renal atrophy (active)
+
+2020-10-14
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+- Diagnosis: Full-time employment (finding) (resolved)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 93.31 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 12.38 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.08 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 9.58 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 143.90 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 5.05 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 109.59 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 24.68 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 71.14 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 1.61 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 1.26 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 13.16 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.03 {nominal}
+- Lab: pH of Urine by Test strip 6.00 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 260.56 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 2.92 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 3 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 61 /min
+- Lab: Respiratory rate 13 /min
+- Lab: Glucose [Mass/volume] in Blood 93.31 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 12.38 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.67 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.58 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 143.90 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 5.05 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 109.59 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 24.68 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Fall risk total [Morse Fall Scale] 9 {#}
+- Lab: Fall risk level [Morse Fall Scale] Low Risk (MFS Score 0 - 24)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 1 {score}
+- Lab: Total score [AUDIT-C] 0 {score}
+
+2021-02-10
+- Encounter: Administration of vaccine to produce active immunity (procedure)
+
+2021-03-10
+- Encounter: Administration of vaccine to produce active immunity (procedure)
+
+2021-07-14
+- Encounter: General examination of patient (procedure)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of anxiety (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Screening for drug abuse (procedure)
+- Procedure: Patient referral for dental care (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 65.46 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 13.01 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.08 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 8.63 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 141.84 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 4.31 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 103.42 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 21.07 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 68.65 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 1.84 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.60 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 16.84 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.03 {nominal}
+- Lab: pH of Urine by Test strip 6.60 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 297.23 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 3.01 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 2 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 91 /min
+- Lab: Respiratory rate 14 /min
+- Lab: Glucose [Mass/volume] in Blood 65.46 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 13.01 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.68 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 8.63 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 141.84 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.31 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 103.42 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 21.07 mmol/L
+- Lab: Leukocytes [#/volume] in Blood by Automated count 5.12 10*3/uL
+- Lab: Erythrocytes [#/volume] in Blood by Automated count 5.11 10*6/uL
+- Lab: Hemoglobin [Mass/volume] in Blood 17.29 g/dL
+- Lab: Hematocrit [Volume Fraction] of Blood by Automated count 42.57 %
+- Lab: MCV [Entitic volume] by Automated count 87.42 fL
+- Lab: MCH [Entitic mass] by Automated count 32.49 pg
+- Lab: MCHC [Mass/volume] by Automated count 34.10 g/dL
+- Lab: Erythrocyte distribution width [Entitic volume] by Automated count 44.77 fL
+- Lab: Platelets [#/volume] in Blood by Automated count 185.54 10*3/uL
+- Lab: Platelet distribution width [Entitic volume] in Blood by Automated count 237.29 fL
+- Lab: Platelet mean volume [Entitic volume] in Blood by Automated count 9.42 fL
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Generalized anxiety disorder 7 item (GAD-7) total score [Reported.PHQ] 7 {score}
+- Lab: Fall risk total [Morse Fall Scale] 58 {#}
+- Lab: Fall risk level [Morse Fall Scale] High Risk (MFS Score 50+)
+- Lab: Total score [DAST-10] 2 {score}
+
+2021-07-28
+- Encounter: Encounter for check up (procedure)
+- Procedure: caries risk assessment and documentation, with a finding of low risk
+
+2021-08-11
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Screening for drug abuse (procedure)
+- Procedure: Patient referral for dental care (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 92.97 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 10.14 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 1.99 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 8.86 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 138.61 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 4.58 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 108.72 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 24.33 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 87.53 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 2.26 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 1.25 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 3.78 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = + (finding)
+- Lab: Specific gravity of Urine by Test strip 1.02 {nominal}
+- Lab: pH of Urine by Test strip 6.82 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 168.22 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 2.99 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 2 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 63 /min
+- Lab: Respiratory rate 15 /min
+- Lab: Glucose [Mass/volume] in Blood 92.97 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 10.14 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 2.79 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 8.86 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 138.61 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.58 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 108.72 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 24.33 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Fall risk total [Morse Fall Scale] 21 {#}
+- Lab: Fall risk level [Morse Fall Scale] Low Risk (MFS Score 0 - 24)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 0 {score}
+- Lab: Total score [DAST-10] 1 {score}
+
+2021-08-25
+- Encounter: Encounter for check up (procedure)
+- Procedure: 2-D cephalometric radiographic image - image capture only
+
+2022-07-20
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+- Diagnosis: Chronic kidney disease stage 3 (disorder) (active)
+- Diagnosis: Proteinuria due to type 2 diabetes mellitus (disorder) (active)
+- Diagnosis: Not in labor force (finding) (resolved)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Screening for drug abuse (procedure)
+- Procedure: Patient referral for dental care (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 97.02 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 12.46 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.06 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 9.81 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 141.15 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 3.88 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 105.17 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 22.84 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 56.60 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 0.83 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.40 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 6.07 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = ++ (finding)
+- Lab: Specific gravity of Urine by Test strip 1.03 {nominal}
+- Lab: pH of Urine by Test strip 6.02 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 253.68 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 2.97 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 0 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 85 /min
+- Lab: Respiratory rate 14 /min
+- Lab: Glucose [Mass/volume] in Blood 97.02 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 12.46 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 3.83 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.81 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 141.15 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 3.88 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 105.17 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 22.84 mmol/L
+- Lab: Cholesterol [Mass/volume] in Serum or Plasma 179 mg/dL
+- Lab: Triglycerides 122.80 mg/dL
+- Lab: Low Density Lipoprotein Cholesterol 129.52 mg/dL
+- Lab: Cholesterol in HDL [Mass/volume] in Serum or Plasma 24.91 mg/dL
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Fall risk total [Morse Fall Scale] 27 {#}
+- Lab: Fall risk level [Morse Fall Scale] Moderate Risk (MFS Score 25 - 45)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 0 {score}
+- Lab: Total score [DAST-10] 2 {score}
+
+2022-08-03
+- Encounter: Encounter for check up (procedure)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of anxiety (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Nine Item score (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 74.96 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 17.67 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.02 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 9.95 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 136.46 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 5.06 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 106.21 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 26.61 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 51.01 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 2.16 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 1.30 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 8.92 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = ++ (finding)
+- Lab: Specific gravity of Urine by Test strip 1.02 {nominal}
+- Lab: pH of Urine by Test strip 6.00 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 239.07 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 3.17 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 0 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 67 /min
+- Lab: Respiratory rate 14 /min
+- Lab: Glucose [Mass/volume] in Blood 74.96 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 17.67 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 5.34 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.95 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 136.46 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 5.06 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 106.21 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 26.61 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Generalized anxiety disorder 7 item (GAD-7) total score [Reported.PHQ] 1 {score}
+- Lab: Fall risk total [Morse Fall Scale] 32 {#}
+- Lab: Fall risk level [Morse Fall Scale] Moderate Risk (MFS Score 25 - 45)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 5 {score}
+- Lab: Patient Health Questionnaire 9 item (PHQ-9) total score [Reported] 27 {score}
+
+2022-08-10
+- Encounter: Encounter for check up (procedure)
+- Procedure: caries risk assessment and documentation, with a finding of high risk
+
+2022-10-12
+- Diagnosis: Venous collaterals (active)
+
+2023-01-23
+- Encounter: Encounter for symptom (reason: Acute infective cystitis (disorder))
+- Diagnosis: Acute infective cystitis (disorder) (resolved)
+- Procedure: History taking (procedure)
+- Procedure: Discussion about signs and symptoms (procedure)
+- Procedure: History and physical examination, limited (procedure)
+- Procedure: Evaluation procedure (procedure)
+- Procedure: Standard pregnancy test (procedure)
+- Procedure: Urine specimen collection (procedure)
+- Procedure: Urinalysis with reflex to microscopy and culture (procedure)
+- Procedure: Antibiotic therapy (procedure)
+- Medication: ciprofloxacin 500 MG Oral Tablet 1.0 2 times per daily (stopped)
+- Lab: Choriogonadotropin (pregnancy test) [Presence] in Urine Negative (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 9.98 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test negative (finding)
+- Lab: Specific gravity of Urine by Test strip 1.02 {nominal}
+- Lab: pH of Urine by Test strip 6.54 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 6.61 mg/dL
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite positive (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = + (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test = + (finding)
+- Lab: WBCs 38.66 /[HPF]
+- Lab: RBCs 1.91 /[HPF]
+- Lab: Epithelial Cells 0.96 /[HPF]
+- Lab: Casts Urine microscopy: no casts (finding)
+- Lab: Mucus Threads Mucus in urine (finding)
+- Lab: Bacteria Finding of presence of bacteria (finding)
+- Lab: Bacteria identified in Urine by Culture Greater than 100,000 colony forming units per mL Escherichia coli
+
+2023-02-01
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+- Diagnosis: Full-time employment (finding) (resolved)
+- Diagnosis: Stress (finding) (resolved)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 91.62 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 15.16 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.01 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 8.99 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 136.16 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 3.87 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 108.08 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 26.25 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 44.86 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 2.11 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 1.24 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 10.46 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = ++ (finding)
+- Lab: Specific gravity of Urine by Test strip 1.04 {nominal}
+- Lab: pH of Urine by Test strip 5.85 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 263.46 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 2.92 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 2 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 89 /min
+- Lab: Respiratory rate 15 /min
+- Lab: Glucose [Mass/volume] in Blood 91.62 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 15.16 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 3.95 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 8.99 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 136.16 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 3.87 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 108.08 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 26.25 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 1 {score}
+
+2023-03-01
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Part-time employment (finding) (resolved)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of anxiety (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Screening for drug abuse (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 83.35 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 17.51 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 1.97 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 9.14 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 141.96 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 4.93 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 101.62 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 23.88 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 48.80 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 2.36 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 1.15 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 12.19 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = ++ (finding)
+- Lab: Specific gravity of Urine by Test strip 1.02 {nominal}
+- Lab: pH of Urine by Test strip 6.03 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 383.77 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 2.88 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 3 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 69 /min
+- Lab: Respiratory rate 13 /min
+- Lab: Glucose [Mass/volume] in Blood 83.35 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 17.51 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 4.26 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.14 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 141.96 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.93 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 101.62 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 23.88 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Generalized anxiety disorder 7 item (GAD-7) total score [Reported.PHQ] 2 {score}
+- Lab: Fall risk total [Morse Fall Scale] 110 {#}
+- Lab: Fall risk level [Morse Fall Scale] High Risk (MFS Score 50+)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 0 {score}
+- Lab: Total score [DAST-10] 2 {score}
+
+2023-07-26
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+- Diagnosis: Full-time employment (finding) (resolved)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 93.94 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 9.15 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 1.99 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 8.70 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 142.94 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 4.88 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 108.55 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 22.12 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 44.80 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 1.51 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 1.16 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 8.94 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = ++ (finding)
+- Lab: Specific gravity of Urine by Test strip 1.02 {nominal}
+- Lab: pH of Urine by Test strip 5.61 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 379.81 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 2.92 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 1 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 89 /min
+- Lab: Respiratory rate 14 /min
+- Lab: Glucose [Mass/volume] in Blood 93.94 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 9.15 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 4.65 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 8.70 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 142.94 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.88 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 108.55 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 22.12 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Fall risk total [Morse Fall Scale] 45 {#}
+- Lab: Fall risk level [Morse Fall Scale] Moderate Risk (MFS Score 25 - 45)
+- Lab: Total score [AUDIT-C] 0 {score}
+
+2023-08-02
+- Encounter: Encounter for check up (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 91.70 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 15.61 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.03 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 9.16 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 140.15 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 4.11 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 110.97 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 24.34 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 37.76 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 0.93 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.43 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 4.42 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = ++ (finding)
+- Lab: Specific gravity of Urine by Test strip 1.01 {nominal}
+- Lab: pH of Urine by Test strip 6.44 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 250.20 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 3.25 %
+
+2024-06-26
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Stress (finding) (resolved)
+- Diagnosis: Victim of intimate partner abuse (finding) (resolved)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of anxiety (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Screening for drug abuse (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 79.53 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 18.15 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 1.95 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 9.26 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 142.50 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 3.89 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 104.78 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 25.68 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 36.59 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 1.22 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.93 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 8.72 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = ++ (finding)
+- Lab: Specific gravity of Urine by Test strip 1.01 {nominal}
+- Lab: pH of Urine by Test strip 5.64 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 327.50 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 3.04 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 3 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 85 /min
+- Lab: Respiratory rate 14 /min
+- Lab: Glucose [Mass/volume] in Blood 79.53 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 18.15 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 4.44 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.26 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 142.50 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 3.89 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 104.78 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 25.68 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Generalized anxiety disorder 7 item (GAD-7) total score [Reported.PHQ] 2 {score}
+- Lab: Fall risk total [Morse Fall Scale] 3 {#}
+- Lab: Fall risk level [Morse Fall Scale] Low Risk (MFS Score 0 - 24)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 0 {score}
+- Lab: Total score [DAST-10] 1 {score}
+
+2024-07-24
+- Encounter: Encounter for check up (procedure)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of anxiety (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 87.88 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 18.18 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 1.97 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 9.06 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 143.20 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 4.87 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 110.68 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 24.14 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 40.12 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 2.48 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.69 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 13.23 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = ++ (finding)
+- Lab: Specific gravity of Urine by Test strip 1.01 {nominal}
+- Lab: pH of Urine by Test strip 5.37 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 325.46 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 3.32 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 1 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 65 /min
+- Lab: Respiratory rate 15 /min
+- Lab: Glucose [Mass/volume] in Blood 87.88 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 18.18 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 3.11 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.06 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 143.20 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.87 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 110.68 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 24.14 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Generalized anxiety disorder 7 item (GAD-7) total score [Reported.PHQ] 3 {score}
+- Lab: Fall risk total [Morse Fall Scale] 81 {#}
+- Lab: Fall risk level [Morse Fall Scale] High Risk (MFS Score 50+)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 1 {score}
+
+2024-07-31
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 81.06 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 12.29 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.09 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 9.67 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 136.75 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 4.79 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 102.96 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 25.85 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 46.56 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 1.18 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.59 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 3.48 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = ++ (finding)
+- Lab: Specific gravity of Urine by Test strip 1.03 {nominal}
+- Lab: pH of Urine by Test strip 5.49 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 302.71 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 2.95 %
+
+2025-01-22
+- Encounter: Encounter for check up (procedure)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of anxiety (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 98.26 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 12.03 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.02 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 9.22 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 137.15 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 3.89 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 110.45 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 25.68 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 48.46 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 0.80 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.23 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 6.56 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = ++ (finding)
+- Lab: Specific gravity of Urine by Test strip 1.03 {nominal}
+- Lab: pH of Urine by Test strip 6.16 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 382.01 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 3.35 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 3 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 73 /min
+- Lab: Respiratory rate 12 /min
+- Lab: Glucose [Mass/volume] in Blood 98.26 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 12.03 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 4.06 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.22 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 137.15 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 3.89 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 110.45 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 25.68 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Generalized anxiety disorder 7 item (GAD-7) total score [Reported.PHQ] 2 {score}
+- Lab: Fall risk total [Morse Fall Scale] 62 {#}
+- Lab: Fall risk level [Morse Fall Scale] High Risk (MFS Score 50+)
+
+2025-03-05
+- Encounter: Patient encounter procedure (procedure) (reason: Transition from acute care to home-health care (finding))
+- Encounter: Home visit (procedure) (reason: Transition from acute care to home-health care (finding))
+- Procedure: Referral to home health care service (procedure)
+- Procedure: Initial patient assessment (procedure)
+- Procedure: Comprehensive interview and evaluation (procedure)
+- Procedure: Development of individualized plan of care (procedure)
+- Procedure: Coordination of care plan (procedure)
+
+2025-03-06
+- Encounter: Home visit (procedure) (reason: Transition from acute care to home-health care (finding))
+- Procedure: Nursing care/supplementary surveillance (regime/therapy)
+
+2025-03-07
+- Encounter: Home visit (procedure) (reason: Transition from acute care to home-health care (finding))
+- Procedure: Physical therapy procedure (regime/therapy)
+
+2025-03-08
+- Encounter: Home visit (procedure) (reason: Transition from acute care to home-health care (finding))
+- Procedure: Physical therapy procedure (regime/therapy)
+
+2025-03-09
+- Encounter: Home visit (procedure) (reason: Transition from acute care to home-health care (finding))
+- Procedure: Nursing care/supplementary surveillance (regime/therapy)
+
+2025-03-10
+- Encounter: Home visit (procedure) (reason: Transition from acute care to home-health care (finding))
+- Procedure: Nursing care/supplementary surveillance (regime/therapy)
+
+2025-03-11
+- Encounter: Home visit (procedure) (reason: Transition from acute care to home-health care (finding))
+- Procedure: Nursing care/supplementary surveillance (regime/therapy)
+
+2025-03-12
+- Encounter: Home visit (procedure) (reason: Transition from acute care to home-health care (finding))
+- Procedure: Nursing care/supplementary surveillance (regime/therapy)
+
+2025-03-13
+- Encounter: Home visit (procedure) (reason: Transition from acute care to home-health care (finding))
+- Procedure: Nursing care/supplementary surveillance (regime/therapy)
+
+2025-03-14
+- Encounter: Home visit (procedure) (reason: Transition from acute care to home-health care (finding))
+- Procedure: Nursing care/supplementary surveillance (regime/therapy)
+
+2025-03-15
+- Encounter: Home visit (procedure) (reason: Transition from acute care to home-health care (finding))
+- Procedure: Nursing care/supplementary surveillance (regime/therapy)
+
+2025-03-16
+- Encounter: Home visit (procedure) (reason: Transition from acute care to home-health care (finding))
+- Procedure: Nursing care/supplementary surveillance (regime/therapy)
+
+2025-03-17
+- Encounter: Home visit (procedure) (reason: Transition from acute care to home-health care (finding))
+- Procedure: Speech and language therapy regime (regime/therapy)
+- Procedure: Patient discharge (procedure)
+
+2025-08-06
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+- Diagnosis: Part-time employment (finding) (resolved)
+- Diagnosis: Limited social contact (finding) (resolved)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Screening for domestic abuse (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 68.01 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 10.71 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.04 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 8.83 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 136.65 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 3.78 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 107.74 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 28.67 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 53.96 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 1.02 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.61 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 6.83 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = ++ (finding)
+- Lab: Specific gravity of Urine by Test strip 1.04 {nominal}
+- Lab: pH of Urine by Test strip 6.62 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 291.22 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 2.87 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 2 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 71 /min
+- Lab: Respiratory rate 15 /min
+- Lab: Glucose [Mass/volume] in Blood 68.01 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 10.71 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 2.91 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 8.83 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 136.65 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 3.78 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 107.74 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 28.67 mmol/L
+- Lab: Cholesterol [Mass/volume] in Serum or Plasma 167.40 mg/dL
+- Lab: Triglycerides 135.81 mg/dL
+- Lab: Low Density Lipoprotein Cholesterol 109.38 mg/dL
+- Lab: Cholesterol in HDL [Mass/volume] in Serum or Plasma 30.86 mg/dL
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Fall risk total [Morse Fall Scale] 109 {#}
+- Lab: Fall risk level [Morse Fall Scale] High Risk (MFS Score 50+)
+- Lab: Total score [HARK] 0 {score}
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 2 {score}
+- Lab: Total score [AUDIT-C] 1 {score}
+
+2025-08-20
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Full-time employment (finding) (active)
+- Diagnosis: Stress (finding) (resolved)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of anxiety (procedure)
+- Procedure: Screening for domestic abuse (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (stopped)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 94.74 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 15.87 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.06 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 9.58 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 136.50 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 4.83 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 105.44 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 24.67 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 43.21 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 0.72 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.72 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 16.69 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = ++ (finding)
+- Lab: Specific gravity of Urine by Test strip 1.03 {nominal}
+- Lab: pH of Urine by Test strip 5.37 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 336.80 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 2.86 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 3 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 82 /min
+- Lab: Respiratory rate 15 /min
+- Lab: Glucose [Mass/volume] in Blood 94.74 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 15.87 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 4.28 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.58 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 136.50 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.83 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 105.44 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 24.67 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Generalized anxiety disorder 7 item (GAD-7) total score [Reported.PHQ] 3 {score}
+- Lab: Total score [HARK] 0 {score}
+- Lab: Total score [AUDIT-C] 1 {score}
+
+2025-10-14
+- Diagnosis: Consolidation (active)
+
+2025-11-04
+- Diagnosis: Bronchial wall thickening (active)
+
+2025-12-17
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Medication review due (situation) (active)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of anxiety (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Screening for drug abuse (procedure)
+- Medication: insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (active)
+- Medication: Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (active)
+- Lab: Glucose [Mass/volume] in Serum or Plasma 71.49 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 13.25 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.09 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 9.41 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 142.46 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 4.16 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 101.37 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 25.55 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 45.49 mL/min/{1.73_m2}
+- Lab: Appearance of Urine Cloudy urine (finding)
+- Lab: Odor of Urine Urine smell ammoniacal (finding)
+- Lab: Clarity of Urine Translucent (qualifier value)
+- Lab: Color of Urine Brown color (qualifier value)
+- Lab: Glucose [Mass/volume] in Urine by Test strip 1.71 mg/dL
+- Lab: Glucose [Presence] in Urine by Test strip Urine glucose test = ++ (finding)
+- Lab: Bilirubin.total [Mass/volume] in Urine by Test strip 0.36 mg/dL
+- Lab: Bilirubin.total [Presence] in Urine by Test strip Finding of bilirubin in urine (finding)
+- Lab: Ketones [Mass/volume] in Urine by Test strip 5.14 mg/dL
+- Lab: Ketones [Presence] in Urine by Test strip Urine ketone test = ++ (finding)
+- Lab: Specific gravity of Urine by Test strip 1.03 {nominal}
+- Lab: pH of Urine by Test strip 6.80 pH
+- Lab: Protein [Mass/volume] in Urine by Test strip 268.86 mg/dL
+- Lab: Protein [Presence] in Urine by Test strip Urine protein test = ++ (finding)
+- Lab: Nitrite [Presence] in Urine by Test strip Urine nitrite negative (finding)
+- Lab: Hemoglobin [Presence] in Urine by Test strip Urine blood test = negative (finding)
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip Urine leukocyte test negative (finding)
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 2.91 %
+- Lab: Body Height 190.20 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 1 {score}
+- Lab: Body Weight 101.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 84 /min
+- Lab: Respiratory rate 12 /min
+- Lab: Glucose [Mass/volume] in Blood 71.49 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 13.25 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 4.83 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.41 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 142.46 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.16 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 101.37 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 25.55 mmol/L
+- Lab: Tobacco smoking status Ex-smoker (finding)
+- Lab: Generalized anxiety disorder 7 item (GAD-7) total score [Reported.PHQ] 1 {score}
+- Lab: Fall risk total [Morse Fall Scale] 73 {#}
+- Lab: Fall risk level [Morse Fall Scale] High Risk (MFS Score 50+)
+- Lab: Total score [DAST-10] 1 {score}
+
+2026-02-03
+- Lab: Tobacco smoking status Never smoked tobacco
+- Narrative (Report):
+  FINDINGS: Multiple venous collaterals are present in the anterior left chest wall and are associated with the anterior jugular vein at the level of the right sternoclavicular junction. Left subclavian vein collapsed (chronic occlusion pathology?). Trachea, both main bronchi are open. Calcific plaques are observed in the aortic arch. Other mediastinal main vascular structures, heart contour, size are normal. Thoracic aorta diameter is normal. Pericardial effusion-thickening was not observed. Thoracic esoph...
+  IMPRESSION: s:
+ Multiple venous collaterals in the anterior left chest wall and collapsed appearance in the left subclavian vein (chronic occlusion?).  Thickening of the bronchial wall in both lungs.  Peribronchial reticulonodular densities in the lower lobes, minimal consolidations (infection process?).  Atelectasis in both lungs.  Thoracic spondylosis.
+
+== ACTIVE MEDICATIONS ==
+- Naproxen sodium 220 MG Oral Tablet (since 1983-11-24)
+- Simvastatin 20 MG Oral Tablet (since 1994-02-16)
+- 24 HR metoprolol succinate 100 MG Extended Release Oral Tablet (since 1994-02-16)
+- Nitroglycerin 0.4 MG/ACTUAT Mucosal Spray (since 1994-02-16)
+- insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (since 2025-12-17)
+- Hydrochlorothiazide 25 MG Oral Tablet 1.0 once daily (since 2025-12-17)
+
+--- Statistics ---
+Token estimate: ~34,841 tokens
+Narrative length: 139,366 characters
+Conditions found: 71
+Medications found: 82
+Risk factors identified: 6
+
+Source: /workspace/Sentinel-X/sentinel_x/data/raw_ct_rate/combined/train_1_a_2/fhir.json

@@ -8,10 +8,7 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-from .agent_loop import ReActAgentLoop, get_risk_adjustment_value
 from .config import (
-    AGENT_MAX_ITERATIONS,
-    AGENT_MODE_ENABLED,
     INBOX_POLL_INTERVAL,
     INBOX_REPORTS_DIR,
     INBOX_VOLUMES_DIR,
@@ -19,12 +16,9 @@ from .config import (
     LOG_FORMAT,
     LOG_JSON_ENABLED,
     OUTPUT_DIR,
-    PRIORITY_CRITICAL,
-    PRIORITY_ROUTINE,
 )
 from .logging import (
     SessionManager,
-    get_agent_trace_logger,
     get_fhir_trace_logger,
     patient_trace_context,
 )
@@ -33,7 +27,6 @@ from .fhir_janitor import FHIRJanitor
 from .inbox_watcher import InboxWatcher, PatientData
 from .medgemma_analyzer import MedGemmaAnalyzer
 from .output_generator import generate_triage_result, save_triage_result
-from .state import AgentState
 from .worklist import Worklist
 
 
@@ -87,9 +80,6 @@ def initialize_trace_logging(session_id: str = None) -> str:
     session_id = session_manager.initialize(session_id)
 
     # Initialize specialized trace loggers
-    agent_trace = get_agent_trace_logger()
-    agent_trace.initialize_session(session_id)
-
     fhir_trace = get_fhir_trace_logger()
     fhir_trace.initialize_session(session_id)
 
@@ -109,7 +99,6 @@ class TriageAgent:
         reports_dir: Path = INBOX_REPORTS_DIR,
         output_dir: Path = OUTPUT_DIR,
         poll_interval: float = INBOX_POLL_INTERVAL,
-        use_agent_mode: bool = AGENT_MODE_ENABLED,
     ):
         """Initialize the triage agent.
 
@@ -118,7 +107,6 @@ class TriageAgent:
             reports_dir: Directory containing reports
             output_dir: Directory for output results
             poll_interval: Seconds between inbox scans
-            use_agent_mode: Enable ReAct agent for clinical correlation
         """
         self.logger = logging.getLogger(__name__)
 
@@ -131,7 +119,6 @@ class TriageAgent:
         self.analyzer = MedGemmaAnalyzer()
         self.worklist = Worklist(output_dir=output_dir)
         self.output_dir = output_dir
-        self.use_agent_mode = use_agent_mode
 
         self._running = False
 
@@ -150,56 +137,6 @@ class TriageAgent:
         except Exception as e:
             self.logger.error(f"Failed to load FHIR bundle: {e}")
             return {}
-
-    def _run_agent_loop(
-        self,
-        patient_id: str,
-        visual_findings: str,
-        fhir_bundle: Dict[str, Any],
-    ) -> Optional[AgentState]:
-        """Run the ReAct agent loop for clinical correlation.
-
-        Args:
-            patient_id: Patient identifier
-            visual_findings: Visual findings from MedGemma
-            fhir_bundle: FHIR Bundle for tool queries
-
-        Returns:
-            Agent state with findings, or None if agent mode disabled/failed
-        """
-        if not self.use_agent_mode:
-            return None
-
-        if not fhir_bundle or fhir_bundle.get("resourceType") != "Bundle":
-            self.logger.warning(
-                f"[{patient_id}] Skipping agent mode - no valid FHIR Bundle"
-            )
-            return None
-
-        try:
-            self.logger.info(f"[{patient_id}] Running ReAct agent for clinical correlation")
-
-            agent_loop = ReActAgentLoop(
-                model=self.analyzer.model,
-                processor=self.analyzer.processor,
-                fhir_bundle=fhir_bundle,
-                patient_id=patient_id,
-                max_iterations=AGENT_MAX_ITERATIONS,
-            )
-
-            agent_state = agent_loop.run(visual_findings)
-
-            self.logger.info(
-                f"[{patient_id}] Agent complete: "
-                f"{agent_state['iteration']} iterations, "
-                f"risk_adjustment={agent_state.get('risk_adjustment', 'NONE')}"
-            )
-
-            return agent_state
-
-        except Exception as e:
-            self.logger.error(f"[{patient_id}] Agent loop failed: {e}", exc_info=True)
-            return None
 
     def process_patient(self, patient_data: PatientData) -> None:
         """Process a single patient through the triage pipeline.
@@ -242,32 +179,7 @@ class TriageAgent:
             self.logger.info(f"[{patient_id}] Running MedGemma analysis")
             analysis = self.analyzer.analyze(images, context_text)
 
-            # Step 4: Run ReAct agent for clinical correlation
-            agent_state = self._run_agent_loop(
-                patient_id=patient_id,
-                visual_findings=analysis.visual_findings,
-                fhir_bundle=fhir_bundle,
-            )
-
-            # Step 5: Apply risk adjustment from agent
-            final_priority = analysis.priority_level
-            if agent_state:
-                adjustment = get_risk_adjustment_value(
-                    agent_state.get("risk_adjustment")
-                )
-                if adjustment != 0:
-                    original_priority = final_priority
-                    final_priority = max(
-                        PRIORITY_CRITICAL,
-                        min(PRIORITY_ROUTINE, final_priority + adjustment),
-                    )
-                    self.logger.info(
-                        f"[{patient_id}] Priority adjusted: "
-                        f"{original_priority} -> {final_priority} "
-                        f"(agent: {agent_state.get('risk_adjustment')})"
-                    )
-
-            # Step 6: Generate output with agent trace
+            # Step 4: Generate output
             self.logger.info(f"[{patient_id}] Generating triage output")
             result = generate_triage_result(
                 patient_id=patient_id,
@@ -275,26 +187,21 @@ class TriageAgent:
                 images=images,
                 slice_indices=slice_indices,
                 conditions_from_context=clinical_stream.conditions,
-                agent_state=agent_state,
             )
 
-            # Override priority level with adjusted value
-            result["priority_level"] = final_priority
-
-            # Step 7: Save result
+            # Step 5: Save result
             result_path = save_triage_result(patient_id, result, self.output_dir)
 
-            # Step 8: Update worklist with adjusted priority
+            # Step 6: Update worklist
             self.worklist.add_entry(
                 patient_id=patient_id,
-                priority_level=final_priority,
+                priority_level=analysis.priority_level,
                 findings_summary=analysis.findings_summary,
                 result_path=str(result_path),
             )
 
             self.logger.info(
-                f"[{patient_id}] Triage complete - Priority {final_priority}"
-                + (f" (agent adjusted)" if agent_state and agent_state.get("risk_adjustment") else "")
+                f"[{patient_id}] Triage complete - Priority {analysis.priority_level}"
             )
 
         except Exception as e:
@@ -401,11 +308,6 @@ def main():
         help=f"Seconds between inbox scans (default: {INBOX_POLL_INTERVAL})",
     )
     parser.add_argument(
-        "--no-agent",
-        action="store_true",
-        help="Disable ReAct agent mode for clinical correlation",
-    )
-    parser.add_argument(
         "--verbose", "-v",
         action="store_true",
         help="Enable verbose debug logging",
@@ -419,7 +321,6 @@ def main():
     # Create agent
     agent = TriageAgent(
         poll_interval=args.poll_interval,
-        use_agent_mode=not args.no_agent,
     )
 
     if args.single:

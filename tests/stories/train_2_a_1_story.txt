@@ -1,0 +1,1152 @@
+================================================================================
+  PATIENT: train_2_a_1
+================================================================================
+
+--- Demographics ---
+Summary: 73-year-old male
+Age: 73
+Gender: male
+
+--- Conditions & Risk Factors ---
+All Conditions (47 items):
+  • Received higher education (finding)
+  • Transport problem (finding)
+  • Pulmonary emphysema (disorder)
+  • Lack of access to transportation (finding)
+  • Gingivitis (disorder)
+  • Essential hypertension (disorder)
+  • Fracture of alveolus of maxilla, initial encounter for closed fracture
+  • Body mass index 30+ - obesity (finding)
+  • Benign neoplasm of lower jaw bone
+  • Has a criminal record (finding)
+  • Osteoarthritis of knee
+  • Hyperlipidemia
+  • Prediabetes
+  • Anemia (disorder)
+  • Social isolation (finding)
+  • Malignant neoplasm of parotid gland
+  • Metabolic syndrome X (disorder)
+  • Limited social contact (finding)
+  • Medication review due (situation)
+  • Full-time employment (finding)
+  • Dental caries, unspecified
+  • Retained dental root
+  • Stress (finding)
+  • Victim of intimate partner abuse (finding)
+  • Viral sinusitis (disorder)
+  • Ischemic heart disease (disorder)
+  • Abnormal findings diagnostic imaging heart+coronary circulat (finding)
+  • History of coronary artery bypass grafting (situation)
+  • Impacted molars
+  • Stress (finding)
+  • Unemployed (finding)
+  • Limited social contact (finding)
+  • Victim of intimate partner abuse (finding)
+  • Medication review due (situation)
+  • Medication review due (situation)
+  • Full-time employment (finding)
+  • Medication review due (situation)
+  • Unhealthy alcohol drinking behavior (finding)
+  • Tricuspid valve regurgitation (disorder)
+  • Medication review due (situation)
+  • Emphysema
+  • Atelectasis
+  • Bronchial wall thickening
+  • Pulmonary nodule
+  • Cholelithiasis
+  • Degenerative changes
+  • Calcified atheroma plaque
+
+Risk Factors (5 items):
+  • Essential hypertension (disorder)
+  • Benign neoplasm of lower jaw bone
+  • Prediabetes
+  • Malignant neoplasm of parotid gland
+  • Ischemic heart disease (disorder)
+
+--- Medications ---
+All Medications (46 items):
+  • Simvastatin 10 MG Oral Tablet
+  • albuterol 5 MG/ML Inhalation Solution
+  • lisinopril 10 MG Oral Tablet
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler
+  • Simvastatin 10 MG Oral Tablet
+  • albuterol 5 MG/ML Inhalation Solution
+  • lisinopril 10 MG Oral Tablet
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler
+  • Simvastatin 10 MG Oral Tablet
+  • albuterol 5 MG/ML Inhalation Solution
+  • lisinopril 10 MG Oral Tablet
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler
+  • Clopidogrel 75 MG Oral Tablet
+  • Simvastatin 20 MG Oral Tablet
+  • 24 HR metoprolol succinate 100 MG Extended Release Oral Tablet
+  • Nitroglycerin 0.4 MG/ACTUAT Mucosal Spray
+  • Simvastatin 10 MG Oral Tablet
+  • Acetaminophen 300 MG / HYDROcodone Bitartrate 5 MG Oral Tablet
+  • albuterol 5 MG/ML Inhalation Solution
+  • lisinopril 10 MG Oral Tablet
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler
+  • Simvastatin 10 MG Oral Tablet
+  • albuterol 5 MG/ML Inhalation Solution
+  • lisinopril 10 MG Oral Tablet
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler
+  • Simvastatin 10 MG Oral Tablet
+  • albuterol 5 MG/ML Inhalation Solution
+  • lisinopril 10 MG Oral Tablet
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler
+  • Simvastatin 10 MG Oral Tablet
+  • albuterol 5 MG/ML Inhalation Solution
+  • lisinopril 10 MG Oral Tablet
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler
+  • Simvastatin 10 MG Oral Tablet
+  • albuterol 5 MG/ML Inhalation Solution
+  • lisinopril 10 MG Oral Tablet
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler
+  • Simvastatin 10 MG Oral Tablet
+  • albuterol 5 MG/ML Inhalation Solution
+  • lisinopril 10 MG Oral Tablet
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler
+  • Simvastatin 10 MG Oral Tablet
+  • albuterol 5 MG/ML Inhalation Solution
+  • lisinopril 10 MG Oral Tablet
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler
+  • Simvastatin 10 MG Oral Tablet
+
+Active Medications (8 items):
+  • Clopidogrel 75 MG Oral Tablet (since 2018-02-17)
+  • Simvastatin 20 MG Oral Tablet (since 2018-02-17)
+  • 24 HR metoprolol succinate 100 MG Extended Release Oral Tablet (since 2018-02-17)
+  • Nitroglycerin 0.4 MG/ACTUAT Mucosal Spray (since 2018-02-17)
+  • albuterol 5 MG/ML Inhalation Solution Take as needed. (since 2025-03-22)
+  • lisinopril 10 MG Oral Tablet 1.0 once daily (since 2025-03-22)
+  • 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (since 2025-03-22)
+  • Simvastatin 10 MG Oral Tablet 1.0 once daily (since 2025-03-23)
+
+--- Report Content ---
+Findings (503 chars):
+Trachea and both main bronchi were in the midline and no obstructive pathology was observed in the lumen. In the non-contrast examination, the mediastinal could not be evaluated optimally. As far as can be seen; mediastinal main vascular structures, heart contour, size are normal. Pericardial effusion-thickening was not observed. Calcific atheroma plaque was observed in the descending aorta. Thoracic esophagus calibration was normal and no significant pathological wall thickening was detected. N...
+
+Impressions (284 chars):
+s:
+ Emphysematous and passive atelectatic changes in both lungs.  Minimal thickening of the segmental bronchial walls of both lungs.  Nonspecific subpleural nodule in the posterior segment of the right lung upper lobe.  Cholelithiasis.  Minimal degenerative changes in bone structure.
+
+--- Complete Clinical Narrative ---
+
+== PATIENT ==
+73-year-old male
+
+== CLINICAL TIMELINE ==
+
+1970-05-30
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Received higher education (finding) (active)
+- Diagnosis: Transport problem (finding) (active)
+
+1971-06-05
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Pulmonary emphysema (disorder) (active)
+
+1974-06-08
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Lack of access to transportation (finding) (active)
+
+1975-06-14
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Gingivitis (disorder) (active)
+
+1979-07-07
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Essential hypertension (disorder) (active)
+
+1979-07-21
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Fracture of alveolus of maxilla, initial encounter for closed fracture (resolved)
+
+1988-08-27
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Body mass index 30+ - obesity (finding) (active)
+
+1988-09-10
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Benign neoplasm of lower jaw bone (resolved)
+
+1992-08-08
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Has a criminal record (finding) (active)
+
+1993-01-25
+- Encounter: Encounter for problem (reason: Osteoarthritis of knee)
+- Diagnosis: Osteoarthritis of knee (active)
+
+1998-10-24
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Hyperlipidemia (active)
+
+1998-11-14
+- Encounter: Follow-up encounter (reason: Hyperlipidemia)
+- Medication: Simvastatin 10 MG Oral Tablet 1.0 once daily (stopped)
+
+2000-11-04
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Prediabetes (active)
+
+2001-01-27
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Anemia (disorder) (active)
+- Diagnosis: Social isolation (finding) (resolved)
+
+2001-11-24
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Malignant neoplasm of parotid gland (resolved)
+
+2003-11-22
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Metabolic syndrome X (disorder) (active)
+
+2011-01-01
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Limited social contact (finding) (resolved)
+
+2011-09-25
+- Diagnosis: Degenerative changes (active)
+
+2015-01-24
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+- Diagnosis: Full-time employment (finding) (resolved)
+
+2016-01-30
+- Encounter: General examination of patient (procedure)
+- Medication: albuterol 5 MG/ML Inhalation Solution Take as needed. (stopped)
+- Medication: lisinopril 10 MG Oral Tablet 1.0 once daily (stopped)
+- Medication: 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (stopped)
+
+2016-01-31
+- Encounter: Follow-up encounter (reason: Hyperlipidemia)
+- Medication: Simvastatin 10 MG Oral Tablet 1.0 once daily (stopped)
+
+2016-02-13
+- Encounter: Encounter for check up (procedure)
+- Diagnosis: Dental caries, unspecified (resolved)
+- Diagnosis: Retained dental root (resolved)
+- Procedure: bone replacement graft for ridge preservation - per site
+- Procedure: deep sedation/general anesthesia - first 15 minutes
+- Procedure: deep sedation/general anesthesia - each subsequent 15 minute increment
+
+2016-09-06
+- Diagnosis: Cholelithiasis (active)
+
+2016-12-25
+- Diagnosis: Atelectasis (active)
+
+2017-02-04
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Stress (finding) (resolved)
+- Diagnosis: Victim of intimate partner abuse (finding) (resolved)
+- Procedure: Spirometry (procedure)
+- Procedure: Pulmonary rehabilitation (regime/therapy)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure)
+- Medication: albuterol 5 MG/ML Inhalation Solution Take as needed. (stopped)
+- Medication: lisinopril 10 MG Oral Tablet 1.0 once daily (stopped)
+- Medication: 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (stopped)
+- Lab: FEV1/FVC 10.72 %
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 6.26 %
+- Lab: Body Height 179.60 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 3 {score}
+- Lab: Body Weight 97.40 kg
+- Lab: Body mass index (BMI) [Ratio] 30.20 kg/m2
+- Lab: Heart rate 88 /min
+- Lab: Respiratory rate 14 /min
+- Lab: Glucose [Mass/volume] in Blood 92.36 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 7.62 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.14 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 8.78 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 142.99 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 5.11 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 106.24 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 24.19 mmol/L
+- Lab: Tobacco smoking status Never smoked tobacco (finding)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 1 {score}
+- Lab: Total score [AUDIT-C] 2 {score}
+
+2017-02-11
+- Encounter: Follow-up encounter (reason: Hyperlipidemia)
+- Medication: Simvastatin 10 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Blood 72.35 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 12.28 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 2.83 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.77 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 137.65 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.71 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 106.48 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 23.48 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 85.00 mL/min
+- Lab: Protein [Mass/volume] in Serum or Plasma 7.81 g/dL
+- Lab: Albumin [Mass/volume] in Serum or Plasma 5.29 g/dL
+- Lab: Globulin [Mass/volume] in Serum by calculation 2.79 g/L
+- Lab: Bilirubin.total [Mass/volume] in Serum or Plasma 1.10 mg/dL
+- Lab: Alkaline phosphatase [Enzymatic activity/volume] in Serum or Plasma 37.14 U/L
+- Lab: Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma 53.95 U/L
+- Lab: Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma 33.25 U/L
+- Lab: Cholesterol [Mass/volume] in Serum or Plasma 193.46 mg/dL
+- Lab: Triglycerides 161.70 mg/dL
+- Lab: Low Density Lipoprotein Cholesterol 96.61 mg/dL
+- Lab: Cholesterol in HDL [Mass/volume] in Serum or Plasma 69.47 mg/dL
+
+2017-03-08
+- Encounter: Encounter for symptom (reason: Viral sinusitis (disorder))
+- Diagnosis: Viral sinusitis (disorder) (resolved)
+
+2017-04-05
+- Encounter: Encounter for check up (reason: Screening for malignant neoplasm of colon (procedure))
+- Procedure: Colonoscopy
+
+2017-04-08
+- Encounter: Admission to hospice (procedure) (reason: Pulmonary emphysema (disorder))
+- Procedure: Certification procedure (procedure)
+- Procedure: Notifications (procedure)
+- Procedure: Initial patient assessment (procedure)
+- Procedure: Development of individualized plan of care (procedure)
+- Procedure: Hospice care (regime/therapy)
+
+2017-04-09
+- Procedure: Hospice care (regime/therapy)
+
+2017-04-10
+- Procedure: Hospice care (regime/therapy)
+
+2017-04-11
+- Procedure: Hospice care (regime/therapy)
+
+2017-04-12
+- Procedure: Hospice care (regime/therapy)
+
+2017-04-13
+- Procedure: Hospice care (regime/therapy)
+
+2017-04-14
+- Procedure: Hospice care (regime/therapy)
+
+2017-04-15
+- Procedure: Hospice care (regime/therapy)
+
+2017-04-16
+- Procedure: Hospice care (regime/therapy)
+
+2017-04-17
+- Procedure: Hospice care (regime/therapy)
+
+2017-04-18
+- Procedure: Hospice care (regime/therapy)
+
+2017-04-19
+- Procedure: Hospice care (regime/therapy)
+
+2017-04-20
+- Procedure: Patient discharge (procedure)
+
+2018-02-10
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Ischemic heart disease (disorder) (active)
+- Procedure: Spirometry (procedure)
+- Procedure: Pulmonary rehabilitation (regime/therapy)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Screening for drug abuse (procedure)
+- Medication: albuterol 5 MG/ML Inhalation Solution Take as needed. (stopped)
+- Medication: lisinopril 10 MG Oral Tablet 1.0 once daily (stopped)
+- Medication: 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (stopped)
+- Lab: FEV1/FVC 16.92 %
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 6.19 %
+- Lab: Body Height 179.60 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 4 {score}
+- Lab: Body Weight 97.40 kg
+- Lab: Body mass index (BMI) [Ratio] 30.20 kg/m2
+- Lab: Heart rate 88 /min
+- Lab: Respiratory rate 13 /min
+- Lab: Glucose [Mass/volume] in Blood 86.08 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 16.95 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.01 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.88 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 139.14 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.29 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 106.84 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 23.57 mmol/L
+- Lab: Tobacco smoking status Never smoked tobacco (finding)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 1 {score}
+- Lab: Total score [DAST-10] 0 {score}
+
+2018-02-17
+- Encounter: Encounter for problem (procedure) (reason: Ischemic heart disease (disorder))
+- Procedure: Referral to cardiology service (procedure)
+- Medication: Clopidogrel 75 MG Oral Tablet (active)
+- Medication: Simvastatin 20 MG Oral Tablet (active)
+- Medication: 24 HR metoprolol succinate 100 MG Extended Release Oral Tablet (active)
+- Medication: Nitroglycerin 0.4 MG/ACTUAT Mucosal Spray (active)
+
+2018-02-24
+- Encounter: Encounter for problem (procedure) (reason: Ischemic heart disease (disorder))
+- Diagnosis: Abnormal findings diagnostic imaging heart+coronary circulat (finding) (active)
+- Procedure: Consultation for treatment (procedure)
+- Procedure: Angiography of coronary artery (procedure)
+- Procedure: Post anesthesia care management (procedure)
+- Procedure: Referral to cardiac surgery service (procedure)
+
+2018-02-26
+- Encounter: Hospital admission (procedure) (reason: Abnormal findings diagnostic imaging heart+coronary circulat (finding))
+- Procedure: Pre-surgery testing (procedure)
+- Procedure: Blood group typing (procedure)
+- Procedure: Electrocardiographic procedure (procedure)
+- Procedure: Plain chest X-ray (procedure)
+- Procedure: Echocardiography (procedure)
+- Procedure: Measurement of respiratory function (procedure)
+- Procedure: Notification of treatment plan (procedure)
+- Procedure: Scheduling (procedure)
+- Procedure: Insertion of catheter into artery (procedure)
+- Procedure: Administration of anesthesia for procedure (procedure)
+- Procedure: Intubation
+- Procedure: Pulmonary catheterization with Swan-Ganz catheter (procedure)
+- Procedure: Preparation of patient for procedure (regime/therapy)
+- Procedure: Median sternotomy (procedure)
+- Procedure: Off-pump coronary artery bypass (procedure)
+- Lab: Leukocytes [#/volume] in Blood by Automated count 9.18 10*3/uL
+- Lab: Erythrocytes [#/volume] in Blood by Automated count 5.65 10*6/uL
+- Lab: Hemoglobin [Mass/volume] in Blood 15.10 g/dL
+- Lab: Hematocrit [Volume Fraction] of Blood by Automated count 44.69 %
+- Lab: MCV [Entitic volume] by Automated count 79.34 fL
+- Lab: MCH [Entitic mass] by Automated count 30.72 pg
+- Lab: MCHC [Mass/volume] by Automated count 33.66 g/dL
+- Lab: Erythrocyte distribution width [Ratio] by Automated count 13.62 %
+- Lab: Platelets [#/volume] in Blood by Automated count 217.19 10*3/uL
+- Lab: Glucose [Mass/volume] in Serum or Plasma 73.10 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 11.91 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.52 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 8.93 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 139.73 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 4.21 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 105.09 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 26.07 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 10.70 mL/min
+- Lab: Protein [Mass/volume] in Serum or Plasma 6.78 g/dL
+- Lab: Albumin [Mass/volume] in Serum or Plasma 4.05 g/dL
+- Lab: Bilirubin.total [Mass/volume] in Serum or Plasma 8.61 mg/dL
+- Lab: Alkaline phosphatase [Enzymatic activity/volume] in Serum or Plasma 78.48 U/L
+- Lab: Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma 30.40 U/L
+- Lab: Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma 29.00 U/L
+- Lab: Magnesium [Mass/volume] in Serum or Plasma 1.79 mg/dL
+- Lab: Phosphate [Mass/volume] in Serum or Plasma 2.76 mg/dL
+- Lab: Prothrombin time (PT) 10.75 s
+- Lab: INR in Platelet poor plasma by Coagulation assay 0.98 {INR}
+- Lab: aPTT in Blood by Coagulation assay 30.45 s
+- Lab: pH of Arterial blood 6.92 [pH]
+- Lab: Carbon dioxide [Partial pressure] in Arterial blood 35.95 mm[Hg]
+- Lab: Oxygen [Partial pressure] in Arterial blood 98.52 mm[Hg]
+- Lab: Bicarbonate [Moles/volume] in Arterial blood 26.62 mmol/L
+- Lab: Oxygen saturation in Arterial blood 98 %
+- Lab: Cholesterol [Mass/volume] in Serum or Plasma 184.48 mg/dL
+- Lab: Triglycerides 146.03 mg/dL
+- Lab: Low Density Lipoprotein Cholesterol 99.48 mg/dL
+- Lab: Cholesterol in HDL [Mass/volume] in Serum or Plasma 55.79 mg/dL
+- Lab: Troponin I.cardiac [Mass/volume] in Serum or Plasma by High sensitivity method 0.01 pg/mL
+- Lab: Thyrotropin [Units/volume] in Serum or Plasma 2.64 m[IU]/L
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 6.28 %
+- Lab: Glucose [Presence] in Urine by Test strip 1 {presence}
+- Lab: Bilirubin.total [Presence] in Urine by Test strip 1 {presence}
+- Lab: Ketones [Presence] in Urine by Test strip 1 {presence}
+- Lab: Specific gravity of Urine by Test strip 1.01 {SG}
+- Lab: pH of Urine by Test strip 5.26 [pH]
+- Lab: Protein [Presence] in Urine by Test strip 1 {presence}
+- Lab: Nitrite [Presence] in Urine by Test strip 1 {presence}
+- Lab: Hemoglobin [Presence] in Urine by Test strip 0 {presence}
+- Lab: Leukocyte esterase [Presence] in Urine by Test strip 0 {presence}
+- Lab: Left ventricular Ejection fraction 35.79 %
+- Lab: Activated clotting time (ACT) of Blood by Coagulation assay 124.22 s
+- Lab: pH of Arterial blood 7.17 [pH]
+- Lab: Carbon dioxide [Partial pressure] in Arterial blood 39.94 mm[Hg]
+- Lab: Oxygen [Partial pressure] in Arterial blood 89.85 mm[Hg]
+- Lab: Bicarbonate [Moles/volume] in Arterial blood 26.40 mmol/L
+- Lab: Oxygen saturation in Arterial blood 98 %
+- Lab: pH of Venous blood 7.43 [pH]
+- Lab: Carbon dioxide [Partial pressure] in Venous blood 40.88 mm[Hg]
+- Lab: Oxygen [Partial pressure] in Venous blood 42.81 mm[Hg]
+- Lab: Bicarbonate [Moles/volume] in Venous blood 27.40 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Venous blood 0.97 mmol/L
+- Lab: Magnesium [Mass/volume] in Serum or Plasma 1.74 mg/dL
+- Lab: Procedure Narrative CABG Grafts: 3
+- Lab: Procedure Narrative CABG Arterial Conduits: 1
+
+2018-02-27
+- Encounter: Patient transfer to intensive care unit (procedure) (reason: History of coronary artery bypass grafting (situation))
+- Diagnosis: History of coronary artery bypass grafting (situation) (active)
+- Procedure: Documentation procedure (procedure)
+- Procedure: Removal of endotracheal tube (procedure)
+- Procedure: Electrocardiographic procedure (procedure)
+- Procedure: Plain chest X-ray (procedure)
+- Procedure: Transfusion of packed red blood cells (procedure)
+- Lab: Leukocytes [#/volume] in Blood by Automated count 5.67 10*3/uL
+- Lab: Erythrocytes [#/volume] in Blood by Automated count 4.96 10*6/uL
+- Lab: Hemoglobin [Mass/volume] in Blood 16.10 g/dL
+- Lab: Hematocrit [Volume Fraction] of Blood by Automated count 37.44 %
+- Lab: MCV [Entitic volume] by Automated count 86.62 fL
+- Lab: MCH [Entitic mass] by Automated count 32.26 pg
+- Lab: MCHC [Mass/volume] by Automated count 34.10 g/dL
+- Lab: Erythrocyte distribution width [Ratio] by Automated count 15.26 %
+- Lab: Platelets [#/volume] in Blood by Automated count 261.33 10*3/uL
+- Lab: Glucose [Mass/volume] in Serum or Plasma 73.10 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 11.91 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.83 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 8.93 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 139.73 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 4.21 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 105.09 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 26.07 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 10.47 mL/min
+- Lab: Protein [Mass/volume] in Serum or Plasma 6.63 g/dL
+- Lab: Albumin [Mass/volume] in Serum or Plasma 4.78 g/dL
+- Lab: Bilirubin.total [Mass/volume] in Serum or Plasma 9.98 mg/dL
+- Lab: Alkaline phosphatase [Enzymatic activity/volume] in Serum or Plasma 113.33 U/L
+- Lab: Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma 37.04 U/L
+- Lab: Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma 26.13 U/L
+- Lab: Magnesium [Mass/volume] in Serum or Plasma 1.94 mg/dL
+- Lab: Phosphate [Mass/volume] in Serum or Plasma 4.31 mg/dL
+- Lab: Prothrombin time (PT) 10.24 s
+- Lab: INR in Platelet poor plasma by Coagulation assay 1.12 {INR}
+- Lab: aPTT in Blood by Coagulation assay 30.68 s
+- Lab: pH of Arterial blood 6.87 [pH]
+- Lab: Carbon dioxide [Partial pressure] in Arterial blood 44.75 mm[Hg]
+- Lab: Oxygen [Partial pressure] in Arterial blood 87.89 mm[Hg]
+- Lab: Bicarbonate [Moles/volume] in Arterial blood 22.54 mmol/L
+- Lab: Oxygen saturation in Arterial blood 98 %
+- Lab: Cholesterol [Mass/volume] in Serum or Plasma 184.48 mg/dL
+- Lab: Triglycerides 146.03 mg/dL
+- Lab: Low Density Lipoprotein Cholesterol 99.48 mg/dL
+- Lab: Cholesterol in HDL [Mass/volume] in Serum or Plasma 55.79 mg/dL
+- Lab: Leukocytes [#/volume] in Blood by Automated count 7.30 10*3/uL
+- Lab: Erythrocytes [#/volume] in Blood by Automated count 3.99 10*6/uL
+- Lab: Hemoglobin [Mass/volume] in Blood 11.77 g/dL
+- Lab: Hematocrit [Volume Fraction] of Blood by Automated count 39.34 %
+- Lab: MCV [Entitic volume] by Automated count 94.02 fL
+- Lab: MCH [Entitic mass] by Automated count 29.73 pg
+- Lab: MCHC [Mass/volume] by Automated count 32.74 g/dL
+- Lab: Erythrocyte distribution width [Ratio] by Automated count 14.33 %
+- Lab: Platelets [#/volume] in Blood by Automated count 230.78 10*3/uL
+- Lab: Glucose [Mass/volume] in Serum or Plasma 73.10 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Serum or Plasma 11.91 mg/dL
+- Lab: Creatinine [Mass/volume] in Serum or Plasma 2.67 mg/dL
+- Lab: Calcium [Mass/volume] in Serum or Plasma 8.93 mg/dL
+- Lab: Sodium [Moles/volume] in Serum or Plasma 139.73 mmol/L
+- Lab: Potassium [Moles/volume] in Serum or Plasma 4.21 mmol/L
+- Lab: Chloride [Moles/volume] in Serum or Plasma 105.09 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Serum or Plasma 26.07 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 10.02 mL/min
+- Lab: Protein [Mass/volume] in Serum or Plasma 8.28 g/dL
+- Lab: Albumin [Mass/volume] in Serum or Plasma 4.14 g/dL
+- Lab: Bilirubin.total [Mass/volume] in Serum or Plasma 12.16 mg/dL
+- Lab: Alkaline phosphatase [Enzymatic activity/volume] in Serum or Plasma 92.76 U/L
+- Lab: Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma 33.70 U/L
+- Lab: Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma 12.34 U/L
+- Lab: Magnesium [Mass/volume] in Serum or Plasma 1.88 mg/dL
+- Lab: Phosphate [Mass/volume] in Serum or Plasma 4.04 mg/dL
+- Lab: Prothrombin time (PT) 11.88 s
+- Lab: INR in Platelet poor plasma by Coagulation assay 1.04 {INR}
+- Lab: aPTT in Blood by Coagulation assay 30.65 s
+- Lab: pH of Arterial blood 6.81 [pH]
+- Lab: Carbon dioxide [Partial pressure] in Arterial blood 43.15 mm[Hg]
+- Lab: Oxygen [Partial pressure] in Arterial blood 89.32 mm[Hg]
+- Lab: Bicarbonate [Moles/volume] in Arterial blood 26.41 mmol/L
+- Lab: Oxygen saturation in Arterial blood 98 %
+- Lab: Cholesterol [Mass/volume] in Serum or Plasma 184.48 mg/dL
+- Lab: Triglycerides 146.03 mg/dL
+- Lab: Low Density Lipoprotein Cholesterol 99.48 mg/dL
+- Lab: Cholesterol in HDL [Mass/volume] in Serum or Plasma 55.79 mg/dL
+
+2018-02-28
+- Encounter: Admission to ward (procedure) (reason: History of coronary artery bypass grafting (situation))
+- Procedure: Discharge to ward (procedure)
+- Procedure: Postoperative procedure education (procedure)
+- Procedure: Walking exercise test (procedure)
+- Procedure: Stair-climbing test (procedure)
+- Procedure: Discharge from hospital (procedure)
+
+2018-03-03
+- Encounter: Follow-up encounter (reason: Hyperlipidemia)
+- Medication: Simvastatin 10 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Blood 73.10 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 11.91 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 3.02 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 8.93 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 139.73 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.21 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 105.09 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 26.07 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 79.52 mL/min
+- Lab: Protein [Mass/volume] in Serum or Plasma 7.20 g/dL
+- Lab: Albumin [Mass/volume] in Serum or Plasma 4.58 g/dL
+- Lab: Globulin [Mass/volume] in Serum by calculation 2.42 g/L
+- Lab: Bilirubin.total [Mass/volume] in Serum or Plasma 0.18 mg/dL
+- Lab: Alkaline phosphatase [Enzymatic activity/volume] in Serum or Plasma 49.91 U/L
+- Lab: Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma 48.93 U/L
+- Lab: Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma 18.59 U/L
+- Lab: Cholesterol [Mass/volume] in Serum or Plasma 198.67 mg/dL
+- Lab: Triglycerides 103.64 mg/dL
+- Lab: Low Density Lipoprotein Cholesterol 139.79 mg/dL
+- Lab: Cholesterol in HDL [Mass/volume] in Serum or Plasma 60.90 mg/dL
+
+2018-08-12
+- Encounter: Emergency treatment (procedure) (reason: Impacted molars)
+- Diagnosis: Impacted molars (active)
+- Procedure: Extraction of wisdom tooth
+- Medication: Acetaminophen 300 MG / HYDROcodone Bitartrate 5 MG Oral Tablet (stopped)
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 4 {score}
+
+2019-02-16
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Stress (finding) (active)
+- Procedure: Spirometry (procedure)
+- Procedure: Pulmonary rehabilitation (regime/therapy)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Screening for domestic abuse (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure)
+- Procedure: Patient referral for dental care (procedure)
+- Medication: albuterol 5 MG/ML Inhalation Solution Take as needed. (stopped)
+- Medication: lisinopril 10 MG Oral Tablet 1.0 once daily (stopped)
+- Medication: 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (stopped)
+- Lab: FEV1/FVC 10.01 %
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 6.21 %
+- Lab: Body Height 179.60 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 4 {score}
+- Lab: Body Weight 93.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28.92 kg/m2
+- Lab: Heart rate 71 /min
+- Lab: Respiratory rate 13 /min
+- Lab: Glucose [Mass/volume] in Blood 66.71 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 18.73 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 0.96 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 8.89 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 137.65 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.85 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 106.84 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 28.13 mmol/L
+- Lab: Cholesterol [Mass/volume] in Serum or Plasma 141.76 mg/dL
+- Lab: Triglycerides 139.81 mg/dL
+- Lab: Low Density Lipoprotein Cholesterol 54.33 mg/dL
+- Lab: Cholesterol in HDL [Mass/volume] in Serum or Plasma 59.48 mg/dL
+- Lab: Tobacco smoking status Never smoked tobacco (finding)
+- Lab: Fall risk total [Morse Fall Scale] 45 {#}
+- Lab: Fall risk level [Morse Fall Scale] Moderate Risk (MFS Score 25 - 45)
+- Lab: Total score [HARK] 0 {score}
+- Lab: Total score [AUDIT-C] 1 {score}
+
+2019-03-02
+- Encounter: Encounter for check up (procedure)
+- Procedure: caries risk assessment and documentation, with a finding of high risk
+
+2019-03-03
+- Encounter: Follow-up encounter (reason: Hyperlipidemia)
+- Medication: Simvastatin 10 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Blood 97.36 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 13.36 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 3.02 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.59 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 143.76 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 3.98 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 110.46 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 22.08 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 88.27 mL/min
+- Lab: Protein [Mass/volume] in Serum or Plasma 6.84 g/dL
+- Lab: Albumin [Mass/volume] in Serum or Plasma 4.87 g/dL
+- Lab: Globulin [Mass/volume] in Serum by calculation 2.16 g/L
+- Lab: Bilirubin.total [Mass/volume] in Serum or Plasma 0.44 mg/dL
+- Lab: Alkaline phosphatase [Enzymatic activity/volume] in Serum or Plasma 73.75 U/L
+- Lab: Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma 20.58 U/L
+- Lab: Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma 24.54 U/L
+- Lab: Cholesterol [Mass/volume] in Serum or Plasma 157.60 mg/dL
+- Lab: Triglycerides 186.74 mg/dL
+- Lab: Low Density Lipoprotein Cholesterol 126.67 mg/dL
+- Lab: Cholesterol in HDL [Mass/volume] in Serum or Plasma 57.16 mg/dL
+
+2019-04-12
+- Diagnosis: Emphysema (active)
+
+2020-02-22
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Unemployed (finding) (resolved)
+- Diagnosis: Limited social contact (finding) (resolved)
+- Diagnosis: Victim of intimate partner abuse (finding) (active)
+- Procedure: Spirometry (procedure)
+- Procedure: Pulmonary rehabilitation (regime/therapy)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of anxiety (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Screening for domestic abuse (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Medication: albuterol 5 MG/ML Inhalation Solution Take as needed. (stopped)
+- Medication: lisinopril 10 MG Oral Tablet 1.0 once daily (stopped)
+- Medication: 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (stopped)
+- Lab: FEV1/FVC 13.24 %
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 5.84 %
+- Lab: Body Height 179.60 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 1 {score}
+- Lab: Body Weight 91.50 kg
+- Lab: Body mass index (BMI) [Ratio] 28.38 kg/m2
+- Lab: Heart rate 70 /min
+- Lab: Respiratory rate 14 /min
+- Lab: Glucose [Mass/volume] in Blood 68.85 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 8.77 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 0.93 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 10.18 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 140.71 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.16 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 104.46 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 20.96 mmol/L
+- Lab: Leukocytes [#/volume] in Blood by Automated count 10.11 10*3/uL
+- Lab: Erythrocytes [#/volume] in Blood by Automated count 4.43 10*6/uL
+- Lab: Hemoglobin [Mass/volume] in Blood 16.80 g/dL
+- Lab: Hematocrit [Volume Fraction] of Blood by Automated count 35.54 %
+- Lab: MCV [Entitic volume] by Automated count 91.15 fL
+- Lab: MCH [Entitic mass] by Automated count 27.36 pg
+- Lab: MCHC [Mass/volume] by Automated count 33.57 g/dL
+- Lab: Erythrocyte distribution width [Entitic volume] by Automated count 42.26 fL
+- Lab: Platelets [#/volume] in Blood by Automated count 282.70 10*3/uL
+- Lab: Platelet distribution width [Entitic volume] in Blood by Automated count 473.74 fL
+- Lab: Platelet mean volume [Entitic volume] in Blood by Automated count 10.90 fL
+- Lab: Tobacco smoking status Never smoked tobacco (finding)
+- Lab: Generalized anxiety disorder 7 item (GAD-7) total score [Reported.PHQ] 1 {score}
+- Lab: Fall risk total [Morse Fall Scale] 94 {#}
+- Lab: Fall risk level [Morse Fall Scale] High Risk (MFS Score 50+)
+- Lab: Total score [HARK] 2 {score}
+
+2020-02-23
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 1 {score}
+- Lab: Total score [AUDIT-C] 2 {score}
+
+2020-03-02
+- Encounter: Follow-up encounter (reason: Hyperlipidemia)
+- Medication: Simvastatin 10 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Blood 96.19 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 12.30 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 3.30 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.50 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 142 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 5.05 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 101.54 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 20.33 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 74.12 mL/min
+- Lab: Protein [Mass/volume] in Serum or Plasma 6.30 g/dL
+- Lab: Albumin [Mass/volume] in Serum or Plasma 5.05 g/dL
+- Lab: Globulin [Mass/volume] in Serum by calculation 2.86 g/L
+- Lab: Bilirubin.total [Mass/volume] in Serum or Plasma 0.85 mg/dL
+- Lab: Alkaline phosphatase [Enzymatic activity/volume] in Serum or Plasma 130.50 U/L
+- Lab: Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma 48.82 U/L
+- Lab: Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma 22.01 U/L
+- Lab: Cholesterol [Mass/volume] in Serum or Plasma 152.18 mg/dL
+- Lab: Triglycerides 132.02 mg/dL
+- Lab: Low Density Lipoprotein Cholesterol 125.08 mg/dL
+- Lab: Cholesterol in HDL [Mass/volume] in Serum or Plasma 36.92 mg/dL
+
+2021-02-13
+- Encounter: Administration of vaccine to produce active immunity (procedure)
+
+2021-02-27
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+- Procedure: Spirometry (procedure)
+- Procedure: Pulmonary rehabilitation (regime/therapy)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of anxiety (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Screening for domestic abuse (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Medication: albuterol 5 MG/ML Inhalation Solution Take as needed. (stopped)
+- Medication: lisinopril 10 MG Oral Tablet 1.0 once daily (stopped)
+- Medication: 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (stopped)
+- Lab: FEV1/FVC 22.29 %
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 6.19 %
+- Lab: Body Height 179.60 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 0 {score}
+- Lab: Body Weight 93.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28.92 kg/m2
+- Lab: Heart rate 77 /min
+- Lab: Respiratory rate 13 /min
+- Lab: Glucose [Mass/volume] in Blood 72.32 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 19.73 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 0.93 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.21 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 139.89 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.74 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 106.58 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 22.88 mmol/L
+- Lab: Tobacco smoking status Never smoked tobacco (finding)
+- Lab: Generalized anxiety disorder 7 item (GAD-7) total score [Reported.PHQ] 1 {score}
+- Lab: Fall risk total [Morse Fall Scale] 13 {#}
+- Lab: Fall risk level [Morse Fall Scale] Low Risk (MFS Score 0 - 24)
+- Lab: Total score [HARK] 0 {score}
+
+2021-02-28
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Screening for drug abuse (procedure)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 1 {score}
+- Lab: Total score [DAST-10] 1 {score}
+
+2021-03-01
+- Diagnosis: Calcified atheroma plaque (active)
+
+2021-03-02
+- Encounter: Follow-up encounter (reason: Hyperlipidemia)
+- Medication: Simvastatin 10 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Blood 87.44 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 11.76 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 2.56 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 8.73 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 137.42 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 5.13 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 106.63 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 20.47 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 70.70 mL/min
+- Lab: Protein [Mass/volume] in Serum or Plasma 6.24 g/dL
+- Lab: Albumin [Mass/volume] in Serum or Plasma 4.33 g/dL
+- Lab: Globulin [Mass/volume] in Serum by calculation 2.33 g/L
+- Lab: Bilirubin.total [Mass/volume] in Serum or Plasma 0.87 mg/dL
+- Lab: Alkaline phosphatase [Enzymatic activity/volume] in Serum or Plasma 95.76 U/L
+- Lab: Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma 41.05 U/L
+- Lab: Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma 31.35 U/L
+- Lab: Cholesterol [Mass/volume] in Serum or Plasma 183.72 mg/dL
+- Lab: Triglycerides 149.29 mg/dL
+- Lab: Low Density Lipoprotein Cholesterol 112.70 mg/dL
+- Lab: Cholesterol in HDL [Mass/volume] in Serum or Plasma 69.71 mg/dL
+
+2021-03-06
+- Encounter: Administration of vaccine to produce active immunity (procedure)
+
+2022-03-05
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+- Diagnosis: Full-time employment (finding) (active)
+- Procedure: Spirometry (procedure)
+- Procedure: Pulmonary rehabilitation (regime/therapy)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of anxiety (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Screening for domestic abuse (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Medication: albuterol 5 MG/ML Inhalation Solution Take as needed. (stopped)
+- Medication: lisinopril 10 MG Oral Tablet 1.0 once daily (stopped)
+- Medication: 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (stopped)
+- Lab: FEV1/FVC 10.01 %
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 5.82 %
+- Lab: Body Height 179.60 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 3 {score}
+- Lab: Body Weight 95.10 kg
+- Lab: Body mass index (BMI) [Ratio] 29.47 kg/m2
+- Lab: Heart rate 96 /min
+- Lab: Respiratory rate 12 /min
+- Lab: Glucose [Mass/volume] in Blood 85.07 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 12.77 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 0.94 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.46 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 139.38 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.63 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 101.11 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 23.42 mmol/L
+- Lab: Cholesterol [Mass/volume] in Serum or Plasma 144.60 mg/dL
+- Lab: Triglycerides 126.77 mg/dL
+- Lab: Low Density Lipoprotein Cholesterol 78.22 mg/dL
+- Lab: Cholesterol in HDL [Mass/volume] in Serum or Plasma 41.02 mg/dL
+- Lab: Tobacco smoking status Never smoked tobacco (finding)
+- Lab: Generalized anxiety disorder 7 item (GAD-7) total score [Reported.PHQ] 0 {score}
+- Lab: Fall risk total [Morse Fall Scale] 27 {#}
+- Lab: Fall risk level [Morse Fall Scale] Moderate Risk (MFS Score 25 - 45)
+- Lab: Total score [HARK] 0 {score}
+
+2022-03-06
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 1 {score}
+- Lab: Total score [AUDIT-C] 1 {score}
+
+2022-03-12
+- Encounter: Follow-up encounter (reason: Hyperlipidemia)
+- Medication: Simvastatin 10 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Blood 86.89 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 10.58 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 2.77 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.04 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 138.05 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.42 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 109.76 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 28.31 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 83.86 mL/min
+- Lab: Protein [Mass/volume] in Serum or Plasma 6.88 g/dL
+- Lab: Albumin [Mass/volume] in Serum or Plasma 4.44 g/dL
+- Lab: Globulin [Mass/volume] in Serum by calculation 3.38 g/L
+- Lab: Bilirubin.total [Mass/volume] in Serum or Plasma 0.68 mg/dL
+- Lab: Alkaline phosphatase [Enzymatic activity/volume] in Serum or Plasma 87.03 U/L
+- Lab: Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma 59.06 U/L
+- Lab: Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma 36.51 U/L
+- Lab: Cholesterol [Mass/volume] in Serum or Plasma 184.18 mg/dL
+- Lab: Triglycerides 105.64 mg/dL
+- Lab: Low Density Lipoprotein Cholesterol 124.36 mg/dL
+- Lab: Cholesterol in HDL [Mass/volume] in Serum or Plasma 43.53 mg/dL
+
+2022-04-06
+- Encounter: Encounter for check up (reason: Screening for malignant neoplasm of colon (procedure))
+- Procedure: Colonoscopy
+
+2023-03-11
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+- Procedure: Spirometry (procedure)
+- Procedure: Pulmonary rehabilitation (regime/therapy)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Procedure: Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure)
+- Medication: albuterol 5 MG/ML Inhalation Solution Take as needed. (stopped)
+- Medication: lisinopril 10 MG Oral Tablet 1.0 once daily (stopped)
+- Medication: 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (stopped)
+- Lab: FEV1/FVC 22.76 %
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 6.33 %
+- Lab: Body Height 179.60 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 1 {score}
+- Lab: Body Weight 96.80 kg
+- Lab: Body mass index (BMI) [Ratio] 30.01 kg/m2
+- Lab: Heart rate 98 /min
+- Lab: Respiratory rate 15 /min
+- Lab: Glucose [Mass/volume] in Blood 73.57 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 10.11 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 0.94 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.16 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 138.63 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 3.82 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 106.83 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 23.30 mmol/L
+- Lab: Tobacco smoking status Never smoked tobacco (finding)
+- Lab: Fall risk total [Morse Fall Scale] 71 {#}
+- Lab: Fall risk level [Morse Fall Scale] High Risk (MFS Score 50+)
+- Lab: Total score [AUDIT-C] 1 {score}
+
+2023-03-12
+- Encounter: Follow-up encounter (reason: Hyperlipidemia)
+- Medication: Simvastatin 10 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Blood 74.68 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 13.26 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 3.31 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.18 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 142.02 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 5.16 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 104.58 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 21.34 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 80.70 mL/min
+- Lab: Protein [Mass/volume] in Serum or Plasma 6.34 g/dL
+- Lab: Albumin [Mass/volume] in Serum or Plasma 3.53 g/dL
+- Lab: Globulin [Mass/volume] in Serum by calculation 3.36 g/L
+- Lab: Bilirubin.total [Mass/volume] in Serum or Plasma 1.00 mg/dL
+- Lab: Alkaline phosphatase [Enzymatic activity/volume] in Serum or Plasma 87.38 U/L
+- Lab: Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma 35.90 U/L
+- Lab: Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma 7.52 U/L
+- Lab: Cholesterol [Mass/volume] in Serum or Plasma 171.60 mg/dL
+- Lab: Triglycerides 143.69 mg/dL
+- Lab: Low Density Lipoprotein Cholesterol 147.31 mg/dL
+- Lab: Cholesterol in HDL [Mass/volume] in Serum or Plasma 60.46 mg/dL
+
+2024-03-16
+- Encounter: General examination of patient (procedure)
+- Procedure: Spirometry (procedure)
+- Procedure: Pulmonary rehabilitation (regime/therapy)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of anxiety (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Medication: albuterol 5 MG/ML Inhalation Solution Take as needed. (stopped)
+- Medication: lisinopril 10 MG Oral Tablet 1.0 once daily (stopped)
+- Medication: 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (stopped)
+- Lab: FEV1/FVC 26.79 %
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 5.94 %
+- Lab: Body Height 179.60 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 2 {score}
+- Lab: Body Weight 91.90 kg
+- Lab: Body mass index (BMI) [Ratio] 28.48 kg/m2
+- Lab: Heart rate 63 /min
+- Lab: Respiratory rate 12 /min
+- Lab: Glucose [Mass/volume] in Blood 94.44 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 16.30 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 1.06 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.24 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 143.55 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.22 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 107.88 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 27.95 mmol/L
+- Lab: Tobacco smoking status Never smoked tobacco (finding)
+- Lab: Generalized anxiety disorder 7 item (GAD-7) total score [Reported.PHQ] 3 {score}
+- Lab: Fall risk total [Morse Fall Scale] 121 {#}
+- Lab: Fall risk level [Morse Fall Scale] High Risk (MFS Score 50+)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 1 {score}
+
+2024-03-17
+- Diagnosis: Unhealthy alcohol drinking behavior (finding) (resolved)
+- Procedure: Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure)
+- Procedure: Patient referral for dental care (procedure)
+- Lab: Total score [AUDIT-C] 6 {score}
+
+2024-03-23
+- Encounter: Follow-up encounter (reason: Hyperlipidemia)
+- Medication: Simvastatin 10 MG Oral Tablet 1.0 once daily (stopped)
+- Lab: Glucose [Mass/volume] in Blood 92.97 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 13.41 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 2.82 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 8.94 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 143.88 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.04 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 109.37 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 22.57 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 87.90 mL/min
+- Lab: Protein [Mass/volume] in Serum or Plasma 6.97 g/dL
+- Lab: Albumin [Mass/volume] in Serum or Plasma 4.93 g/dL
+- Lab: Globulin [Mass/volume] in Serum by calculation 2.59 g/L
+- Lab: Bilirubin.total [Mass/volume] in Serum or Plasma 0.33 mg/dL
+- Lab: Alkaline phosphatase [Enzymatic activity/volume] in Serum or Plasma 124.73 U/L
+- Lab: Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma 54.97 U/L
+- Lab: Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma 38.89 U/L
+- Lab: Cholesterol [Mass/volume] in Serum or Plasma 183.75 mg/dL
+- Lab: Triglycerides 165.07 mg/dL
+- Lab: Low Density Lipoprotein Cholesterol 120.72 mg/dL
+- Lab: Cholesterol in HDL [Mass/volume] in Serum or Plasma 35.25 mg/dL
+
+2024-03-30
+- Encounter: Encounter for check up (procedure)
+- Procedure: caries risk assessment and documentation, with a finding of high risk
+
+2024-09-24
+- Encounter: Encounter for problem (procedure) (reason: Tricuspid valve regurgitation (disorder))
+- Diagnosis: Tricuspid valve regurgitation (disorder) (active)
+- Procedure: Transthoracic echocardiography (procedure)
+
+2025-03-22
+- Encounter: General examination of patient (procedure)
+- Diagnosis: Medication review due (situation) (resolved)
+- Procedure: Spirometry (procedure)
+- Procedure: Pulmonary rehabilitation (regime/therapy)
+- Procedure: Medication Reconciliation (procedure)
+- Procedure: Assessment of health and social care needs (procedure)
+- Procedure: Assessment of anxiety (procedure)
+- Procedure: Assessment using Morse Fall Scale (procedure)
+- Procedure: Depression screening (procedure)
+- Procedure: Depression screening using Patient Health Questionnaire Two-Item score (procedure)
+- Procedure: Assessment of substance use (procedure)
+- Medication: albuterol 5 MG/ML Inhalation Solution Take as needed. (active)
+- Medication: lisinopril 10 MG Oral Tablet 1.0 once daily (active)
+- Medication: 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (active)
+- Lab: FEV1/FVC 10.28 %
+- Lab: Hemoglobin A1c/Hemoglobin.total in Blood 5.85 %
+- Lab: Body Height 179.60 cm
+- Lab: Pain severity - 0-10 verbal numeric rating [Score] - Reported 3 {score}
+- Lab: Body Weight 90.30 kg
+- Lab: Body mass index (BMI) [Ratio] 28 kg/m2
+- Lab: Heart rate 94 /min
+- Lab: Respiratory rate 14 /min
+- Lab: Glucose [Mass/volume] in Blood 93.42 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 13.43 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 0.85 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 9.20 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 140.83 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.85 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 109.78 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 27.21 mmol/L
+- Lab: Cholesterol [Mass/volume] in Serum or Plasma 201.78 mg/dL
+- Lab: Triglycerides 101.28 mg/dL
+- Lab: Low Density Lipoprotein Cholesterol 128.25 mg/dL
+- Lab: Cholesterol in HDL [Mass/volume] in Serum or Plasma 53.28 mg/dL
+- Lab: Leukocytes [#/volume] in Blood by Automated count 5.48 10*3/uL
+- Lab: Erythrocytes [#/volume] in Blood by Automated count 4.13 10*6/uL
+- Lab: Hemoglobin [Mass/volume] in Blood 15.98 g/dL
+- Lab: Hematocrit [Volume Fraction] of Blood by Automated count 42.55 %
+- Lab: MCV [Entitic volume] by Automated count 90.82 fL
+- Lab: MCH [Entitic mass] by Automated count 31.32 pg
+- Lab: MCHC [Mass/volume] by Automated count 34.82 g/dL
+- Lab: Erythrocyte distribution width [Entitic volume] by Automated count 44.89 fL
+- Lab: Platelets [#/volume] in Blood by Automated count 375.36 10*3/uL
+- Lab: Platelet distribution width [Entitic volume] in Blood by Automated count 177.43 fL
+- Lab: Platelet mean volume [Entitic volume] in Blood by Automated count 9.43 fL
+- Lab: Tobacco smoking status Never smoked tobacco (finding)
+- Lab: Generalized anxiety disorder 7 item (GAD-7) total score [Reported.PHQ] 1 {score}
+- Lab: Fall risk total [Morse Fall Scale] 10 {#}
+- Lab: Fall risk level [Morse Fall Scale] Low Risk (MFS Score 0 - 24)
+- Lab: Patient Health Questionnaire 2 item (PHQ-2) total score [Reported] 1 {score}
+
+2025-03-23
+- Encounter: Follow-up encounter (reason: Hyperlipidemia)
+- Procedure: Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure)
+- Medication: Simvastatin 10 MG Oral Tablet 1.0 once daily (active)
+- Lab: Total score [AUDIT-C] 3 {score}
+- Lab: Glucose [Mass/volume] in Blood 71.41 mg/dL
+- Lab: Urea nitrogen [Mass/volume] in Blood 9.46 mg/dL
+- Lab: Creatinine [Mass/volume] in Blood 2.96 mg/dL
+- Lab: Calcium [Mass/volume] in Blood 8.59 mg/dL
+- Lab: Sodium [Moles/volume] in Blood 137.09 mmol/L
+- Lab: Potassium [Moles/volume] in Blood 4.37 mmol/L
+- Lab: Chloride [Moles/volume] in Blood 102.86 mmol/L
+- Lab: Carbon dioxide, total [Moles/volume] in Blood 27.25 mmol/L
+- Lab: Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD) 88.42 mL/min
+- Lab: Protein [Mass/volume] in Serum or Plasma 7.86 g/dL
+- Lab: Albumin [Mass/volume] in Serum or Plasma 4.20 g/dL
+- Lab: Globulin [Mass/volume] in Serum by calculation 3.33 g/L
+- Lab: Bilirubin.total [Mass/volume] in Serum or Plasma 1.14 mg/dL
+- Lab: Alkaline phosphatase [Enzymatic activity/volume] in Serum or Plasma 136.78 U/L
+- Lab: Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma 24.98 U/L
+- Lab: Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma 35.59 U/L
+- Lab: Cholesterol [Mass/volume] in Serum or Plasma 207.98 mg/dL
+- Lab: Triglycerides 191.46 mg/dL
+- Lab: Low Density Lipoprotein Cholesterol 149.23 mg/dL
+- Lab: Cholesterol in HDL [Mass/volume] in Serum or Plasma 50.16 mg/dL
+
+2025-08-07
+- Diagnosis: Pulmonary nodule (active)
+
+2025-09-03
+- Diagnosis: Bronchial wall thickening (active)
+
+2026-02-03
+- Lab: Tobacco smoking status Current every day smoker
+- Narrative (Report):
+  FINDINGS: Trachea and both main bronchi were in the midline and no obstructive pathology was observed in the lumen. In the non-contrast examination, the mediastinal could not be evaluated optimally. As far as can be seen; mediastinal main vascular structures, heart contour, size are normal. Pericardial effusion-thickening was not observed. Calcific atheroma plaque was observed in the descending aorta. Thoracic esophagus calibration was normal and no significant pathological wall thickening was detected. N...
+  IMPRESSION: s:
+ Emphysematous and passive atelectatic changes in both lungs.  Minimal thickening of the segmental bronchial walls of both lungs.  Nonspecific subpleural nodule in the posterior segment of the right lung upper lobe.  Cholelithiasis.  Minimal degenerative changes in bone structure.
+
+== ACTIVE MEDICATIONS ==
+- Clopidogrel 75 MG Oral Tablet (since 2018-02-17)
+- Simvastatin 20 MG Oral Tablet (since 2018-02-17)
+- 24 HR metoprolol succinate 100 MG Extended Release Oral Tablet (since 2018-02-17)
+- Nitroglycerin 0.4 MG/ACTUAT Mucosal Spray (since 2018-02-17)
+- albuterol 5 MG/ML Inhalation Solution Take as needed. (since 2025-03-22)
+- lisinopril 10 MG Oral Tablet 1.0 once daily (since 2025-03-22)
+- 60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler (since 2025-03-22)
+- Simvastatin 10 MG Oral Tablet 1.0 once daily (since 2025-03-23)
+
+--- Statistics ---
+Token estimate: ~13,201 tokens
+Narrative length: 52,804 characters
+Conditions found: 47
+Medications found: 46
+Risk factors identified: 5
+
+Source: /workspace/Sentinel-X/sentinel_x/data/raw_ct_rate/combined/train_2_a_1/fhir.json

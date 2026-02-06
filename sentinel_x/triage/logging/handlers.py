@@ -104,7 +104,7 @@ class SessionManager:
         """Get the path for a specific log file in the current session.
 
         Args:
-            log_name: Name of the log file (e.g., "agent_trace.jsonl")
+            log_name: Name of the log file (e.g., "fhir_trace.jsonl")
 
         Returns:
             Full path to the log file
@@ -134,7 +134,7 @@ class SessionFileHandler(logging.FileHandler):
         """Initialize the session file handler.
 
         Args:
-            log_name: Name of the log file (e.g., "agent_trace.jsonl")
+            log_name: Name of the log file (e.g., "fhir_trace.jsonl")
             mode: File open mode
             encoding: File encoding
             delay: Whether to delay file opening
@@ -156,14 +156,6 @@ class SessionFileHandler(logging.FileHandler):
         )
 
 
-class AgentTraceHandler(SessionFileHandler):
-    """Handler specifically for agent trace events."""
-
-    def __init__(self):
-        """Initialize the agent trace handler."""
-        super().__init__(log_name="agent_trace.jsonl")
-
-
 class FHIRTraceHandler(SessionFileHandler):
     """Handler specifically for FHIR extraction trace events."""
 
@@ -181,7 +173,6 @@ class SummaryHandler(SessionFileHandler):
 
 
 def setup_session_handlers(
-    agent_logger: logging.Logger,
     fhir_logger: logging.Logger,
     summary_logger: Optional[logging.Logger] = None,
     session_id: Optional[str] = None,
@@ -189,7 +180,6 @@ def setup_session_handlers(
     """Set up session-based handlers for the trace loggers.
 
     Args:
-        agent_logger: Logger for agent trace events
         fhir_logger: Logger for FHIR trace events
         summary_logger: Optional logger for human-readable summary
         session_id: Optional specific session ID
@@ -202,13 +192,6 @@ def setup_session_handlers(
     # Initialize session
     session_manager = SessionManager.get_instance()
     session_id = session_manager.initialize(session_id)
-
-    # Set up agent trace handler
-    agent_handler = AgentTraceHandler()
-    agent_handler.setFormatter(JSONLogFormatter())
-    agent_handler.setLevel(logging.DEBUG)
-    agent_logger.addHandler(agent_handler)
-    agent_logger.setLevel(logging.DEBUG)
 
     # Set up FHIR trace handler
     fhir_handler = FHIRTraceHandler()

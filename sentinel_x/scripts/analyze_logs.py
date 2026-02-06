@@ -8,9 +8,6 @@ Usage:
     # Specific patient trace
     python -m sentinel_x.scripts.analyze_logs logs/sessions/<session-id> -p CT-001
 
-    # Full conversation for a patient
-    python -m sentinel_x.scripts.analyze_logs logs/sessions/<session-id> -c CT-001
-
     # Find all failures
     python -m sentinel_x.scripts.analyze_logs logs/sessions/<session-id> --failures
 
@@ -56,35 +53,6 @@ def print_json(data: any, indent: int = 2) -> None:
     print(json.dumps(data, indent=indent, default=str))
 
 
-def print_conversation(conversation: list, truncate: int = 500) -> None:
-    """Print a conversation in readable format.
-
-    Args:
-        conversation: List of message dicts
-        truncate: Maximum characters per message (0 for no truncation)
-    """
-    for i, msg in enumerate(conversation):
-        role = msg.get("role", "unknown")
-        content = msg.get("content", "")
-
-        # Truncate if requested
-        if truncate > 0 and len(content) > truncate:
-            content = content[:truncate] + f"... [{len(content)} chars total]"
-
-        # Format role with color/style
-        if role == "user":
-            role_str = "[USER]"
-        elif role == "assistant":
-            role_str = "[ASSISTANT]"
-        else:
-            role_str = f"[{role.upper()}]"
-
-        print(f"\n{'='*60}")
-        print(f"Message {i+1}: {role_str}")
-        print(f"{'='*60}")
-        print(content)
-
-
 def main():
     """Main entry point for the log analyzer CLI."""
     parser = argparse.ArgumentParser(
@@ -113,13 +81,6 @@ def main():
     )
 
     parser.add_argument(
-        "-c", "--conversation",
-        type=str,
-        metavar="PATIENT_ID",
-        help="Show full conversation for a specific patient ID",
-    )
-
-    parser.add_argument(
         "--failures",
         action="store_true",
         help="Show all failure/error events",
@@ -130,19 +91,13 @@ def main():
         type=str,
         nargs="+",
         metavar="EVENT_TYPE",
-        help="Filter events by type (e.g., TOOL_EXECUTION RESPONSE_RECEIVED)",
+        help="Filter events by type (e.g., CONDITIONS_SUMMARY MEDICATIONS_SUMMARY)",
     )
 
     parser.add_argument(
         "--json",
         action="store_true",
         help="Output results as JSON",
-    )
-
-    parser.add_argument(
-        "--no-truncate",
-        action="store_true",
-        help="Don't truncate long content in conversation view",
     )
 
     parser.add_argument(
@@ -177,36 +132,16 @@ def main():
     analyzer = LogAnalyzer(session_path)
 
     # Handle different output modes
-    if args.conversation:
-        # Show full conversation for a patient
-        conversation = analyzer.get_full_conversation(args.conversation)
-        if not conversation:
-            print(f"No conversation found for patient: {args.conversation}")
-            sys.exit(1)
-
-        if args.json:
-            print_json(conversation)
-        else:
-            truncate = 0 if args.no_truncate else 500
-            print(f"\nConversation for patient: {args.conversation}")
-            print(f"Total messages: {len(conversation)}")
-            print_conversation(conversation, truncate=truncate)
-
-    elif args.patient:
+    if args.patient:
         # Show patient summary
         summary = analyzer.get_patient_summary(args.patient)
-        if summary.iterations == 0 and not summary.conditions:
+        if not summary.conditions and not summary.medications and not summary.errors:
             print(f"No data found for patient: {args.patient}")
             sys.exit(1)
 
         if args.json:
             print_json({
                 "patient_id": summary.patient_id,
-                "iterations": summary.iterations,
-                "tools_used": summary.tools_used,
-                "risk_adjustment": summary.risk_adjustment,
-                "final_assessment": summary.final_assessment,
-                "critical_findings": summary.critical_findings,
                 "conditions": summary.conditions,
                 "medications": summary.medications,
                 "errors": summary.errors,
@@ -268,14 +203,11 @@ def main():
                 "start_time": summary.start_time.isoformat() if summary.start_time else None,
                 "end_time": summary.end_time.isoformat() if summary.end_time else None,
                 "patient_count": summary.patient_count,
-                "total_iterations": summary.total_iterations,
-                "total_tool_calls": summary.total_tool_calls,
                 "error_count": len(summary.errors),
                 "patients": {
                     pid: {
-                        "iterations": p.iterations,
-                        "tools_used": p.tools_used,
-                        "risk_adjustment": p.risk_adjustment,
+                        "conditions": p.conditions,
+                        "medications": p.medications,
                         "error_count": len(p.errors),
                     }
                     for pid, p in summary.patients.items()

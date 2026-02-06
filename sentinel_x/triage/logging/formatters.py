@@ -49,7 +49,7 @@ class JSONLogFormatter(logging.Formatter):
                 "event_type", "patient_id", "iteration", "session_id",
                 "tool_name", "tool_args", "tool_result", "duration_ms",
                 "char_count", "message_count", "resource_type", "entry_count",
-                "source_field", "risk_adjustment", "assessment", "findings",
+                "source_field", "assessment", "findings",
                 "error", "raw_text", "prompt", "response", "conditions",
                 "medications", "demographics", "age", "gender"
             ]:
@@ -146,9 +146,6 @@ class HumanReadableFormatter(logging.Formatter):
 
         if hasattr(record, "message_count"):
             details.append(f"messages={record.message_count}")
-
-        if hasattr(record, "risk_adjustment"):
-            details.append(f"risk_adj={record.risk_adjustment}")
 
         # Combine parts
         if details:

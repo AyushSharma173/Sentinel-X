@@ -91,31 +91,6 @@ LOG_FULL_PROMPTS = True  # Log full model prompts (can be large)
 LOG_FULL_RESPONSES = True  # Log full model responses (can be large)
 
 # =============================================================================
-# ReAct Agent Configuration
-# =============================================================================
-
-# Enable/disable the ReAct agent mode for clinical correlation
-AGENT_MODE_ENABLED = True
-
-# Maximum number of reasoning iterations before forcing conclusion
-AGENT_MAX_ITERATIONS = 5
-
-# Temperature for tool call generation (0.0 = deterministic)
-AGENT_TOOL_CALL_TEMPERATURE = 0.0
-
-# Maximum tokens per agent turn
-AGENT_MAX_TOKENS_PER_TURN = 512
-
-# Lookback period for lab values (days)
-# Extended to 3650 days (10 years) to support synthetic/test data
-TOOL_LAB_LOOKBACK_DAYS = 3650
-
-# Risk adjustment values
-RISK_ADJUSTMENT_INCREASE = -1  # Decrease priority number = increase urgency
-RISK_ADJUSTMENT_DECREASE = 1  # Increase priority number = decrease urgency
-RISK_ADJUSTMENT_NONE = 0
-
-# =============================================================================
 # FHIR Janitor Configuration
 # =============================================================================
 

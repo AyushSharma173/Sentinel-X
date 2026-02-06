@@ -13,7 +13,6 @@ from PIL import Image
 from .config import OUTPUT_DIR
 from .ct_processor import get_thumbnail
 from .medgemma_analyzer import AnalysisResult
-from .state import AgentState, format_agent_trace
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +39,6 @@ def generate_triage_result(
     images: List[Image.Image],
     slice_indices: List[int],
     conditions_from_context: List[str],
-    agent_state: Optional[AgentState] = None,
 ) -> Dict[str, Any]:
     """Generate triage result JSON structure.
 
@@ -50,7 +48,6 @@ def generate_triage_result(
         images: List of CT slice images
         slice_indices: Original slice indices from volume
         conditions_from_context: Conditions from FHIR context
-        agent_state: Optional ReAct agent state with clinical correlation
 
     Returns:
         Triage result dictionary
@@ -73,10 +70,6 @@ def generate_triage_result(
         rationale += f" EHR Context: Patient has {', '.join(conditions_from_context)}."
     rationale += f" {analysis.priority_rationale}"
 
-    # Add agent findings to rationale if available
-    if agent_state and agent_state.get("final_assessment"):
-        rationale += f" Agent Assessment: {agent_state['final_assessment']}"
-
     result = {
         "patient_id": patient_id,
         "priority_level": analysis.priority_level,
@@ -88,10 +81,6 @@ def generate_triage_result(
         "findings_summary": analysis.findings_summary,
         "visual_findings": analysis.visual_findings,
     }
-
-    # Add agent reasoning trace if available
-    if agent_state:
-        result["agent_reasoning"] = format_agent_trace(agent_state)
 
     return result
 
