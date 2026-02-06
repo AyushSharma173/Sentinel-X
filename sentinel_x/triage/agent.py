@@ -5,6 +5,7 @@ import json
 import logging
 import signal
 import sys
+import time
 from pathlib import Path
 from typing import Any, Dict, Optional
 
@@ -12,33 +13,26 @@ from .config import (
     INBOX_POLL_INTERVAL,
     INBOX_REPORTS_DIR,
     INBOX_VOLUMES_DIR,
+    LOG_DIR,
     LOG_FILE,
     LOG_FORMAT,
-    LOG_JSON_ENABLED,
     OUTPUT_DIR,
-)
-from .logging import (
-    SessionManager,
-    get_fhir_trace_logger,
-    patient_trace_context,
 )
 from .ct_processor import process_ct_volume
 from .fhir_janitor import FHIRJanitor
 from .inbox_watcher import InboxWatcher, PatientData
 from .medgemma_analyzer import MedGemmaAnalyzer
 from .output_generator import generate_triage_result, save_triage_result
+from .prompts import SYSTEM_PROMPT, build_user_prompt
+from .session_logger import SessionLogger
 from .worklist import Worklist
 
 
-def setup_logging(verbose: bool = False, session_id: str = None) -> str:
+def setup_logging(verbose: bool = False) -> None:
     """Configure logging for the agent.
 
     Args:
         verbose: Enable verbose debug logging
-        session_id: Optional specific session ID for trace logs
-
-    Returns:
-        The session ID being used for trace logs
     """
     level = logging.DEBUG if verbose else logging.INFO
 
@@ -55,39 +49,6 @@ def setup_logging(verbose: bool = False, session_id: str = None) -> str:
     # Reduce noise from transformers
     logging.getLogger("transformers").setLevel(logging.WARNING)
     logging.getLogger("accelerate").setLevel(logging.WARNING)
-
-    # Initialize session-based trace logging
-    return initialize_trace_logging(session_id)
-
-
-def initialize_trace_logging(session_id: str = None) -> str:
-    """Initialize session-based trace logging.
-
-    This can be called independently of setup_logging() when trace logging
-    needs to be initialized without reconfiguring the root logger (e.g., when
-    running through an API server that has its own logging setup).
-
-    Args:
-        session_id: Optional specific session ID for trace logs
-
-    Returns:
-        The session ID being used for trace logs, or None if disabled
-    """
-    if not LOG_JSON_ENABLED:
-        return None
-
-    session_manager = SessionManager.get_instance()
-    session_id = session_manager.initialize(session_id)
-
-    # Initialize specialized trace loggers
-    fhir_trace = get_fhir_trace_logger()
-    fhir_trace.initialize_session(session_id)
-
-    logging.getLogger(__name__).info(
-        f"Trace logging initialized: session={session_id}"
-    )
-
-    return session_id
 
 
 class TriageAgent:
@@ -121,6 +82,10 @@ class TriageAgent:
         self.output_dir = output_dir
 
         self._running = False
+        self._patient_count = 0
+
+        # Session trace logger
+        self.session_logger = SessionLogger(LOG_DIR)
 
     def _load_fhir_bundle(self, report_path: Path) -> Dict[str, Any]:
         """Load the raw FHIR bundle from report path.
@@ -144,11 +109,7 @@ class TriageAgent:
         Args:
             patient_data: Patient volume and report paths
         """
-        patient_id = patient_data.patient_id
-
-        # Wrap processing in patient trace context for structured logging
-        with patient_trace_context(patient_id, self.logger):
-            self._process_patient_internal(patient_data)
+        self._process_patient_internal(patient_data)
 
     def _process_patient_internal(self, patient_data: PatientData) -> None:
         """Internal patient processing implementation.
@@ -159,27 +120,68 @@ class TriageAgent:
         patient_id = patient_data.patient_id
         self.logger.info(f"Starting triage for patient: {patient_id}")
 
+        self._patient_count += 1
+        self.session_logger.log_patient_start(self._patient_count, patient_id)
+
         try:
             # Step 1: Parse FHIR context using FHIRJanitor (Dense Clinical Stream)
             self.logger.info(f"[{patient_id}] Parsing clinical context with FHIRJanitor")
+            t0 = time.time()
             fhir_bundle = self._load_fhir_bundle(patient_data.report_path)
             janitor = FHIRJanitor()
             clinical_stream = janitor.process_bundle(fhir_bundle)
             context_text = clinical_stream.narrative
+            fhir_duration = time.time() - t0
 
-            # Log any extraction warnings
             for warning in clinical_stream.extraction_warnings:
                 self.logger.warning(f"[{patient_id}] FHIR extraction: {warning}")
 
+            self.session_logger.log_fhir_extraction(
+                report_path=patient_data.report_path,
+                fhir_bundle=fhir_bundle,
+                clinical_stream=clinical_stream,
+                duration_secs=fhir_duration,
+            )
+
             # Step 2: Process CT volume
             self.logger.info(f"[{patient_id}] Processing CT volume")
+            t0 = time.time()
             images, slice_indices, metadata = process_ct_volume(patient_data.volume_path)
+            ct_duration = time.time() - t0
+
+            self.session_logger.log_ct_processing(
+                volume_path=patient_data.volume_path,
+                num_slices=len(images),
+                slice_indices=slice_indices,
+                image_size=images[0].size if images else (0, 0),
+                duration_secs=ct_duration,
+            )
 
             # Step 3: Run MedGemma analysis
             self.logger.info(f"[{patient_id}] Running MedGemma analysis")
-            analysis = self.analyzer.analyze(images, context_text)
 
-            # Step 4: Generate output
+            # Log the prompt before calling the model
+            user_prompt = build_user_prompt(context_text, len(images))
+            self.session_logger.log_medgemma_prompt(
+                system_prompt=SYSTEM_PROMPT,
+                user_prompt=user_prompt,
+                num_images=len(images),
+                volume_path=patient_data.volume_path,
+            )
+
+            t0 = time.time()
+            analysis = self.analyzer.analyze(images, context_text)
+            analysis_duration = time.time() - t0
+
+            self.session_logger.log_medgemma_response(
+                raw_response=analysis.raw_response,
+                duration_secs=analysis_duration,
+            )
+
+            # Step 4: Log parsed results
+            self.session_logger.log_parsed_results(analysis, slice_indices)
+
+            # Step 5: Generate and save output
             self.logger.info(f"[{patient_id}] Generating triage output")
             result = generate_triage_result(
                 patient_id=patient_id,
@@ -189,8 +191,9 @@ class TriageAgent:
                 conditions_from_context=clinical_stream.conditions,
             )
 
-            # Step 5: Save result
             result_path = save_triage_result(patient_id, result, self.output_dir)
+
+            self.session_logger.log_output_saved(result_path, analysis.priority_level)
 
             # Step 6: Update worklist
             self.worklist.add_entry(
@@ -204,8 +207,12 @@ class TriageAgent:
                 f"[{patient_id}] Triage complete - Priority {analysis.priority_level}"
             )
 
+            self.session_logger.log_patient_end(self._patient_count, patient_id)
+
         except Exception as e:
             self.logger.error(f"[{patient_id}] Triage failed: {e}", exc_info=True)
+            self.session_logger.log_error(patient_id, str(e))
+            self.session_logger.log_patient_end(self._patient_count, patient_id)
             raise
 
     def run(self, max_patients: int = None) -> None:

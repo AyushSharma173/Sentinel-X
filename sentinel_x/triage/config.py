@@ -85,11 +85,6 @@ LOG_FILE = LOG_DIR / "triage.log"
 LOG_SESSIONS_DIR = LOG_DIR / "sessions"
 LOG_SESSIONS_DIR.mkdir(parents=True, exist_ok=True)
 
-# Trace logging options
-LOG_JSON_ENABLED = True  # Enable structured JSON logging to session files
-LOG_FULL_PROMPTS = True  # Log full model prompts (can be large)
-LOG_FULL_RESPONSES = True  # Log full model responses (can be large)
-
 # =============================================================================
 # FHIR Janitor Configuration
 # =============================================================================
