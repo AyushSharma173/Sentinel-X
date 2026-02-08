@@ -201,11 +201,21 @@ class VisionAnalyzer:
 
         input_len = inputs["input_ids"].shape[-1]
 
+        # Diagnostic: confirm images are embedded in the tokenized input
+        input_keys = list(inputs.keys())
+        logger.info(f"[DIAG] apply_chat_template keys: {input_keys}")
+        logger.info(f"[DIAG] input_ids length: {input_len}")
+        if "pixel_values" in inputs:
+            logger.info(f"[DIAG] pixel_values shape: {inputs['pixel_values'].shape}")
+        else:
+            logger.warning("[DIAG] pixel_values NOT present in inputs — images may not be embedded!")
+
         with torch.inference_mode():
             outputs = self.model.generate(
                 **inputs,
                 max_new_tokens=max_new_tokens,
                 do_sample=False,
+                repetition_penalty=1.05,
             )
 
         # Decode only the generated portion (skip input tokens)

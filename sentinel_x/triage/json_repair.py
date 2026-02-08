@@ -210,6 +210,22 @@ def extract_findings_from_narrative(text: str) -> Optional[Dict[str, Any]]:
     return None
 
 
+def _deduplicate_lines(text: str) -> str:
+    """Collapse consecutive identical lines to reduce repetition noise.
+
+    The 4B model often loops, producing 80+ copies of the same line.
+    This collapses them before any parsing to give cleaner input.
+    """
+    lines = text.split("\n")
+    deduped = []
+    prev = None
+    for line in lines:
+        if line != prev:
+            deduped.append(line)
+            prev = line
+    return "\n".join(deduped)
+
+
 def parse_json_safely(text: str) -> Optional[Dict[str, Any]]:
     """Attempt to parse JSON with progressive repair strategies.
 
@@ -219,6 +235,9 @@ def parse_json_safely(text: str) -> Optional[Dict[str, Any]]:
     Returns:
         Parsed JSON dict, or None if parsing failed
     """
+    # Upfront: collapse consecutive identical lines (model repetition loops)
+    text = _deduplicate_lines(text)
+
     # Strategy 1: Try direct parse
     try:
         return json.loads(text)

@@ -14,10 +14,12 @@ YOUR TASK: Carefully examine every slice. Report ALL visible findings — nodule
 
 Even if a finding is subtle or you are uncertain, report what you see. It is better to over-report than to miss a finding.
 
+Report each unique finding ONCE. Do NOT repeat the same finding for multiple slices. If the same abnormality spans multiple slices, report it once with the slice where it is most visible.
+
 If no abnormalities are visible, report that clearly.
 
 You MUST respond with ONLY a JSON object in this exact format:
-{"findings": [{"finding": "nodule", "location": "RUL", "size": "4mm", "slice_index": 42, "description": "small round opacity in right upper lobe"}]}
+{"findings": [{"finding": "opacity", "location": "LLL", "size": "12mm", "slice_index": 30, "description": "ground-glass opacity in left lower lobe"}]}
 
 If no findings: {"findings": []}"""
 
