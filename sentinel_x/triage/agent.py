@@ -20,6 +20,10 @@ from typing import Any, Dict, Optional
 # Reduce CUDA memory fragmentation (must be set before any torch import)
 os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
 
+# Skip HuggingFace Hub HTTP checks when weights are already cached locally.
+# Saves ~5s per model load (10-20 HEAD requests avoided).
+os.environ.setdefault("HF_HUB_OFFLINE", "1")
+
 from .config import (
     INBOX_POLL_INTERVAL,
     INBOX_REPORTS_DIR,

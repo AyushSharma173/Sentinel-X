@@ -174,7 +174,7 @@ class VisionAnalyzer:
             num_slices_analyzed=num_slices,
         )
 
-    def analyze(self, images: List[Image.Image], max_new_tokens: int = 512) -> VisualFactSheet:
+    def analyze(self, images: List[Image.Image], max_new_tokens: int = 1024) -> VisualFactSheet:
         """Run Phase 1 vision analysis on CT images (no clinical context).
 
         Args:
@@ -206,7 +206,6 @@ class VisionAnalyzer:
                 **inputs,
                 max_new_tokens=max_new_tokens,
                 do_sample=False,
-                repetition_penalty=1.2,
             )
 
         # Decode only the generated portion (skip input tokens)

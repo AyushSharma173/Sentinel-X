@@ -880,6 +880,7 @@ class FHIRJanitor:
         # Additional fields for replacing PatientContext
         conditions: List[str] = []
         medications: List[str] = []
+        seen_medications: Set[str] = set()  # Dedup by medication name
         age: Optional[int] = None
         gender: Optional[str] = None
         all_findings: List[str] = []
@@ -949,6 +950,13 @@ class FHIRJanitor:
                 timeline_entry, active_med, med_name = (
                     self.medication_extractor.extract(resource)
                 )
+                # Deduplicate medications by name (same regimen appears per encounter)
+                if med_name and med_name in seen_medications:
+                    warnings.extend(self.medication_extractor.warnings)
+                    self.medication_extractor.warnings.clear()
+                    continue
+                if med_name:
+                    seen_medications.add(med_name)
                 if timeline_entry:
                     timeline_entries.append(timeline_entry)
                 if active_med:

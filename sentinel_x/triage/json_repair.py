@@ -106,6 +106,110 @@ def repair_json(json_str: str) -> str:
     return json_str
 
 
+def extract_findings_from_narrative(text: str) -> Optional[Dict[str, Any]]:
+    """Extract findings from narrative/bullet-point radiology text.
+
+    Handles cases where the 4B model produces a radiology report instead of JSON.
+    Looks for anatomical findings described in natural language and converts them
+    to the expected structured format.
+
+    Args:
+        text: Raw narrative text from model output
+
+    Returns:
+        Dict with "findings" list, or None if no findings detected
+    """
+    findings = []
+    seen_descriptions = set()
+
+    # Anatomical locations for matching
+    locations = (
+        r"(?:RUL|RML|RLL|LUL|LLL|bilateral|left|right|upper|middle|lower|"
+        r"mediastin\w*|hilum|hilar|perihilar|lingula|pleural|pericardial|"
+        r"subcarinal|paratracheal|apic\w*|basal|basilar)"
+    )
+
+    # Finding types to look for
+    finding_types = (
+        r"(?:nodule|nodular|opacity|opacities|effusion|consolidation|"
+        r"emphysema|emphysematous|atelectasis|atelectatic|mass|"
+        r"lymphadenopathy|adenopathy|thickening|bronchial\s+wall\s+thickening|"
+        r"ground.?glass|fibrosis|fibrotic|calcification|calcified|"
+        r"pneumothorax|pleural\s+effusion|cardiomegaly|edema|infiltrate|"
+        r"cavit\w+|bronchiectasis|tree.?in.?bud|cyst|bulla|bullae)"
+    )
+
+    # Pattern 1: "SIZE finding in/of LOCATION" or "LOCATION: SIZE finding"
+    # e.g., "1.1 cm nodule in RUL" or "RUL: 1.1 cm nodule"
+    size_pattern = r"(\d+(?:\.\d+)?\s*(?:mm|cm|millimeter|centimeter)s?)"
+
+    # Split into lines and deduplicate
+    lines = text.split("\n")
+    unique_lines = []
+    for line in lines:
+        stripped = line.strip().lstrip("- *•")
+        if stripped and stripped not in seen_descriptions:
+            seen_descriptions.add(stripped)
+            unique_lines.append(stripped)
+
+    full_text = " ".join(unique_lines)
+
+    # Strategy A: Look for sentences/phrases containing both a finding type and location
+    # Split on sentence boundaries AND treat each original line as a separate candidate
+    sentences = re.split(r"[.;]\s+", full_text)
+    # Also add individual deduplicated lines as sentence candidates
+    for line in unique_lines:
+        if line not in sentences:
+            sentences.append(line)
+    for sentence in sentences:
+        sentence_lower = sentence.lower()
+
+        finding_match = re.search(finding_types, sentence_lower)
+        if not finding_match:
+            continue
+
+        finding_type = finding_match.group(0).strip()
+
+        # Normalize finding type
+        type_map = {
+            "nodular": "nodule", "opacities": "opacity",
+            "emphysematous": "emphysema", "atelectatic": "atelectasis",
+            "fibrotic": "fibrosis", "calcified": "calcification",
+            "adenopathy": "lymphadenopathy", "bullae": "bulla",
+        }
+        finding_type = type_map.get(finding_type, finding_type)
+
+        # Extract location
+        loc_match = re.search(locations, sentence, re.IGNORECASE)
+        location = loc_match.group(0) if loc_match else "unspecified"
+
+        # Extract size
+        size_match = re.search(size_pattern, sentence, re.IGNORECASE)
+        size = size_match.group(0) if size_match else ""
+
+        # Deduplicate by (finding_type, location)
+        dedup_key = (finding_type.lower(), location.lower())
+        if dedup_key in {(f["finding"].lower(), f["location"].lower()) for f in findings}:
+            continue
+
+        findings.append({
+            "finding": finding_type,
+            "location": location,
+            "size": size,
+            "slice_index": 0,
+            "description": sentence.strip()[:200],
+        })
+
+    if findings:
+        logger.info(
+            f"Extracted {len(findings)} findings from narrative text "
+            f"(fallback strategy)"
+        )
+        return {"findings": findings}
+
+    return None
+
+
 def parse_json_safely(text: str) -> Optional[Dict[str, Any]]:
     """Attempt to parse JSON with progressive repair strategies.
 
@@ -135,6 +239,12 @@ def parse_json_safely(text: str) -> Optional[Dict[str, Any]]:
     except json.JSONDecodeError as e:
         logger.warning(f"Failed to parse JSON after repairs: {e}")
         logger.debug(f"Attempted to parse: {repaired[:200]}...")
-        return None
+
+    # Strategy 4: Extract findings from narrative/bullet-point text
+    narrative_result = extract_findings_from_narrative(text)
+    if narrative_result is not None:
+        return narrative_result
+
+    return None
 
 

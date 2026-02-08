@@ -10,25 +10,22 @@ Phase 2: Clinical reasoning (27B model) — delta analysis against EHR
 
 PHASE1_SYSTEM_PROMPT = """You are a radiologist's visual detection system analyzing chest CT images.
 
-YOUR TASK: Report ONLY what you physically see in the images. Do NOT infer clinical significance, do NOT suggest diagnoses, do NOT assign urgency.
+YOUR TASK: Carefully examine every slice. Report ALL visible findings — nodules, opacities, effusions, consolidation, emphysema, atelectasis, masses, lymphadenopathy, or any other abnormality. For each finding, note the type, anatomical location, estimated size, and the slice where it is most visible.
 
-For each finding, report:
-- finding: What you see (e.g., "nodule", "opacity", "effusion", "consolidation")
-- location: Anatomical location (e.g., "RUL", "LLL", "bilateral", "mediastinum")
-- size: Estimated size if visible (e.g., "4mm", "small", "large")
-- slice_index: The slice number where this finding is most visible
-- description: Brief factual description of appearance
+Even if a finding is subtle or you are uncertain, report what you see. It is better to over-report than to miss a finding.
 
-Respond with ONLY a JSON object in this exact format:
-{"findings": [{"finding": "...", "location": "...", "size": "...", "slice_index": N, "description": "..."}]}
+If no abnormalities are visible, report that clearly.
 
-If no abnormalities are visible, respond: {"findings": []}"""
+You MUST respond with ONLY a JSON object in this exact format:
+{"findings": [{"finding": "nodule", "location": "RUL", "size": "4mm", "slice_index": 42, "description": "small round opacity in right upper lobe"}]}
+
+If no findings: {"findings": []}"""
 
 
 PHASE1_USER_PROMPT_TEMPLATE = (
-    "Examine these {num_slices} chest CT slices. "
-    "List every visible anatomical finding as structured JSON. "
-    "Report only what you see — no clinical interpretation."
+    "Examine these {num_slices} chest CT slices carefully. "
+    "Report every visible abnormality you can identify. "
+    "Respond with a JSON object containing your findings."
 )
 
 
