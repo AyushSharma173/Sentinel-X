@@ -10,11 +10,15 @@ Per-patient execution:
 import argparse
 import json
 import logging
+import os
 import signal
 import sys
 import time
 from pathlib import Path
 from typing import Any, Dict, Optional
+
+# Reduce CUDA memory fragmentation (must be set before any torch import)
+os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
 
 from .config import (
     INBOX_POLL_INTERVAL,
@@ -40,8 +44,12 @@ from .prompts import (
     build_phase2_user_prompt,
 )
 from .session_logger import SessionLogger
-from .vram_manager import log_vram_status
+from .vram_manager import get_vram_free_mb, get_vram_total_mb, log_vram_status, verify_clean_state
 from .worklist import Worklist
+
+# Minimum total GPU memory (MB) to run the full pipeline.
+# Phase 2 (27B NF4) peaks at ~17GB — need at least ~22GB total for safety.
+MIN_GPU_TOTAL_MB = 22_000
 
 
 def setup_logging(verbose: bool = False) -> None:
@@ -98,13 +106,52 @@ class TriageAgent:
     def process_patient(self, patient_data: PatientData) -> None:
         self._process_patient_internal(patient_data)
 
+    def _preflight_gpu_check(self) -> None:
+        """Verify GPU has enough total memory and nothing else is using it."""
+        import torch
+        if not torch.cuda.is_available():
+            self.logger.warning("CUDA not available — pipeline will fail at model load")
+            return
+
+        total = get_vram_total_mb()
+        free = get_vram_free_mb()
+
+        if total < MIN_GPU_TOTAL_MB:
+            raise RuntimeError(
+                f"GPU has {total:.0f}MB total VRAM — need at least {MIN_GPU_TOTAL_MB}MB "
+                f"for the Serial Late Fusion pipeline (Phase 2 peaks at ~17GB). "
+                f"An RTX 4090 (24GB) or better is required."
+            )
+
+        # Warn if something else is using significant VRAM
+        used = total - free
+        if used > 1000:
+            self.logger.warning(
+                f"GPU has {used:.0f}MB already in use before pipeline start. "
+                f"Free: {free:.0f}MB / {total:.0f}MB. "
+                f"Other GPU processes may cause OOM — consider stopping them."
+            )
+        else:
+            self.logger.info(
+                f"GPU pre-flight OK: {free:.0f}MB free / {total:.0f}MB total"
+            )
+
     def _process_patient_internal(self, patient_data: PatientData) -> None:
         patient_id = patient_data.patient_id
-        self.logger.info(f"Starting triage for patient: {patient_id}")
         self._patient_count += 1
+        self.logger.info(
+            f"{'='*60}\n"
+            f"  Patient {self._patient_count}: {patient_id}\n"
+            f"{'='*60}"
+        )
+        log_vram_status(f"patient {self._patient_count} start")
         self.session_logger.log_patient_start(self._patient_count, patient_id)
 
         try:
+            # GPU pre-flight check (first patient only, or if problems detected)
+            if self._patient_count == 1:
+                self._preflight_gpu_check()
+
             # ==============================================================
             # PHASE 0: Preprocessing (no GPU)
             # ==============================================================
@@ -166,6 +213,7 @@ class TriageAgent:
             # Unload 4B model before loading 27B
             t_swap = time.time()
             self.vision_analyzer.unload()
+            verify_clean_state("post-Phase1-unload")
 
             # ==============================================================
             # PHASE 2: Clinical Reasoning (27B, ~13-14GB VRAM)
@@ -203,6 +251,7 @@ class TriageAgent:
 
             # Unload 27B model
             self.reasoner.unload()
+            verify_clean_state("post-Phase2-unload")
 
             # ==============================================================
             # PHASE 3: Output Generation (no GPU)
@@ -232,6 +281,7 @@ class TriageAgent:
                 f"(Phase1: {phase1_duration:.1f}s, Swap: {swap_duration:.1f}s, "
                 f"Phase2: {phase2_duration:.1f}s)"
             )
+            log_vram_status(f"patient {self._patient_count} end")
             self.session_logger.log_patient_end(self._patient_count, patient_id)
 
         except Exception as e:

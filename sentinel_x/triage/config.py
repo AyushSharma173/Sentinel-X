@@ -27,10 +27,12 @@ MEDGEMMA_DTYPE = "bfloat16"
 VISION_MODEL_ID = "google/medgemma-1.5-4b-it"
 VISION_MODEL_DTYPE = "bfloat16"  # Full precision for visual fidelity
 
-# Phase 2: Reasoning model (MedGemma 27B — best text reasoning)
-REASONER_MODEL_ID = "google/medgemma-27b-it"
-REASONER_QUANTIZATION = "nf4"  # 4-bit NormalFloat
-REASONER_USE_DOUBLE_QUANT = True  # Nested quantization for extra savings
+# Phase 2: Reasoning model (MedGemma 27B text-only — best text reasoning)
+# Uses Unsloth's pre-quantized BnB 4-bit version (16.6GB download vs 54GB full-precision).
+# The text-only variant is ideal for Phase 2 since it receives no images.
+REASONER_MODEL_ID = "unsloth/medgemma-27b-text-it-unsloth-bnb-4bit"
+REASONER_QUANTIZATION = "nf4"  # Pre-quantized NF4 4-bit
+REASONER_USE_DOUBLE_QUANT = True  # Already applied in pre-quantized weights
 
 # CT processing configuration
 CT_NUM_SLICES = 85  # Number of slices to sample from volume

@@ -1,9 +1,11 @@
-"""Phase 2 Clinical Reasoner — MedGemma 27B for delta analysis.
+"""Phase 2 Clinical Reasoner — MedGemma 27B text-only for delta analysis.
 
-Loads the 27B text model with NF4 4-bit quantization via BitsAndBytes
-(~13-14GB VRAM with double quantization). Receives the FHIR clinical
-narrative + Phase 1 VisualFactSheet and performs Delta Analysis to
-classify each finding as CHRONIC_STABLE, ACUTE_NEW, or DISCORDANT.
+Uses Unsloth's pre-quantized BnB NF4 4-bit version of medgemma-27b-text-it
+(~16.6GB download, ~13-14GB VRAM). This is the text-only variant — ideal for
+Phase 2 since it receives no images, only the FHIR narrative + Phase 1 fact sheet.
+
+Receives the FHIR clinical narrative + Phase 1 VisualFactSheet and performs
+Delta Analysis to classify each finding as CHRONIC_STABLE, ACUTE_NEW, or DISCORDANT.
 """
 
 import json
@@ -12,12 +14,17 @@ from dataclasses import dataclass, field
 from typing import List, Optional
 
 import torch
-from transformers import AutoModelForImageTextToText, AutoProcessor
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from .config import REASONER_MODEL_ID, REASONER_USE_DOUBLE_QUANT, PRIORITY_ROUTINE
 from .json_repair import parse_json_safely
 from .prompts import PHASE2_SYSTEM_PROMPT, build_phase2_user_prompt
-from .vram_manager import log_vram_status, unload_model
+from .vram_manager import (
+    VRAM_MIN_FREE_PHASE2_MB,
+    assert_vram_available,
+    log_vram_status,
+    unload_model,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +60,10 @@ class DeltaAnalysisResult:
 class ClinicalReasoner:
     """Phase 2: MedGemma 27B text-only reasoner for delta analysis.
 
-    Loads the model with NF4 4-bit quantization to fit within VRAM budget.
+    Uses Unsloth's pre-quantized BnB NF4 4-bit model — weights are already
+    quantized on disk (16.6GB download), so no BitsAndBytesConfig is needed
+    at load time. This avoids downloading the full 54GB BF16 weights.
+
     Receives clinical narrative + visual fact sheet (text only, no images)
     and performs Delta Analysis.
     """
@@ -61,32 +71,34 @@ class ClinicalReasoner:
     def __init__(self, model_id: str = REASONER_MODEL_ID):
         self.model_id = model_id
         self.model = None
-        self.processor = None
+        self.tokenizer = None
         self._loaded = False
 
+    @property
+    def processor(self):
+        """Legacy alias — returns tokenizer for backward compatibility."""
+        return self.tokenizer
+
     def load_model(self) -> None:
-        """Load 27B model with 4-bit NF4 quantization via BitsAndBytes."""
+        """Load pre-quantized 27B text-only model."""
         if self._loaded:
             logger.info("Reasoner model already loaded")
             return
 
         logger.info(f"Loading reasoner model: {self.model_id}")
+        assert_vram_available(VRAM_MIN_FREE_PHASE2_MB, "Phase 2 reasoner load")
         log_vram_status("before reasoner model load")
 
-        from transformers import BitsAndBytesConfig
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model_id)
 
-        quantization_config = BitsAndBytesConfig(
-            load_in_4bit=True,
-            bnb_4bit_quant_type="nf4",
-            bnb_4bit_compute_dtype=torch.bfloat16,
-            bnb_4bit_use_double_quant=REASONER_USE_DOUBLE_QUANT,
-        )
+        # Cap GPU allocation to 20GB — leaves ~4GB headroom for KV cache
+        # and activations, preventing OOM on 24GB cards.
+        max_mem = {0: "20GiB", "cpu": "32GiB"}
 
-        self.processor = AutoProcessor.from_pretrained(self.model_id)
-        self.model = AutoModelForImageTextToText.from_pretrained(
+        self.model = AutoModelForCausalLM.from_pretrained(
             self.model_id,
-            quantization_config=quantization_config,
             device_map="auto",
+            max_memory=max_mem,
         )
         self._loaded = True
         log_vram_status("after reasoner model load")
@@ -97,22 +109,16 @@ class ClinicalReasoner:
     ) -> List[dict]:
         """Build text-only messages for Phase 2 Delta Analysis.
 
-        Uses system + user role format for the 27B-it model.
-        No images — this is pure text reasoning.
+        Uses system + user role format with plain string content
+        (text-only model, no multimodal content dicts needed).
         """
         user_prompt = build_phase2_user_prompt(
             clinical_narrative, visual_fact_sheet_json
         )
 
         messages = [
-            {
-                "role": "system",
-                "content": [{"type": "text", "text": PHASE2_SYSTEM_PROMPT}],
-            },
-            {
-                "role": "user",
-                "content": [{"type": "text", "text": user_prompt}],
-            },
+            {"role": "system", "content": PHASE2_SYSTEM_PROMPT},
+            {"role": "user", "content": user_prompt},
         ]
         return messages
 
@@ -161,7 +167,7 @@ class ClinicalReasoner:
         self,
         clinical_narrative: str,
         visual_fact_sheet: dict,
-        max_new_tokens: int = 1024,
+        max_new_tokens: int = 512,
     ) -> DeltaAnalysisResult:
         """Run Phase 2 Delta Analysis: compare visual findings against clinical history.
 
@@ -177,29 +183,34 @@ class ClinicalReasoner:
             self.load_model()
 
         visual_json = json.dumps(visual_fact_sheet, indent=2)
-        logger.info("Phase 2: Running delta analysis (text-only)")
+        logger.info(
+            "Phase 2: Running delta analysis (text-only) | "
+            f"narrative_chars={len(clinical_narrative)}, "
+            f"truncated={len(clinical_narrative) > 12_000}"
+        )
         messages = self._build_messages(clinical_narrative, visual_json)
 
         # Tokenize (text-only, no images)
-        prompt = self.processor.apply_chat_template(
+        inputs = self.tokenizer.apply_chat_template(
             messages,
             add_generation_prompt=True,
-            tokenize=False,
-        )
-
-        inputs = self.processor(
-            text=prompt,
             return_tensors="pt",
+            return_dict=True,
         ).to(self.model.device)
 
         input_len = inputs["input_ids"].shape[-1]
+        logger.info(
+            f"Phase 2 input budget: {input_len} tokens | "
+            f"max_new_tokens={max_new_tokens} | "
+            f"total_budget={input_len + max_new_tokens}"
+        )
 
         with torch.inference_mode():
             outputs = self.model.generate(
                 **inputs, max_new_tokens=max_new_tokens, do_sample=False
             )
 
-        response = self.processor.decode(
+        response = self.tokenizer.decode(
             outputs[0][input_len:], skip_special_tokens=True
         )
 
@@ -214,8 +225,8 @@ class ClinicalReasoner:
         """Unload reasoner model and free GPU memory."""
         if self._loaded:
             logger.info("Unloading reasoner model...")
-            unload_model(self.model, self.processor)
+            unload_model(self.model, self.tokenizer)
             self.model = None
-            self.processor = None
+            self.tokenizer = None
             self._loaded = False
             logger.info("Reasoner model unloaded")

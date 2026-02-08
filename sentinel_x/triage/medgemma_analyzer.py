@@ -17,7 +17,12 @@ from transformers import AutoModelForImageTextToText, AutoProcessor
 from .config import VISION_MODEL_ID
 from .json_repair import parse_json_safely
 from .prompts import PHASE1_SYSTEM_PROMPT, build_phase1_user_prompt
-from .vram_manager import log_vram_status, unload_model
+from .vram_manager import (
+    VRAM_MIN_FREE_PHASE1_MB,
+    assert_vram_available,
+    log_vram_status,
+    unload_model,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -93,6 +98,7 @@ class VisionAnalyzer:
             return
 
         logger.info(f"Loading vision model: {self.model_id}")
+        assert_vram_available(VRAM_MIN_FREE_PHASE1_MB, "Phase 1 vision load")
         log_vram_status("before vision model load")
 
         try:
@@ -168,7 +174,7 @@ class VisionAnalyzer:
             num_slices_analyzed=num_slices,
         )
 
-    def analyze(self, images: List[Image.Image], max_new_tokens: int = 1024) -> VisualFactSheet:
+    def analyze(self, images: List[Image.Image], max_new_tokens: int = 512) -> VisualFactSheet:
         """Run Phase 1 vision analysis on CT images (no clinical context).
 
         Args:
@@ -197,7 +203,10 @@ class VisionAnalyzer:
 
         with torch.inference_mode():
             outputs = self.model.generate(
-                **inputs, max_new_tokens=max_new_tokens, do_sample=False
+                **inputs,
+                max_new_tokens=max_new_tokens,
+                do_sample=False,
+                repetition_penalty=1.2,
             )
 
         # Decode only the generated portion (skip input tokens)

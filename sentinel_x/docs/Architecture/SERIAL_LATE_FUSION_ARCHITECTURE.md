@@ -103,7 +103,7 @@ Per-Patient Pipeline (Serial Execution):
                           ▼
   ┌─────────────────────────────────────────────────────┐
   │ PHASE 2: CLINICAL REASONING (~13-14GB VRAM)         │
-  │  Model: google/medgemma-27b-it (NF4 4-bit quant)   │
+  │  Model: unsloth/medgemma-27b-text-it (pre-quant NF4)│
   │                                                     │
   │  Input:  FHIR ClinicalStream (text)                 │
   │          + Visual Fact Sheet (JSON from Phase 1)    │
@@ -165,15 +165,17 @@ Phase 2 (Reasoning — MedGemma 27B):
 | **VRAM** | ~8 GB | Leaves 16GB headroom on RTX 4090 |
 | **Architecture** | Gemma 3 + SigLIP | SigLIP encoder trained on de-identified medical images |
 
-### Phase 2: Reasoning — `google/medgemma-27b-it`
+### Phase 2: Reasoning — `unsloth/medgemma-27b-text-it-unsloth-bnb-4bit`
 
 | Property | Value | Rationale |
 |----------|-------|-----------|
+| **Base model** | `google/medgemma-27b-text-it` | Text-only variant — no vision encoder overhead since Phase 2 is text-only |
 | **Version** | v1.0 (May 2025) | Best text reasoning available; 27B doesn't have a v1.5 |
 | **Medical QA** | MedQA: 87.7% | vs 4B's 64.4% — 23 points better at clinical reasoning |
 | **EHR Reasoning** | EHRQA: 93.6% | Excels at multi-hop EHR reasoning — exactly what Delta Analysis needs |
-| **Quantization** | NF4 4-bit (BitsAndBytes) | Double quantization compresses 27B params to ~13.5GB |
+| **Quantization** | Pre-quantized NF4 4-bit (Unsloth) | Pre-quantized on disk: 16.6GB download vs 54GB full-precision. Same quality as runtime quantization via BitsAndBytes. |
 | **VRAM** | ~13-14 GB | Fits within 24GB budget after Phase 1 unload |
+| **Disk** | ~16.6 GB | vs 54GB for full-precision weights — critical for limited storage environments |
 
 ---
 

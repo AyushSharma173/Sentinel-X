@@ -88,9 +88,18 @@ PHASE2_USER_PROMPT_TEMPLATE = """## CLINICAL HISTORY
 
 Perform Delta Analysis. Compare each visual finding against the clinical history. Classify every finding and determine the overall triage priority."""
 
+# Phase 2 narrative truncation — keeps total input under ~4000 tokens to avoid
+# OOM from KV cache on the 27B model (each token costs ~377KB KV cache).
+PHASE2_MAX_NARRATIVE_CHARS = 12_000  # ~3000 tokens
+
 
 def build_phase2_user_prompt(clinical_narrative: str, visual_fact_sheet_json: str) -> str:
     """Build Phase 2 user prompt with clinical context and visual findings."""
+    if len(clinical_narrative) > PHASE2_MAX_NARRATIVE_CHARS:
+        clinical_narrative = (
+            clinical_narrative[:PHASE2_MAX_NARRATIVE_CHARS]
+            + "\n\n[... clinical history truncated for context window ...]"
+        )
     return PHASE2_USER_PROMPT_TEMPLATE.format(
         clinical_narrative=clinical_narrative,
         visual_fact_sheet_json=visual_fact_sheet_json,
