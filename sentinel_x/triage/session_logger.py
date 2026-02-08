@@ -1,7 +1,9 @@
 """Human-readable session trace logger for Sentinel-X pipeline.
 
 Writes a single .txt log file per session that traces the full pipeline
-for every patient: FHIR extraction, MedGemma prompt/response, and parsed results.
+for every patient across both phases of the Serial Late Fusion architecture:
+  Phase 1 (Vision): 4B model visual detection
+  Phase 2 (Reasoning): 27B model delta analysis
 """
 
 import time
@@ -31,7 +33,7 @@ class SessionLogger:
         # Write session header
         self._write(
             "=" * 80 + "\n"
-            + " " * 22 + "SENTINEL-X TRIAGE SESSION LOG\n"
+            + " " * 15 + "SENTINEL-X TRIAGE SESSION LOG (Late Fusion)\n"
             + "=" * 80 + "\n"
             + f"Session:  {self._session_id}\n"
             + f"Started:  {now.strftime('%Y-%m-%d %H:%M:%S')}\n"
@@ -134,7 +136,7 @@ class SessionLogger:
         self._write(f"Extraction Warnings: {warnings_text}\n\n")
 
         # Full narrative
-        self._write("--- CLINICAL NARRATIVE (sent to MedGemma as context) ---\n\n")
+        self._write("--- CLINICAL NARRATIVE (sent to Phase 2 reasoner) ---\n\n")
         self._write(clinical_stream.narrative + "\n\n")
         self._write("--- END CLINICAL NARRATIVE ---\n\n")
 
@@ -151,20 +153,156 @@ class SessionLogger:
         duration_secs: float,
     ) -> None:
         ts = self._ts()
-        header = f" STEP 2: CT VOLUME PROCESSING                            [{ts} | {duration_secs:.2f}s]"
+        header = f" STEP 2: CT VOLUME PROCESSING (Multi-Window)              [{ts} | {duration_secs:.2f}s]"
         self._write("=" * 80 + "\n" + header + "\n" + "=" * 80 + "\n\n")
 
         self._write(f"Volume File: {volume_path}\n")
         self._write(f"Total Slices Sampled: {num_slices}\n")
-        # Show first ~15 indices for readability
         indices_str = str(slice_indices[:15])
         if len(slice_indices) > 15:
             indices_str = indices_str[:-1] + ", ...]"
         self._write(f"Slice Indices: {indices_str}\n")
-        self._write(f"Image Dimensions: {image_size[0]} x {image_size[1]} (RGB)\n\n")
+        self._write(f"Image Dimensions: {image_size[0]} x {image_size[1]} (RGB Multi-Window)\n")
+        self._write(f"Channels: R=Wide(-1024,1024) G=Soft(-135,215) B=Brain(0,80)\n\n")
 
     # ------------------------------------------------------------------
-    # Step 3: MedGemma analysis (prompt + response)
+    # Step 3: Phase 1 — Vision Analysis (4B)
+    # ------------------------------------------------------------------
+
+    def log_phase1_prompt(
+        self,
+        system_prompt: str,
+        user_prompt: str,
+        num_images: int,
+        volume_path: Path,
+    ) -> None:
+        ts = self._ts()
+        header = f" STEP 3: PHASE 1 — VISUAL DETECTION (4B)                  [{ts}]"
+        self._write("=" * 80 + "\n" + header + "\n" + "=" * 80 + "\n\n")
+
+        self._write(f"Model: google/medgemma-1.5-4b-it (BF16, no quant)\n")
+        self._write(f"Mode: Vision-only (NO clinical context)\n\n")
+
+        self._write("--- PHASE 1 SYSTEM PROMPT ---\n\n")
+        self._write(system_prompt + "\n\n")
+        self._write("--- END PHASE 1 SYSTEM PROMPT ---\n\n")
+
+        self._write("--- PHASE 1 USER PROMPT ---\n\n")
+        self._write(f"[{num_images} CT slice images from {volume_path.name}]\n\n")
+        self._write(user_prompt + "\n\n")
+        self._write("--- END PHASE 1 USER PROMPT ---\n\n")
+
+    def log_phase1_response(
+        self, raw_response: str, fact_sheet, duration_secs: float
+    ) -> None:
+        ts = self._ts()
+        self._write(f"Phase 1 Duration: {duration_secs:.2f}s (completed {ts})\n\n")
+
+        self._write("--- PHASE 1 RAW RESPONSE ---\n\n")
+        self._write(raw_response + "\n\n")
+        self._write("--- END PHASE 1 RAW RESPONSE ---\n\n")
+
+        # Parsed findings table
+        self._write(f"Parsed Findings: {len(fact_sheet.findings)}\n\n")
+        if fact_sheet.findings:
+            self._write(f"{'#':<4}{'Finding':<20}{'Location':<12}{'Size':<10}{'Slice':<8}Description\n")
+            self._write(f"{'—'*3:<4}{'—'*18:<20}{'—'*10:<12}{'—'*8:<10}{'—'*5:<8}{'—'*30}\n")
+            for i, f in enumerate(fact_sheet.findings, 1):
+                self._write(
+                    f"{i:<4}{f.finding[:18]:<20}{f.location[:10]:<12}"
+                    f"{f.size[:8]:<10}{f.slice_index:<8}{f.description[:40]}\n"
+                )
+        self._write("\n")
+
+    # ------------------------------------------------------------------
+    # Model Swap
+    # ------------------------------------------------------------------
+
+    def log_model_swap(self, from_model: str, to_model: str, duration_secs: float) -> None:
+        ts = self._ts()
+        header = f" MODEL SWAP                                               [{ts} | {duration_secs:.2f}s]"
+        self._write("-" * 80 + "\n" + header + "\n" + "-" * 80 + "\n\n")
+        self._write(f"Unloaded: {from_model}\n")
+        self._write(f"Loading:  {to_model}\n\n")
+
+    # ------------------------------------------------------------------
+    # Step 4: Phase 2 — Clinical Reasoning (27B)
+    # ------------------------------------------------------------------
+
+    def log_phase2_prompt(
+        self,
+        system_prompt: str,
+        user_prompt: str,
+    ) -> None:
+        ts = self._ts()
+        header = f" STEP 4: PHASE 2 — CLINICAL REASONING (27B)               [{ts}]"
+        self._write("=" * 80 + "\n" + header + "\n" + "=" * 80 + "\n\n")
+
+        self._write(f"Model: google/medgemma-27b-it (NF4 4-bit, double quant)\n")
+        self._write(f"Mode: Text-only (Clinical narrative + Visual fact sheet)\n\n")
+
+        self._write("--- PHASE 2 SYSTEM PROMPT ---\n\n")
+        self._write(system_prompt + "\n\n")
+        self._write("--- END PHASE 2 SYSTEM PROMPT ---\n\n")
+
+        self._write("--- PHASE 2 USER PROMPT ---\n\n")
+        self._write(user_prompt + "\n\n")
+        self._write("--- END PHASE 2 USER PROMPT ---\n\n")
+
+    def log_phase2_response(
+        self, raw_response: str, delta_result, duration_secs: float
+    ) -> None:
+        ts = self._ts()
+        self._write(f"Phase 2 Duration: {duration_secs:.2f}s (completed {ts})\n\n")
+
+        self._write("--- PHASE 2 RAW RESPONSE ---\n\n")
+        self._write(raw_response + "\n\n")
+        self._write("--- END PHASE 2 RAW RESPONSE ---\n\n")
+
+        # Delta analysis table
+        self.log_delta_analysis_table(delta_result)
+
+    def log_delta_analysis_table(self, delta_result) -> None:
+        """Log formatted table of finding classifications."""
+        header = " STEP 5: DELTA ANALYSIS RESULTS"
+        self._write("=" * 80 + "\n" + header + "\n" + "=" * 80 + "\n\n")
+
+        if delta_result.delta_analysis:
+            self._write(
+                f"{'#':<4}{'Finding':<25}{'Classification':<18}{'Pri':<5}"
+                f"{'History Match':<25}Reasoning\n"
+            )
+            self._write(
+                f"{'—'*3:<4}{'—'*23:<25}{'—'*16:<18}{'—'*3:<5}"
+                f"{'—'*23:<25}{'—'*30}\n"
+            )
+            for i, de in enumerate(delta_result.delta_analysis, 1):
+                hm = str(de.history_match or "—")[:23]
+                self._write(
+                    f"{i:<4}{de.finding[:23]:<25}{de.classification:<18}"
+                    f"{de.priority:<5}{hm:<25}{de.reasoning[:40]}\n"
+                )
+        else:
+            self._write("No delta entries produced.\n")
+
+        self._write(f"\nOverall Priority: {delta_result.overall_priority} "
+                     f"({self._priority_name(delta_result.overall_priority)})\n")
+        self._write(f"Rationale: {delta_result.priority_rationale}\n")
+        self._write(f"Summary: {delta_result.findings_summary}\n\n")
+
+    # ------------------------------------------------------------------
+    # Step 6: Output saved
+    # ------------------------------------------------------------------
+
+    def log_output_saved(self, result_path: Path, priority_level: int) -> None:
+        header = " STEP 6: OUTPUT SAVED"
+        self._write("=" * 80 + "\n" + header + "\n" + "=" * 80 + "\n\n")
+
+        self._write(f"Result File: {result_path}\n")
+        self._write(f"Priority: {priority_level} ({self._priority_name(priority_level)})\n\n")
+
+    # ------------------------------------------------------------------
+    # Legacy methods (kept for backward compatibility)
     # ------------------------------------------------------------------
 
     def log_medgemma_prompt(
@@ -174,42 +312,24 @@ class SessionLogger:
         num_images: int,
         volume_path: Path,
     ) -> None:
-        ts = self._ts()
-        # Write step header (duration will be filled in by response half)
-        header = f" STEP 3: MEDGEMMA ANALYSIS                               [{ts}]"
-        self._write("=" * 80 + "\n" + header + "\n" + "=" * 80 + "\n\n")
-
-        self._write(f"Model: google/medgemma-4b-it\n\n")
-
-        self._write("--- SYSTEM PROMPT ---\n\n")
-        self._write(system_prompt + "\n\n")
-        self._write("--- END SYSTEM PROMPT ---\n\n")
-
-        self._write("--- USER PROMPT ---\n\n")
-        self._write(f"[{num_images} CT slice images from {volume_path.name}]\n\n")
-        self._write(user_prompt + "\n\n")
-        self._write("--- END USER PROMPT ---\n\n")
+        """Legacy — delegates to log_phase1_prompt."""
+        self.log_phase1_prompt(system_prompt, user_prompt, num_images, volume_path)
 
     def log_medgemma_response(self, raw_response: str, duration_secs: float) -> None:
+        """Legacy — logs raw response without fact sheet parsing."""
         ts = self._ts()
         self._write(f"Analysis Duration: {duration_secs:.2f}s (completed {ts})\n\n")
-
         self._write("--- MEDGEMMA RAW RESPONSE ---\n\n")
         self._write(raw_response + "\n\n")
         self._write("--- END MEDGEMMA RAW RESPONSE ---\n\n")
 
-    # ------------------------------------------------------------------
-    # Step 4: Parsed results
-    # ------------------------------------------------------------------
-
     def log_parsed_results(self, analysis, slice_indices: list) -> None:
-        header = " STEP 4: PARSED RESULTS"
+        """Legacy — logs old-style parsed results."""
+        header = " PARSED RESULTS (Legacy)"
         self._write("=" * 80 + "\n" + header + "\n" + "=" * 80 + "\n\n")
 
-        # Calculate original volume index for key slice
         sampled_idx = analysis.key_slice_index
         original_idx = slice_indices[sampled_idx] if sampled_idx < len(slice_indices) else sampled_idx
-
         priority_label = f"{analysis.priority_level} ({self._priority_name(analysis.priority_level)})"
 
         fields = [
@@ -224,20 +344,8 @@ class SessionLogger:
         self._write(f"{'Field':<23}Extracted Value\n")
         self._write(f"{'-----':<23}---------------\n")
         for name, value in fields:
-            # Truncate long values for table display but show full text
             self._write(f"{name + ':':<23}{value}\n")
         self._write("\n")
-
-    # ------------------------------------------------------------------
-    # Step 5: Output saved
-    # ------------------------------------------------------------------
-
-    def log_output_saved(self, result_path: Path, priority_level: int) -> None:
-        header = " STEP 5: OUTPUT SAVED"
-        self._write("=" * 80 + "\n" + header + "\n" + "=" * 80 + "\n\n")
-
-        self._write(f"Result File: {result_path}\n")
-        self._write(f"Priority: {priority_level} ({self._priority_name(priority_level)})\n\n")
 
     # ------------------------------------------------------------------
     # Error handling

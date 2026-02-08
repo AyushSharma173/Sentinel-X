@@ -1,4 +1,11 @@
-"""Main triage agent orchestrating the CT analysis pipeline."""
+"""Main triage agent orchestrating the Serial Late Fusion pipeline.
+
+Per-patient execution:
+  Phase 0: FHIR extraction + CT multi-window preprocessing (no GPU)
+  Phase 1: Load 4B vision model -> visual detection -> unload (8GB VRAM)
+  Phase 2: Load 27B reasoner -> delta analysis -> unload (13-14GB VRAM)
+  Phase 3: Merge outputs -> save results -> update worklist (no GPU)
+"""
 
 import argparse
 import json
@@ -17,85 +24,70 @@ from .config import (
     LOG_FILE,
     LOG_FORMAT,
     OUTPUT_DIR,
+    VISION_MODEL_ID,
+    REASONER_MODEL_ID,
 )
 from .ct_processor import process_ct_volume
 from .fhir_janitor import FHIRJanitor
 from .inbox_watcher import InboxWatcher, PatientData
-from .medgemma_analyzer import MedGemmaAnalyzer
+from .medgemma_analyzer import VisionAnalyzer
+from .medgemma_reasoner import ClinicalReasoner
 from .output_generator import generate_triage_result, save_triage_result
-from .prompts import SYSTEM_PROMPT, build_user_prompt
+from .prompts import (
+    PHASE1_SYSTEM_PROMPT,
+    PHASE2_SYSTEM_PROMPT,
+    build_phase1_user_prompt,
+    build_phase2_user_prompt,
+)
 from .session_logger import SessionLogger
+from .vram_manager import log_vram_status
 from .worklist import Worklist
 
 
 def setup_logging(verbose: bool = False) -> None:
-    """Configure logging for the agent.
-
-    Args:
-        verbose: Enable verbose debug logging
-    """
     level = logging.DEBUG if verbose else logging.INFO
-
-    # Configure root logger
     logging.basicConfig(
         level=level,
         format=LOG_FORMAT,
-        handlers=[
-            logging.FileHandler(LOG_FILE),
-            logging.StreamHandler(sys.stdout),
-        ],
+        handlers=[logging.FileHandler(LOG_FILE), logging.StreamHandler(sys.stdout)],
     )
-
-    # Reduce noise from transformers
     logging.getLogger("transformers").setLevel(logging.WARNING)
     logging.getLogger("accelerate").setLevel(logging.WARNING)
 
 
 class TriageAgent:
-    """Main triage agent that orchestrates the processing pipeline."""
+    """Main triage agent — Serial Late Fusion architecture.
+
+    Models are loaded on-demand per-phase and unloaded immediately after,
+    so they never coexist in VRAM (24GB budget).
+    """
 
     def __init__(
         self,
-        volumes_dir: Path = INBOX_VOLUMES_DIR,
-        reports_dir: Path = INBOX_REPORTS_DIR,
-        output_dir: Path = OUTPUT_DIR,
-        poll_interval: float = INBOX_POLL_INTERVAL,
+        volumes_dir=INBOX_VOLUMES_DIR,
+        reports_dir=INBOX_REPORTS_DIR,
+        output_dir=OUTPUT_DIR,
+        poll_interval=INBOX_POLL_INTERVAL,
     ):
-        """Initialize the triage agent.
-
-        Args:
-            volumes_dir: Directory containing CT volumes
-            reports_dir: Directory containing reports
-            output_dir: Directory for output results
-            poll_interval: Seconds between inbox scans
-        """
         self.logger = logging.getLogger(__name__)
-
-        # Initialize components
         self.inbox_watcher = InboxWatcher(
             volumes_dir=volumes_dir,
             reports_dir=reports_dir,
             poll_interval=poll_interval,
         )
-        self.analyzer = MedGemmaAnalyzer()
+        # Phase 1 and Phase 2 components (loaded on-demand, not at init)
+        self.vision_analyzer = VisionAnalyzer()
+        self.reasoner = ClinicalReasoner()
+        # Legacy alias so existing references (e.g. demo_service) still work
+        self.analyzer = self.vision_analyzer
+
         self.worklist = Worklist(output_dir=output_dir)
         self.output_dir = output_dir
-
         self._running = False
         self._patient_count = 0
-
-        # Session trace logger
         self.session_logger = SessionLogger(LOG_DIR)
 
     def _load_fhir_bundle(self, report_path: Path) -> Dict[str, Any]:
-        """Load the raw FHIR bundle from report path.
-
-        Args:
-            report_path: Path to the report JSON file
-
-        Returns:
-            FHIR Bundle dictionary
-        """
         try:
             with open(report_path, "r") as f:
                 return json.load(f)
@@ -104,28 +96,20 @@ class TriageAgent:
             return {}
 
     def process_patient(self, patient_data: PatientData) -> None:
-        """Process a single patient through the triage pipeline.
-
-        Args:
-            patient_data: Patient volume and report paths
-        """
         self._process_patient_internal(patient_data)
 
     def _process_patient_internal(self, patient_data: PatientData) -> None:
-        """Internal patient processing implementation.
-
-        Args:
-            patient_data: Patient volume and report paths
-        """
         patient_id = patient_data.patient_id
         self.logger.info(f"Starting triage for patient: {patient_id}")
-
         self._patient_count += 1
         self.session_logger.log_patient_start(self._patient_count, patient_id)
 
         try:
-            # Step 1: Parse FHIR context using FHIRJanitor (Dense Clinical Stream)
-            self.logger.info(f"[{patient_id}] Parsing clinical context with FHIRJanitor")
+            # ==============================================================
+            # PHASE 0: Preprocessing (no GPU)
+            # ==============================================================
+
+            # Step 0a: Parse FHIR context using FHIRJanitor
             t0 = time.time()
             fhir_bundle = self._load_fhir_bundle(patient_data.report_path)
             janitor = FHIRJanitor()
@@ -143,8 +127,7 @@ class TriageAgent:
                 duration_secs=fhir_duration,
             )
 
-            # Step 2: Process CT volume
-            self.logger.info(f"[{patient_id}] Processing CT volume")
+            # Step 0b: Process CT volume (multi-window RGB)
             t0 = time.time()
             images, slice_indices, metadata = process_ct_volume(patient_data.volume_path)
             ct_duration = time.time() - t0
@@ -157,185 +140,179 @@ class TriageAgent:
                 duration_secs=ct_duration,
             )
 
-            # Step 3: Run MedGemma analysis
-            self.logger.info(f"[{patient_id}] Running MedGemma analysis")
+            # ==============================================================
+            # PHASE 1: Visual Detection (4B, ~8GB VRAM)
+            # ==============================================================
 
-            # Log the prompt before calling the model
-            user_prompt = build_user_prompt(context_text, len(images))
-            self.session_logger.log_medgemma_prompt(
-                system_prompt=SYSTEM_PROMPT,
-                user_prompt=user_prompt,
+            phase1_user_prompt = build_phase1_user_prompt(len(images))
+            self.session_logger.log_phase1_prompt(
+                system_prompt=PHASE1_SYSTEM_PROMPT,
+                user_prompt=phase1_user_prompt,
                 num_images=len(images),
                 volume_path=patient_data.volume_path,
             )
 
             t0 = time.time()
-            analysis = self.analyzer.analyze(images, context_text)
-            analysis_duration = time.time() - t0
+            self.vision_analyzer.load_model()
+            visual_fact_sheet = self.vision_analyzer.analyze(images)
+            phase1_duration = time.time() - t0
 
-            self.session_logger.log_medgemma_response(
-                raw_response=analysis.raw_response,
-                duration_secs=analysis_duration,
+            self.session_logger.log_phase1_response(
+                raw_response=visual_fact_sheet.raw_response,
+                fact_sheet=visual_fact_sheet,
+                duration_secs=phase1_duration,
             )
 
-            # Step 4: Log parsed results
-            self.session_logger.log_parsed_results(analysis, slice_indices)
+            # Unload 4B model before loading 27B
+            t_swap = time.time()
+            self.vision_analyzer.unload()
 
-            # Step 5: Generate and save output
-            self.logger.info(f"[{patient_id}] Generating triage output")
+            # ==============================================================
+            # PHASE 2: Clinical Reasoning (27B, ~13-14GB VRAM)
+            # ==============================================================
+
+            self.reasoner.load_model()
+            swap_duration = time.time() - t_swap
+
+            self.session_logger.log_model_swap(
+                from_model=VISION_MODEL_ID,
+                to_model=REASONER_MODEL_ID,
+                duration_secs=swap_duration,
+            )
+
+            phase2_user_prompt = build_phase2_user_prompt(
+                context_text, visual_fact_sheet.to_json()
+            )
+            self.session_logger.log_phase2_prompt(
+                system_prompt=PHASE2_SYSTEM_PROMPT,
+                user_prompt=phase2_user_prompt,
+            )
+
+            t0 = time.time()
+            delta_result = self.reasoner.analyze(
+                clinical_narrative=context_text,
+                visual_fact_sheet=visual_fact_sheet.to_dict(),
+            )
+            phase2_duration = time.time() - t0
+
+            self.session_logger.log_phase2_response(
+                raw_response=delta_result.raw_response,
+                delta_result=delta_result,
+                duration_secs=phase2_duration,
+            )
+
+            # Unload 27B model
+            self.reasoner.unload()
+
+            # ==============================================================
+            # PHASE 3: Output Generation (no GPU)
+            # ==============================================================
+
             result = generate_triage_result(
                 patient_id=patient_id,
-                analysis=analysis,
+                visual_fact_sheet=visual_fact_sheet,
+                delta_result=delta_result,
                 images=images,
                 slice_indices=slice_indices,
                 conditions_from_context=clinical_stream.conditions,
             )
-
             result_path = save_triage_result(patient_id, result, self.output_dir)
+            self.session_logger.log_output_saved(result_path, delta_result.overall_priority)
 
-            self.session_logger.log_output_saved(result_path, analysis.priority_level)
-
-            # Step 6: Update worklist
+            # Update worklist
             self.worklist.add_entry(
                 patient_id=patient_id,
-                priority_level=analysis.priority_level,
-                findings_summary=analysis.findings_summary,
+                priority_level=delta_result.overall_priority,
+                findings_summary=delta_result.findings_summary,
                 result_path=str(result_path),
             )
 
             self.logger.info(
-                f"[{patient_id}] Triage complete - Priority {analysis.priority_level}"
+                f"[{patient_id}] Triage complete - Priority {delta_result.overall_priority} "
+                f"(Phase1: {phase1_duration:.1f}s, Swap: {swap_duration:.1f}s, "
+                f"Phase2: {phase2_duration:.1f}s)"
             )
-
             self.session_logger.log_patient_end(self._patient_count, patient_id)
 
         except Exception as e:
             self.logger.error(f"[{patient_id}] Triage failed: {e}", exc_info=True)
             self.session_logger.log_error(patient_id, str(e))
             self.session_logger.log_patient_end(self._patient_count, patient_id)
+            # Ensure models are unloaded on failure
+            try:
+                self.vision_analyzer.unload()
+            except Exception:
+                pass
+            try:
+                self.reasoner.unload()
+            except Exception:
+                pass
             raise
 
-    def run(self, max_patients: int = None) -> None:
+    def run(self, max_patients=None):
         """Start the triage agent in watch mode.
 
-        Args:
-            max_patients: Maximum number of patients to process (None = infinite)
+        Models are loaded/unloaded per-patient inside _process_patient_internal,
+        NOT preloaded at startup.
         """
-        self.logger.info("Starting Sentinel-X Triage Agent")
-        self.logger.info(f"Watching: {self.inbox_watcher.volumes_dir}")
-        self.logger.info(f"Output: {self.output_dir}")
-
-        # Load model upfront
-        self.logger.info("Loading MedGemma model...")
-        self.analyzer.load_model()
-        self.logger.info("Model loaded, starting inbox watch")
-
+        self.logger.info("Starting Sentinel-X Triage Agent (Serial Late Fusion)")
         self._running = True
 
-        # Set up signal handlers
         def signal_handler(sig, frame):
-            self.logger.info("Received shutdown signal")
             self.stop()
 
         signal.signal(signal.SIGINT, signal_handler)
         signal.signal(signal.SIGTERM, signal_handler)
 
-        # Start watching inbox
         try:
             self.inbox_watcher.watch(
-                callback=self.process_patient,
-                max_iterations=max_patients,
+                callback=self.process_patient, max_iterations=max_patients
             )
         except KeyboardInterrupt:
-            self.logger.info("Interrupted by user")
+            pass
         finally:
             self.stop()
 
-    def stop(self) -> None:
-        """Stop the triage agent."""
-        self.logger.info("Stopping triage agent")
+    def stop(self):
         self._running = False
         self.inbox_watcher.stop()
-
-        # Print statistics
+        # Ensure models are unloaded
+        try:
+            self.vision_analyzer.unload()
+        except Exception:
+            pass
+        try:
+            self.reasoner.unload()
+        except Exception:
+            pass
         stats = self.worklist.get_statistics()
         self.logger.info(f"Processed {stats['total']} patients")
-        for level, count in stats.get("by_priority", {}).items():
-            name = stats["priority_names"].get(level, "UNKNOWN")
-            self.logger.info(f"  Priority {level} ({name}): {count}")
 
     def process_single_patient(self, patient_id: str) -> bool:
-        """Process a single patient by ID.
-
-        Args:
-            patient_id: Patient ID to process
-
-        Returns:
-            True if successful, False otherwise
-        """
-        self.logger.info(f"Processing single patient: {patient_id}")
-
-        # Load model
-        self.analyzer.load_model()
-
-        # Find patient data
+        """Process a single patient by ID (models loaded on-demand per-phase)."""
         patient_data = self.inbox_watcher.process_single(patient_id)
         if not patient_data:
-            self.logger.error(f"Patient not found: {patient_id}")
             return False
-
         try:
             self.process_patient(patient_data)
             return True
-        except Exception as e:
-            self.logger.error(f"Failed to process patient: {e}")
+        except Exception:
             return False
 
 
 def main():
-    """Main entry point for the triage agent."""
-    parser = argparse.ArgumentParser(
-        description="Sentinel-X Triage Agent - CT scan prioritization using MedGemma"
-    )
-    parser.add_argument(
-        "--single",
-        type=str,
-        help="Process a single patient by ID instead of watching inbox",
-    )
-    parser.add_argument(
-        "--max-patients",
-        type=int,
-        default=None,
-        help="Maximum number of patients to process before stopping",
-    )
-    parser.add_argument(
-        "--poll-interval",
-        type=float,
-        default=INBOX_POLL_INTERVAL,
-        help=f"Seconds between inbox scans (default: {INBOX_POLL_INTERVAL})",
-    )
-    parser.add_argument(
-        "--verbose", "-v",
-        action="store_true",
-        help="Enable verbose debug logging",
-    )
-
+    parser = argparse.ArgumentParser(description="Sentinel-X Triage Agent")
+    parser.add_argument("--single", type=str)
+    parser.add_argument("--max-patients", type=int, default=None)
+    parser.add_argument("--poll-interval", type=float, default=INBOX_POLL_INTERVAL)
+    parser.add_argument("--verbose", "-v", action="store_true")
     args = parser.parse_args()
-
-    # Set up logging
     setup_logging(verbose=args.verbose)
-
-    # Create agent
-    agent = TriageAgent(
-        poll_interval=args.poll_interval,
-    )
-
+    agent = TriageAgent(poll_interval=args.poll_interval)
     if args.single:
-        # Process single patient
         success = agent.process_single_patient(args.single)
         sys.exit(0 if success else 1)
     else:
-        # Run in watch mode
         agent.run(max_patients=args.max_patients)
 
 

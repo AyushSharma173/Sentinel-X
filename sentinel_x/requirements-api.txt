@@ -9,3 +9,4 @@ torch>=2.0.0
 transformers>=4.35.0
 accelerate>=0.9.0
 pillow>=10.0.0
+bitsandbytes>=0.43.0  # NF4 4-bit quantization for 27B reasoner model

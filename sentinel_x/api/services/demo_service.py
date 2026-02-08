@@ -308,15 +308,19 @@ class DemoService:
             shutil.copy2(report_txt, INBOX_REPORTS_DIR / f"{patient_id}.txt")
 
     def _run_agent(self) -> None:
-        """Run the triage agent in a background thread."""
+        """Run the triage agent in a background thread.
+
+        Serial Late Fusion: models are loaded/unloaded per-patient inside
+        the agent pipeline — no upfront model preload needed.
+        """
         import time
 
         from triage.agent import TriageAgent
         from triage.inbox_watcher import PatientData
 
-        logger.info("Agent thread started")
+        logger.info("Agent thread started (Serial Late Fusion — no model preload)")
 
-        # Create agent with callbacks
+        # Create agent (models loaded on-demand per-phase)
         agent = TriageAgent()
 
         # Set up callback wrappers
@@ -331,8 +335,14 @@ class DemoService:
                 {"patient_id": patient_id}
             ))
 
+            # Notify Phase 1 starting
+            self._run_async(ws_manager.send_event(
+                WSEventType.PHASE1_STARTED,
+                {"patient_id": patient_id, "model": "google/medgemma-1.5-4b-it"}
+            ))
+
             try:
-                # Run actual processing
+                # Run actual processing (both phases happen inside)
                 original_process(patient_data)
 
                 # Reload worklist from disk to get the entry added by agent
@@ -358,6 +368,8 @@ class DemoService:
                     ))
 
                 self._patients_processed += 1
+                # Models are transient — loaded/unloaded per patient
+                self._model_loaded = True
 
             except Exception as e:
                 logger.error(f"Agent processing failed for {patient_id}: {e}")
@@ -368,31 +380,7 @@ class DemoService:
 
         agent.process_patient = process_with_callbacks
 
-        # Load model
-        try:
-            logger.info("Loading MedGemma model...")
-            agent.analyzer.load_model()
-            self._model_loaded = True
-            logger.info("Model loaded successfully")
-        except ImportError as e:
-            logger.error(f"Failed to load model - missing dependency: {e}")
-            logger.error("Ensure all dependencies installed: pip install -r requirements-api.txt")
-            self._agent_running = False
-            self._run_async(ws_manager.send_event(
-                WSEventType.ERROR,
-                {"type": "dependency_error", "message": str(e)}
-            ))
-            return
-        except Exception as e:
-            logger.error(f"Failed to load model: {e}", exc_info=True)
-            self._agent_running = False
-            self._run_async(ws_manager.send_event(
-                WSEventType.ERROR,
-                {"type": "model_load_error", "message": str(e)}
-            ))
-            return
-
-        # Watch inbox
+        # Watch inbox (no model preload — models load per-phase inside pipeline)
         while self._agent_running:
             new_patients = agent.inbox_watcher.scan_inbox()
 

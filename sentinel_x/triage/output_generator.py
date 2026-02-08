@@ -1,4 +1,9 @@
-"""Output generation for triage results including JSON and thumbnails."""
+"""Output generation for triage results including JSON and thumbnails.
+
+Supports the Serial Late Fusion pipeline: merges Phase 1 VisualFactSheet
+and Phase 2 DeltaAnalysisResult into a single triage_result.json while
+maintaining backward-compatible fields.
+"""
 
 import base64
 import io
@@ -6,123 +11,153 @@ import json
 import logging
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from PIL import Image
 
 from .config import OUTPUT_DIR
 from .ct_processor import get_thumbnail
-from .medgemma_analyzer import AnalysisResult
+from .medgemma_analyzer import VisualFactSheet
+from .medgemma_reasoner import DeltaAnalysisResult
 
 logger = logging.getLogger(__name__)
 
 
 def image_to_base64(image: Image.Image, format: str = "PNG") -> str:
-    """Convert PIL Image to base64 string.
-
-    Args:
-        image: PIL Image
-        format: Image format (PNG, JPEG)
-
-    Returns:
-        Base64 encoded string
-    """
+    """Encode a PIL Image as a base64 string."""
     buffer = io.BytesIO()
     image.save(buffer, format=format)
     buffer.seek(0)
     return base64.b64encode(buffer.read()).decode("utf-8")
 
 
+def _get_key_slice_index(
+    visual_fact_sheet: VisualFactSheet,
+    delta_result: DeltaAnalysisResult,
+    num_images: int,
+) -> int:
+    """Determine the most diagnostically important slice index.
+
+    Picks the slice_index from the highest-priority finding. Falls back
+    to the middle slice if no findings exist.
+    """
+    best_priority = 4
+    best_slice = num_images // 2  # fallback: middle slice
+
+    for vf in visual_fact_sheet.findings:
+        # Find matching delta entry for this finding's priority
+        finding_priority = 3
+        for de in delta_result.delta_analysis:
+            if de.finding and vf.finding and vf.finding.lower() in de.finding.lower():
+                finding_priority = de.priority
+                break
+
+        if finding_priority < best_priority:
+            best_priority = finding_priority
+            idx = vf.slice_index
+            if 0 <= idx < num_images:
+                best_slice = idx
+
+    return best_slice
+
+
 def generate_triage_result(
     patient_id: str,
-    analysis: AnalysisResult,
+    visual_fact_sheet: VisualFactSheet,
+    delta_result: DeltaAnalysisResult,
     images: List[Image.Image],
     slice_indices: List[int],
     conditions_from_context: List[str],
 ) -> Dict[str, Any]:
-    """Generate triage result JSON structure.
+    """Generate the final triage result JSON from both pipeline phases.
 
     Args:
         patient_id: Patient identifier
-        analysis: MedGemma analysis result
-        images: List of CT slice images
-        slice_indices: Original slice indices from volume
-        conditions_from_context: Conditions from FHIR context
+        visual_fact_sheet: Phase 1 output
+        delta_result: Phase 2 output
+        images: CT slice PIL Images
+        slice_indices: Original volume slice indices
+        conditions_from_context: Conditions extracted from FHIR
 
     Returns:
-        Triage result dictionary
+        Dict ready to be serialized as triage_result.json
     """
-    # Get the key slice image
-    key_slice_idx = analysis.key_slice_index
-    if key_slice_idx >= len(images):
-        key_slice_idx = len(images) // 2  # Default to middle slice
+    # Determine key slice from highest-priority finding
+    key_slice_idx = _get_key_slice_index(visual_fact_sheet, delta_result, len(images))
 
-    key_image = images[key_slice_idx]
+    # Generate thumbnail
+    key_image = images[key_slice_idx] if key_slice_idx < len(images) else images[len(images) // 2]
     thumbnail = get_thumbnail(key_image)
     thumbnail_base64 = image_to_base64(thumbnail)
 
-    # Map sampled index to original slice index
-    original_slice_index = slice_indices[key_slice_idx] if key_slice_idx < len(slice_indices) else key_slice_idx
+    # Map sampled index to original volume index
+    original_slice_index = (
+        slice_indices[key_slice_idx]
+        if key_slice_idx < len(slice_indices)
+        else key_slice_idx
+    )
 
-    # Build rationale combining visual and context
-    rationale = f"Visual analysis: {analysis.visual_findings}"
+    # Build visual findings text from fact sheet
+    visual_findings_text = "; ".join(
+        f"{f.finding} ({f.location}, {f.size}): {f.description}"
+        for f in visual_fact_sheet.findings
+    ) or "No abnormalities detected"
+
+    # Build rationale combining both phases
+    rationale = f"Visual analysis: {visual_findings_text}"
     if conditions_from_context:
         rationale += f" EHR Context: Patient has {', '.join(conditions_from_context)}."
-    rationale += f" {analysis.priority_rationale}"
+    rationale += f" {delta_result.priority_rationale}"
+
+    # Build delta_analysis serializable list
+    delta_analysis_list = [
+        {
+            "finding": de.finding,
+            "classification": de.classification,
+            "priority": de.priority,
+            "history_match": de.history_match,
+            "reasoning": de.reasoning,
+        }
+        for de in delta_result.delta_analysis
+    ]
 
     result = {
+        # Core fields (backward compatible)
         "patient_id": patient_id,
-        "priority_level": analysis.priority_level,
+        "priority_level": delta_result.overall_priority,
         "rationale": rationale,
         "key_slice_index": original_slice_index,
         "key_slice_thumbnail": thumbnail_base64,
         "processed_at": datetime.utcnow().isoformat() + "Z",
-        "conditions_considered": analysis.conditions_considered,
-        "findings_summary": analysis.findings_summary,
-        "visual_findings": analysis.visual_findings,
+        "conditions_considered": conditions_from_context,
+        "findings_summary": delta_result.findings_summary,
+        "visual_findings": visual_findings_text,
+        # New Serial Late Fusion fields
+        "delta_analysis": delta_analysis_list,
+        "phase1_raw": visual_fact_sheet.raw_response,
+        "phase2_raw": delta_result.raw_response,
     }
 
     return result
 
 
 def save_triage_result(
-    patient_id: str,
-    result: Dict[str, Any],
-    output_dir: Path = OUTPUT_DIR,
+    patient_id: str, result: Dict[str, Any], output_dir: Path = OUTPUT_DIR
 ) -> Path:
-    """Save triage result to patient-specific directory.
-
-    Args:
-        patient_id: Patient identifier
-        result: Triage result dictionary
-        output_dir: Base output directory
-
-    Returns:
-        Path to saved result file
-    """
+    """Save triage result JSON to disk."""
     patient_dir = output_dir / patient_id
     patient_dir.mkdir(parents=True, exist_ok=True)
-
     result_path = patient_dir / "triage_result.json"
-
     with open(result_path, "w") as f:
         json.dump(result, f, indent=2)
-
     logger.info(f"Saved triage result: {result_path}")
     return result_path
 
 
-def load_triage_result(patient_id: str, output_dir: Path = OUTPUT_DIR) -> Dict[str, Any]:
-    """Load triage result for a patient.
-
-    Args:
-        patient_id: Patient identifier
-        output_dir: Base output directory
-
-    Returns:
-        Triage result dictionary
-    """
+def load_triage_result(
+    patient_id: str, output_dir: Path = OUTPUT_DIR
+) -> Dict[str, Any]:
+    """Load a saved triage result from disk."""
     result_path = output_dir / patient_id / "triage_result.json"
-
     with open(result_path, "r") as f:
         return json.load(f)

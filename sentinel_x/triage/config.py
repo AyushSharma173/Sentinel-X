@@ -19,14 +19,28 @@ COMBINED_MANIFEST = COMBINED_DIR / "manifest.json"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 LOG_DIR.mkdir(parents=True, exist_ok=True)
 
-# MedGemma model configuration
+# MedGemma model configuration (legacy — kept for backward compat)
 MEDGEMMA_MODEL_ID = "google/medgemma-4b-it"
 MEDGEMMA_DTYPE = "bfloat16"
 
+# Phase 1: Vision model (MedGemma 1.5 4B — trained on 3D CT volumes)
+VISION_MODEL_ID = "google/medgemma-1.5-4b-it"
+VISION_MODEL_DTYPE = "bfloat16"  # Full precision for visual fidelity
+
+# Phase 2: Reasoning model (MedGemma 27B — best text reasoning)
+REASONER_MODEL_ID = "google/medgemma-27b-it"
+REASONER_QUANTIZATION = "nf4"  # 4-bit NormalFloat
+REASONER_USE_DOUBLE_QUANT = True  # Nested quantization for extra savings
+
 # CT processing configuration
 CT_NUM_SLICES = 85  # Number of slices to sample from volume
-CT_WINDOW_CENTER = 40  # Soft tissue window center (HU)
-CT_WINDOW_WIDTH = 400  # Soft tissue window width (HU)
+CT_WINDOW_CENTER = 40  # Soft tissue window center (HU) — legacy, kept for compat
+CT_WINDOW_WIDTH = 400  # Soft tissue window width (HU) — legacy, kept for compat
+
+# CT 3-channel windowing (EXACT values from Google's official CT notebook)
+CT_WINDOW_WIDE = (-1024, 1024)   # R channel: full HU range (air to bone)
+CT_WINDOW_SOFT = (-135, 215)     # G channel: soft tissue (fat to start of bone)
+CT_WINDOW_BRAIN = (0, 80)        # B channel: brain (water to brain density)
 
 # Inbox watcher configuration
 INBOX_POLL_INTERVAL = 5  # Seconds between inbox scans

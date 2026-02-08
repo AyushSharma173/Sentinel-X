@@ -1021,10 +1021,12 @@ class FHIRJanitor:
         # Estimate token count (rough approximation: 1 token ~ 4 characters)
         token_estimate = len(narrative) // 4
 
-        # Warn if over limit
+        # Truncate if over limit
         if token_estimate > JANITOR_TARGET_MAX_TOKENS:
+            max_chars = JANITOR_TARGET_MAX_TOKENS * 4
+            narrative = narrative[:max_chars] + "\n\n[... narrative truncated ...]"
             warnings.append(
-                f"Narrative exceeds target token limit: ~{token_estimate} tokens"
+                f"Narrative truncated from ~{token_estimate} to ~{JANITOR_TARGET_MAX_TOKENS} tokens"
             )
 
         return ClinicalStream(

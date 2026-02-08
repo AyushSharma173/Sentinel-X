@@ -88,6 +88,15 @@ class PatientFHIRContext(BaseModel):
     impressions: str
 
 
+class DeltaAnalysisEntry(BaseModel):
+    """A single finding classification from Delta Analysis."""
+    finding: str
+    classification: str
+    priority: int
+    history_match: Optional[str] = None
+    reasoning: str
+
+
 class TriageResult(BaseModel):
     """Full triage result for a patient."""
     patient_id: str
@@ -101,6 +110,10 @@ class TriageResult(BaseModel):
     conditions_considered: List[str]
     findings_summary: str
     visual_findings: str
+    # Serial Late Fusion fields
+    delta_analysis: List[DeltaAnalysisEntry] = Field(default_factory=list)
+    phase1_raw: str = ""
+    phase2_raw: str = ""
 
 
 class DemoControlResponse(BaseModel):
@@ -120,6 +133,12 @@ class WSEventType(str, Enum):
     PROCESSING_COMPLETE = "processing_complete"
     WORKLIST_UPDATED = "worklist_updated"
     ERROR = "error"
+    # Serial Late Fusion phase events
+    PHASE1_STARTED = "phase1_started"
+    PHASE1_COMPLETE = "phase1_complete"
+    MODEL_SWAPPING = "model_swapping"
+    PHASE2_STARTED = "phase2_started"
+    PHASE2_COMPLETE = "phase2_complete"
 
 
 class WSEvent(BaseModel):
