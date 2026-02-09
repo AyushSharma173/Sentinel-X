@@ -81,9 +81,9 @@ PHASE2_USER_PROMPT_TEMPLATE = """## CLINICAL HISTORY
 
 Perform Delta Analysis. Compare each visual finding against the clinical history. Classify every finding and determine the overall triage priority."""
 
-# Phase 2 narrative truncation — keeps total input under ~4000 tokens to avoid
-# OOM from KV cache on the 27B model (each token costs ~377KB KV cache).
-PHASE2_MAX_NARRATIVE_CHARS = 12_000  # ~3000 tokens
+# Phase 2 narrative truncation — safety net. Smart compression targets ~800 tokens;
+# this limit only activates for edge cases with unusually large histories.
+PHASE2_MAX_NARRATIVE_CHARS = 16_000  # Safety net — smart compression targets ~800 tokens
 
 
 def build_phase2_user_prompt(clinical_narrative: str, visual_narrative: str) -> str:

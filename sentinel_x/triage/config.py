@@ -124,4 +124,84 @@ JANITOR_UNDATED_LABEL = "[Historical/Undated]"
 JANITOR_MAX_NARRATIVE_LENGTH = 500
 
 # Target maximum tokens for the entire clinical stream
-JANITOR_TARGET_MAX_TOKENS = 16000
+JANITOR_TARGET_MAX_TOKENS = 4000
+
+# =============================================================================
+# Smart Compression Configuration (Stages 1-4)
+# =============================================================================
+
+# Stage 1: SNOMED codes to DROP (social, admin, dental, reproductive)
+DROP_SNOMED_CODES = {
+    "73595000",   # Stress (finding)
+    "160903007",  # Full-time employment
+    "160904001",  # Part-time employment
+    "224299000",  # Received higher education
+    "423315002",  # Limited social contact
+    "446654005",  # Refugee
+    "266948004",  # Has a criminal record
+    "706893006",  # Victim of intimate partner abuse
+    "314529007",  # Medication review due
+    "267020005",  # History of tubal ligation
+    "80583007",   # Severe anxiety (panic) — screening-related
+    "66383009",   # Gingivitis
+    "31642005",   # Acute gingivitis
+    "109573003",  # Dental plaque
+    "80967001",   # Dental caries
+    "2556008",    # Periodontal disease
+    "718052004",  # Asymptomatic periapical periodontitis
+    "422650009",  # Social isolation (finding)
+    "19169002",   # Miscarriage in first trimester (not chest-CT relevant)
+    "281647001",  # Adverse reaction caused by drug (handled by AllergyIntolerance)
+    "1172608001",  # Accretion on tooth
+    "161744009",  # Past pregnancy history of miscarriage
+}
+
+# Stage 1: ICD-10 prefixes to DROP (dental)
+DROP_ICD10_PREFIXES = ("K00", "K02", "K03", "K04", "K05", "K08")
+
+# Stage 1: Observation categories to DROP
+DROP_OBSERVATION_CATEGORIES = {"survey"}
+
+# Stage 1: Resource types to DROP entirely (beyond existing JANITOR_DISCARD_RESOURCES)
+DROP_RESOURCE_TYPES = {"Immunization", "SupplyDelivery", "CarePlan", "CareTeam", "DocumentReference"}
+
+# Stage 1: Procedure coding systems to DROP (dental)
+DROP_PROCEDURE_SYSTEMS = {"http://www.ada.org/cdt"}
+
+# Stage 2: Lab LOINC whitelist (code -> short display name)
+LAB_WHITELIST_LOINC = {
+    # CBC
+    "6690-2": "WBC", "718-7": "Hgb", "4544-3": "Hct", "777-3": "Plt",
+    # Renal
+    "2160-0": "Cr", "3094-0": "BUN", "33914-3": "eGFR",
+    # Coag/PE
+    "48065-7": "D-dimer", "6598-7": "Troponin", "6301-6": "INR",
+    # Inflammatory
+    "1988-5": "CRP",
+    # Metabolic
+    "4548-4": "HbA1c", "2345-7": "Glucose", "2951-2": "Na", "2823-3": "K",
+    # ABG
+    "2744-1": "pH", "2019-8": "pCO2", "2703-7": "pO2", "1960-4": "HCO3",
+    # PFT
+    "19926-5": "FEV1/FVC", "20150-9": "FEV1",
+    # Lipids (cardiac context)
+    "2093-3": "Chol", "18262-6": "LDL",
+}
+
+# Stage 2: Vital signs LOINC codes (for latest-set extraction)
+VITAL_SIGNS_LOINC = {
+    "8480-6": "SBP", "8462-4": "DBP", "8867-4": "HR",
+    "9279-1": "RR", "2708-6": "SpO2", "8310-5": "Temp",
+    "39156-5": "BMI",
+}
+
+LAB_DELTA_THRESHOLD_PERCENT = 10
+
+# Stage 3: Time decay half-lives (days)
+TIME_DECAY_HALF_LIVES = {
+    "active_condition": float("inf"),
+    "procedure": 365,
+    "resolved_condition": 730,
+}
+
+RELEVANCE_THRESHOLD = 0.1

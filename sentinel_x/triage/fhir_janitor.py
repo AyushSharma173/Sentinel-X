@@ -12,19 +12,31 @@ Components:
 
 import base64
 import logging
+import math
 import re
+from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Set, Tuple
 
 from .age_utils import extract_age_from_patient_resource
 from .config import (
+    DROP_ICD10_PREFIXES,
+    DROP_OBSERVATION_CATEGORIES,
+    DROP_PROCEDURE_SYSTEMS,
+    DROP_RESOURCE_TYPES,
+    DROP_SNOMED_CODES,
     HIGH_RISK_CONDITIONS,
     JANITOR_CONDITIONAL_RESOURCES,
     JANITOR_DISCARD_RESOURCES,
     JANITOR_MAX_NARRATIVE_LENGTH,
     JANITOR_TARGET_MAX_TOKENS,
     JANITOR_UNDATED_LABEL,
+    LAB_DELTA_THRESHOLD_PERCENT,
+    LAB_WHITELIST_LOINC,
+    RELEVANCE_THRESHOLD,
+    TIME_DECAY_HALF_LIVES,
+    VITAL_SIGNS_LOINC,
 )
 
 logger = logging.getLogger(__name__)
@@ -193,6 +205,274 @@ class GarbageCollector:
             "http://hl7.org/fhir/sid/icd-9-cm",
         }
         return system in diagnosis_systems
+
+
+# =============================================================================
+# ChestCTRelevanceFilter (Stage 1)
+# =============================================================================
+
+
+class ChestCTRelevanceFilter:
+    """Classifies FHIR resources as keep/drop based on chest-CT relevance."""
+
+    # Resource types that are always kept
+    _ALWAYS_KEEP = {"Patient", "DiagnosticReport", "MedicationRequest", "AllergyIntolerance"}
+
+    def should_keep(self, resource: dict) -> bool:
+        resource_type = resource.get("resourceType", "")
+
+        if resource_type in self._ALWAYS_KEEP:
+            return True
+        if resource_type in DROP_RESOURCE_TYPES:
+            return False
+        if resource_type == "Encounter":
+            return False
+        if resource_type == "Condition":
+            return self._check_condition(resource)
+        if resource_type == "Observation":
+            return self._check_observation(resource)
+        if resource_type == "Procedure":
+            return self._check_procedure(resource)
+        return True
+
+    def _get_codes(self, resource: dict) -> List[Tuple[str, str]]:
+        code_obj = resource.get("code", {})
+        return [
+            (c.get("system", ""), c.get("code", ""))
+            for c in code_obj.get("coding", [])
+        ]
+
+    def _check_condition(self, resource: dict) -> bool:
+        for system, code in self._get_codes(resource):
+            if code in DROP_SNOMED_CODES:
+                return False
+            if "icd" in system.lower():
+                for prefix in DROP_ICD10_PREFIXES:
+                    if code.startswith(prefix):
+                        return False
+        return True
+
+    def _check_observation(self, resource: dict) -> bool:
+        categories = resource.get("category", [])
+        for cat in categories:
+            for coding in cat.get("coding", []):
+                if coding.get("code", "").lower() in DROP_OBSERVATION_CATEGORIES:
+                    return False
+        return True
+
+    def _check_procedure(self, resource: dict) -> bool:
+        for system, _ in self._get_codes(resource):
+            if system in DROP_PROCEDURE_SYSTEMS:
+                return False
+        return True
+
+
+# =============================================================================
+# LabCompressor (Stage 2)
+# =============================================================================
+
+
+class LabCompressor:
+    """Compresses Observation resources into compact lab/vital text."""
+
+    def compress(
+        self, observations: List[Dict[str, Any]]
+    ) -> Tuple[str, str, Optional[float], Optional[str]]:
+        """Compress observations into labs_text, vitals_text, bmi, smoking_status."""
+        labs: List[Dict[str, Any]] = []
+        vitals: List[Dict[str, Any]] = []
+        smoking_status: Optional[str] = None
+
+        for obs in observations:
+            loinc = self._get_loinc(obs)
+            if not loinc:
+                continue
+
+            # Smoking status (LOINC 72166-2)
+            if loinc == "72166-2":
+                vcc = obs.get("valueCodeableConcept", {})
+                smoking_status = vcc.get("text", "")
+                if not smoking_status:
+                    for c in vcc.get("coding", []):
+                        if c.get("display"):
+                            smoking_status = c["display"]
+                            break
+                continue
+
+            if loinc in VITAL_SIGNS_LOINC:
+                vitals.append(obs)
+            elif loinc in LAB_WHITELIST_LOINC:
+                labs.append(obs)
+
+        labs_text = self._compress_labs(labs)
+        vitals_text, bmi = self._compress_vitals(vitals)
+        return labs_text, vitals_text, bmi, smoking_status
+
+    def _compress_labs(self, labs: List[Dict[str, Any]]) -> str:
+        # Group by LOINC code
+        by_loinc: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
+        for obs in labs:
+            loinc = self._get_loinc(obs)
+            if loinc:
+                by_loinc[loinc].append(obs)
+
+        parts = []
+        for loinc, short_name in LAB_WHITELIST_LOINC.items():
+            group = by_loinc.get(loinc)
+            if not group:
+                continue
+
+            # Sort by date descending
+            group.sort(key=lambda o: o.get("effectiveDateTime", ""), reverse=True)
+            latest = group[0]
+            value = self._get_value(latest)
+            if value is None:
+                continue
+
+            flag = self._get_flag(latest)
+            entry = f"{short_name} {value}"
+            if flag:
+                entry += f" [{flag}]"
+
+            # Delta check
+            if len(group) > 1:
+                prev = group[1]
+                prev_value = self._get_value(prev)
+                if prev_value is not None and isinstance(value, (int, float)) and isinstance(prev_value, (int, float)):
+                    if prev_value != 0:
+                        delta_pct = abs(value - prev_value) / abs(prev_value) * 100
+                        if delta_pct > LAB_DELTA_THRESHOLD_PERCENT:
+                            prev_date = prev.get("effectiveDateTime", "")[:7]  # YYYY-MM
+                            entry += f" (prev: {prev_value}, {prev_date})"
+
+            parts.append(entry)
+
+        return ", ".join(parts)
+
+    def _compress_vitals(self, vitals: List[Dict[str, Any]]) -> Tuple[str, Optional[float]]:
+        by_loinc: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
+        for obs in vitals:
+            loinc = self._get_loinc(obs)
+            if loinc:
+                by_loinc[loinc].append(obs)
+
+        bmi: Optional[float] = None
+        sbp = dbp = None
+        parts = []
+
+        for loinc, short_name in VITAL_SIGNS_LOINC.items():
+            group = by_loinc.get(loinc)
+            if not group:
+                continue
+            group.sort(key=lambda o: o.get("effectiveDateTime", ""), reverse=True)
+            value = self._get_value(group[0])
+            if value is None:
+                continue
+
+            if loinc == "39156-5":  # BMI — extract separately
+                bmi = float(value) if not isinstance(value, float) else value
+                continue
+            if loinc == "8480-6":  # SBP
+                sbp = value
+                continue
+            if loinc == "8462-4":  # DBP
+                dbp = value
+                continue
+
+            unit = self._get_unit(group[0])
+            if unit:
+                parts.append(f"{short_name} {value}{unit}")
+            else:
+                parts.append(f"{short_name} {value}")
+
+        # Combine BP
+        if sbp is not None and dbp is not None:
+            parts.insert(0, f"BP {sbp}/{dbp}")
+        elif sbp is not None:
+            parts.insert(0, f"SBP {sbp}")
+
+        return ", ".join(parts), bmi
+
+    def _get_loinc(self, resource: Dict[str, Any]) -> Optional[str]:
+        code_obj = resource.get("code", {})
+        for coding in code_obj.get("coding", []):
+            system = coding.get("system", "")
+            if "loinc" in system.lower():
+                return coding.get("code")
+        return None
+
+    def _get_value(self, resource: Dict[str, Any]) -> Any:
+        vq = resource.get("valueQuantity", {})
+        v = vq.get("value")
+        if v is not None:
+            return round(v, 2) if isinstance(v, float) else v
+        vs = resource.get("valueString")
+        if vs:
+            return vs
+        vcc = resource.get("valueCodeableConcept", {})
+        return vcc.get("text") or None
+
+    def _get_unit(self, resource: Dict[str, Any]) -> str:
+        vq = resource.get("valueQuantity", {})
+        unit = vq.get("unit", "")
+        # Normalize common units
+        if unit in ("{beats}/min", "/min", "beats/minute"):
+            return ""
+        if unit in ("mm[Hg]", "mmHg"):
+            return ""
+        if unit == "Cel":
+            return "\u00b0C"
+        return unit
+
+    def _get_flag(self, resource: Dict[str, Any]) -> str:
+        interpretation = resource.get("interpretation", [])
+        if not interpretation:
+            return ""
+        codings = interpretation[0].get("coding", [])
+        if not codings:
+            return ""
+        code = codings[0].get("code", "")
+        flag_map = {"H": "H", "HH": "HH", "L": "L", "LL": "LL", "A": "A"}
+        return flag_map.get(code, "")
+
+
+# =============================================================================
+# TimeDecayScorer (Stage 3)
+# =============================================================================
+
+
+class TimeDecayScorer:
+    """Scores TimelineEntry objects by relevance x time decay."""
+
+    def filter(self, entries: List["TimelineEntry"], now: datetime) -> List["TimelineEntry"]:
+        return [e for e in entries if self._score(e, now) >= RELEVANCE_THRESHOLD]
+
+    def _score(self, entry: "TimelineEntry", now: datetime) -> float:
+        content_lower = entry.content.lower()
+
+        # Active conditions always kept
+        if entry.category == "Condition" and "active" in content_lower:
+            return 1.0
+
+        # Determine half-life
+        if entry.category == "Procedure":
+            half_life = TIME_DECAY_HALF_LIVES["procedure"]
+            weight = 0.5
+        elif entry.category == "Condition":
+            half_life = TIME_DECAY_HALF_LIVES["resolved_condition"]
+            weight = 0.3
+        else:
+            return 1.0  # Keep everything else
+
+        if entry.date is None:
+            return weight  # No date = assume moderately old
+
+        age_days = (now - entry.date).days
+        if age_days <= 0:
+            return weight
+
+        decay = math.exp(-0.693 * age_days / half_life)
+        return weight * decay
 
 
 # =============================================================================
@@ -839,6 +1119,75 @@ class TimelineSerializer:
 
         return "\n".join(lines)
 
+    def serialize_structured(
+        self,
+        patient_summary: str,
+        bmi: Optional[float],
+        smoking_status: Optional[str],
+        conditions: List[str],
+        active_medications: List[str],
+        labs_text: str,
+        vitals_text: str,
+        procedures: List[str],
+        imaging_narratives: List[str],
+        allergies: List[str],
+    ) -> str:
+        """Serialize into compact structured sections for Phase 2 input."""
+        lines = []
+
+        # Patient
+        lines.append("== PATIENT ==")
+        patient_line = patient_summary
+        extras = []
+        if bmi is not None:
+            extras.append(f"BMI {bmi:.1f}")
+        if smoking_status:
+            extras.append(smoking_status)
+        if extras:
+            patient_line += ", " + ", ".join(extras)
+        lines.append(patient_line)
+
+        # Active Conditions
+        if conditions:
+            lines.append("")
+            lines.append("== ACTIVE CONDITIONS ==")
+            lines.append(", ".join(conditions))
+
+        # Active Medications
+        if active_medications:
+            lines.append("")
+            lines.append("== ACTIVE MEDICATIONS ==")
+            lines.append(", ".join(active_medications))
+
+        # Labs
+        if labs_text:
+            lines.append("")
+            lines.append("== RELEVANT LABS ==")
+            lines.append(labs_text)
+
+        # Vitals
+        if vitals_text:
+            lines.append("")
+            lines.append("== VITALS ==")
+            lines.append(vitals_text)
+
+        # Procedures + imaging
+        if procedures or imaging_narratives:
+            lines.append("")
+            lines.append("== RECENT IMAGING/PROCEDURES ==")
+            if procedures:
+                lines.append(", ".join(procedures))
+            for narrative in imaging_narratives:
+                lines.append(f"Prior CT: {narrative}")
+
+        # Allergies
+        if allergies:
+            lines.append("")
+            lines.append("== ALLERGIES ==")
+            lines.append(", ".join(allergies))
+
+        return "\n".join(lines)
+
 
 # =============================================================================
 # Main FHIRJanitor Class
@@ -848,11 +1197,19 @@ class TimelineSerializer:
 class FHIRJanitor:
     """Main orchestrator for FHIR bundle processing.
 
-    Transforms FHIR bundles into condensed clinical narratives.
+    Transforms FHIR bundles into condensed clinical narratives using a
+    4-stage smart compression pipeline:
+      Stage 1: ChestCTRelevanceFilter — drop irrelevant resources
+      Stage 2: LabCompressor — compact lab/vital representation
+      Stage 3: TimeDecayScorer — deprioritize old resolved conditions/procedures
+      Stage 4: Structured serialization — section-based output
     """
 
     def __init__(self) -> None:
         self.garbage_collector = GarbageCollector()
+        self.relevance_filter = ChestCTRelevanceFilter()
+        self.lab_compressor = LabCompressor()
+        self.time_decay_scorer = TimeDecayScorer()
         self.narrative_decoder = NarrativeDecoder()
         self.patient_extractor = PatientExtractor()
         self.condition_extractor = ConditionExtractor()
@@ -872,19 +1229,22 @@ class FHIRJanitor:
             ClinicalStream with processed narrative
         """
         warnings: List[str] = []
-        timeline_entries: List[TimelineEntry] = []
         active_medications: List[str] = []
         patient_summary = "Unknown patient demographics"
         condition_codes: Set[str] = set()
 
-        # Additional fields for replacing PatientContext
         conditions: List[str] = []
+        condition_strings: List[str] = []  # Formatted: "display (status, since YYYY)"
         medications: List[str] = []
-        seen_medications: Set[str] = set()  # Dedup by medication name
+        seen_medications: Set[str] = set()
         age: Optional[int] = None
         gender: Optional[str] = None
         all_findings: List[str] = []
         all_impressions: List[str] = []
+        observation_resources: List[Dict[str, Any]] = []
+        procedure_entries: List[TimelineEntry] = []
+        allergy_names: List[str] = []
+        imaging_narrative_strings: List[str] = []
 
         # Validate bundle
         if not fhir_bundle or fhir_bundle.get("resourceType") != "Bundle":
@@ -913,23 +1273,19 @@ class FHIRJanitor:
             entries, condition_codes
         )
 
-        # Add historical diagnoses as timeline entries and to conditions list
+        # Add historical diagnoses to conditions list
         for hd in historical_diagnoses:
-            timeline_entries.append(
-                TimelineEntry(
-                    date=None,
-                    date_label=JANITOR_UNDATED_LABEL,
-                    category="Condition",
-                    content=f"Historical Diagnosis: {hd.display} (from billing records)",
-                    priority=CATEGORY_PRIORITY["Condition"],
-                )
-            )
             conditions.append(hd.display)
+            condition_strings.append(f"{hd.display} (historical)")
 
-        # Process each resource type
+        # Process each resource type with Stage 1 relevance filtering
         for entry in cleaned_entries:
             resource = entry.get("resource", {})
             resource_type = resource.get("resourceType", "")
+
+            # Stage 1: Relevance filter
+            if not self.relevance_filter.should_keep(resource):
+                continue
 
             if resource_type == "Patient":
                 patient_summary, age, gender, patient_warnings = (
@@ -941,24 +1297,34 @@ class FHIRJanitor:
                 timeline_entry, _, display_name = self.condition_extractor.extract(
                     resource
                 )
-                if timeline_entry:
-                    timeline_entries.append(timeline_entry)
                 if display_name:
                     conditions.append(display_name)
+                    # Build formatted condition string
+                    clinical_status = "unknown"
+                    status_obj = resource.get("clinicalStatus", {})
+                    status_codings = status_obj.get("coding", [])
+                    if status_codings:
+                        clinical_status = status_codings[0].get("code", "unknown")
+                    onset_dt = resource.get("onsetDateTime")
+                    since = ""
+                    if onset_dt:
+                        since = f", since {onset_dt[:4]}"
+                    condition_strings.append(f"{display_name} ({clinical_status}{since})")
+
+                # Collect for time decay (resolved conditions)
+                if timeline_entry:
+                    procedure_entries.append(timeline_entry)
 
             elif resource_type == "MedicationRequest":
-                timeline_entry, active_med, med_name = (
+                _, active_med, med_name = (
                     self.medication_extractor.extract(resource)
                 )
-                # Deduplicate medications by name (same regimen appears per encounter)
                 if med_name and med_name in seen_medications:
                     warnings.extend(self.medication_extractor.warnings)
                     self.medication_extractor.warnings.clear()
                     continue
                 if med_name:
                     seen_medications.add(med_name)
-                if timeline_entry:
-                    timeline_entries.append(timeline_entry)
                 if active_med:
                     active_medications.append(active_med)
                 if med_name:
@@ -967,19 +1333,12 @@ class FHIRJanitor:
                 self.medication_extractor.warnings.clear()
 
             elif resource_type == "Observation":
-                timeline_entry = self.observation_extractor.extract(resource)
-                if timeline_entry:
-                    timeline_entries.append(timeline_entry)
+                observation_resources.append(resource)
 
             elif resource_type == "Procedure":
                 timeline_entry = self.procedure_extractor.extract(resource)
                 if timeline_entry:
-                    timeline_entries.append(timeline_entry)
-
-            elif resource_type == "Encounter":
-                timeline_entry = self.encounter_extractor.extract(resource)
-                if timeline_entry:
-                    timeline_entries.append(timeline_entry)
+                    procedure_entries.append(timeline_entry)
 
             elif resource_type == "DiagnosticReport":
                 findings, impression, effective_date = (
@@ -989,47 +1348,70 @@ class FHIRJanitor:
                     all_findings.append(findings)
                 if impression:
                     all_impressions.append(impression)
+                # Collect compact imaging narrative
+                narrative_parts = []
+                if findings:
+                    narrative_parts.append(findings)
+                if impression:
+                    narrative_parts.append(impression)
+                if narrative_parts:
+                    imaging_narrative_strings.append("; ".join(narrative_parts))
 
-                if findings or impression:
-                    date_label = (
-                        effective_date.strftime("%Y-%m-%d")
-                        if effective_date
-                        else JANITOR_UNDATED_LABEL
-                    )
-
-                    narrative_parts = []
-                    if findings:
-                        narrative_parts.append(f"FINDINGS: {findings}")
-                    if impression:
-                        narrative_parts.append(f"IMPRESSION: {impression}")
-
-                    content = "Narrative (Report):\n  " + "\n  ".join(narrative_parts)
-
-                    timeline_entries.append(
-                        TimelineEntry(
-                            date=effective_date,
-                            date_label=date_label,
-                            category="Narrative",
-                            content=content,
-                            priority=CATEGORY_PRIORITY["Narrative"],
-                        )
-                    )
+            elif resource_type == "AllergyIntolerance":
+                code_obj = resource.get("code", {})
+                for coding in code_obj.get("coding", []):
+                    if coding.get("display"):
+                        allergy_names.append(coding["display"])
+                        break  # One display per resource
 
         # Collect decoder warnings
         warnings.extend(self.narrative_decoder.warnings)
 
+        # Stage 2: Lab compression
+        labs_text, vitals_text, bmi, smoking_status = self.lab_compressor.compress(
+            observation_resources
+        )
+
+        # Stage 3: Time decay on procedures and resolved conditions
+        now = datetime.now()
+        procedure_entries = self.time_decay_scorer.filter(procedure_entries, now)
+
+        # Separate procedures from conditions after time decay, deduplicate
+        procedure_strings = []
+        seen_procedures: Dict[str, str] = {}  # name -> latest date_label
+        for e in procedure_entries:
+            if e.category == "Procedure":
+                name = e.content.replace("Procedure: ", "")
+                if name not in seen_procedures:
+                    seen_procedures[name] = e.date_label
+                else:
+                    # Keep the latest date
+                    if e.date_label > seen_procedures[name]:
+                        seen_procedures[name] = e.date_label
+        for name, date_label in seen_procedures.items():
+            procedure_strings.append(f"{name} ({date_label})")
+
         # Identify risk factors from conditions
         risk_factors = self._identify_risk_factors(conditions)
 
-        # Serialize timeline
-        narrative = self.timeline_serializer.serialize(
-            patient_summary, timeline_entries, active_medications
+        # Stage 4: Structured serialization
+        narrative = self.timeline_serializer.serialize_structured(
+            patient_summary=patient_summary,
+            bmi=bmi,
+            smoking_status=smoking_status,
+            conditions=condition_strings,
+            active_medications=active_medications,
+            labs_text=labs_text,
+            vitals_text=vitals_text,
+            procedures=procedure_strings,
+            imaging_narratives=imaging_narrative_strings,
+            allergies=allergy_names,
         )
 
         # Estimate token count (rough approximation: 1 token ~ 4 characters)
         token_estimate = len(narrative) // 4
 
-        # Truncate if over limit
+        # Truncation safety net
         if token_estimate > JANITOR_TARGET_MAX_TOKENS:
             max_chars = JANITOR_TARGET_MAX_TOKENS * 4
             narrative = narrative[:max_chars] + "\n\n[... narrative truncated ...]"
