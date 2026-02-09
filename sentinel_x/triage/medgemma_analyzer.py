@@ -15,7 +15,7 @@ from PIL import Image
 from transformers import AutoModelForImageTextToText, AutoProcessor
 
 from .config import VISION_MODEL_ID
-from .json_repair import parse_json_safely
+from .json_repair import extract_findings_from_narrative
 from .prompts import PHASE1_SYSTEM_PROMPT, build_phase1_user_prompt
 from .vram_manager import (
     VRAM_MIN_FREE_PHASE1_MB,
@@ -48,15 +48,19 @@ class VisualFactSheet:
     raw_response: str = ""
     num_slices_analyzed: int = 0
 
+    def to_narrative(self) -> str:
+        """Return the raw narrative for passing to Phase 2."""
+        return self.raw_response
+
     def to_dict(self) -> dict:
-        """Convert to a JSON-serializable dict for passing to Phase 2."""
+        """Convert to a JSON-serializable dict (logging/display only)."""
         return {
             "findings": [asdict(f) for f in self.findings],
             "num_slices_analyzed": self.num_slices_analyzed,
         }
 
     def to_json(self) -> str:
-        """Serialize to JSON string for Phase 2 prompt injection."""
+        """Serialize to JSON string (logging/display only)."""
         return json.dumps(self.to_dict(), indent=2)
 
 
@@ -134,7 +138,7 @@ class VisionAnalyzer:
         # Interleaved images with slice labels (Google's CT notebook format)
         for i, image in enumerate(images, 1):
             content.append({"type": "image", "image": image})
-            content.append({"type": "text", "text": f"SLICE {i}"})
+            content.append({"type": "text", "text": f" SLICE {i}"})
 
         # Query at the end
         user_prompt = build_phase1_user_prompt(len(images))
@@ -144,29 +148,29 @@ class VisionAnalyzer:
         return messages
 
     def _parse_response(self, response: str, num_slices: int) -> VisualFactSheet:
-        """Parse JSON response into a VisualFactSheet."""
-        parsed = parse_json_safely(response)
+        """Parse response: extract findings best-effort for logging/display.
 
-        if parsed is None:
-            logger.warning("Failed to parse Phase 1 response as JSON, returning empty fact sheet")
-            return VisualFactSheet(
-                findings=[],
-                raw_response=response,
-                num_slices_analyzed=num_slices,
-            )
-
+        The raw narrative is the authoritative output passed to Phase 2.
+        Structured findings are extracted best-effort via narrative extraction
+        for logging and display only — they are not on the critical path.
+        """
         findings = []
-        for item in parsed.get("findings", []):
-            try:
-                findings.append(VisualFinding(
-                    finding=str(item.get("finding", "")),
-                    location=str(item.get("location", "")),
-                    size=str(item.get("size", "")),
-                    slice_index=int(item.get("slice_index", 0)),
-                    description=str(item.get("description", "")),
-                ))
-            except (ValueError, TypeError) as e:
-                logger.warning(f"Skipping malformed finding: {e}")
+        narrative_result = extract_findings_from_narrative(response)
+        if narrative_result:
+            for item in narrative_result.get("findings", []):
+                try:
+                    findings.append(VisualFinding(
+                        finding=str(item.get("finding", "")),
+                        location=str(item.get("location", "")),
+                        size=str(item.get("size", "")),
+                        slice_index=int(item.get("slice_index", 0)),
+                        description=str(item.get("description", "")),
+                    ))
+                except (ValueError, TypeError) as e:
+                    logger.warning(f"Skipping malformed finding: {e}")
+            logger.info(f"Extracted {len(findings)} findings from narrative (best-effort)")
+        else:
+            logger.info("No structured findings extracted from narrative (OK — raw narrative is authoritative)")
 
         return VisualFactSheet(
             findings=findings,
@@ -174,7 +178,7 @@ class VisionAnalyzer:
             num_slices_analyzed=num_slices,
         )
 
-    def analyze(self, images: List[Image.Image], max_new_tokens: int = 1024) -> VisualFactSheet:
+    def analyze(self, images: List[Image.Image], max_new_tokens: int = 2048) -> VisualFactSheet:
         """Run Phase 1 vision analysis on CT images (no clinical context).
 
         Args:

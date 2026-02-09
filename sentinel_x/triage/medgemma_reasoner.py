@@ -8,7 +8,6 @@ Receives the FHIR clinical narrative + Phase 1 VisualFactSheet and performs
 Delta Analysis to classify each finding as CHRONIC_STABLE, ACUTE_NEW, or DISCORDANT.
 """
 
-import json
 import logging
 from dataclasses import dataclass, field
 from typing import List, Optional
@@ -105,7 +104,7 @@ class ClinicalReasoner:
         logger.info("Reasoner model loaded successfully")
 
     def _build_messages(
-        self, clinical_narrative: str, visual_fact_sheet_json: str
+        self, clinical_narrative: str, visual_narrative: str
     ) -> List[dict]:
         """Build text-only messages for Phase 2 Delta Analysis.
 
@@ -113,7 +112,7 @@ class ClinicalReasoner:
         (text-only model, no multimodal content dicts needed).
         """
         user_prompt = build_phase2_user_prompt(
-            clinical_narrative, visual_fact_sheet_json
+            clinical_narrative, visual_narrative
         )
 
         messages = [
@@ -166,14 +165,14 @@ class ClinicalReasoner:
     def analyze(
         self,
         clinical_narrative: str,
-        visual_fact_sheet: dict,
+        visual_narrative: str,
         max_new_tokens: int = 512,
     ) -> DeltaAnalysisResult:
         """Run Phase 2 Delta Analysis: compare visual findings against clinical history.
 
         Args:
             clinical_narrative: Full FHIR clinical stream text
-            visual_fact_sheet: Dict from VisualFactSheet.to_dict()
+            visual_narrative: Raw narrative from Phase 1 vision analysis
             max_new_tokens: Maximum generation length
 
         Returns:
@@ -182,13 +181,12 @@ class ClinicalReasoner:
         if not self._loaded:
             self.load_model()
 
-        visual_json = json.dumps(visual_fact_sheet, indent=2)
         logger.info(
             "Phase 2: Running delta analysis (text-only) | "
             f"narrative_chars={len(clinical_narrative)}, "
             f"truncated={len(clinical_narrative) > 12_000}"
         )
-        messages = self._build_messages(clinical_narrative, visual_json)
+        messages = self._build_messages(clinical_narrative, visual_narrative)
 
         # Tokenize (text-only, no images)
         inputs = self.tokenizer.apply_chat_template(

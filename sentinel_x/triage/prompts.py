@@ -8,26 +8,20 @@ Phase 2: Clinical reasoning (27B model) — delta analysis against EHR
 # PHASE 1: VISION — "Unbiased Sensor" (MedGemma 1.5 4B)
 # =============================================================================
 
-PHASE1_SYSTEM_PROMPT = """You are a radiologist's visual detection system analyzing chest CT images.
-
-YOUR TASK: Carefully examine every slice. Report ALL visible findings — nodules, opacities, effusions, consolidation, emphysema, atelectasis, masses, lymphadenopathy, or any other abnormality. For each finding, note the type, anatomical location, estimated size, and the slice where it is most visible.
-
-Even if a finding is subtle or you are uncertain, report what you see. It is better to over-report than to miss a finding.
-
-Report each unique finding ONCE. Do NOT repeat the same finding for multiple slices. If the same abnormality spans multiple slices, report it once with the slice where it is most visible.
-
-If no abnormalities are visible, report that clearly.
-
-You MUST respond with ONLY a JSON object in this exact format:
-{"findings": [{"finding": "opacity", "location": "LLL", "size": "12mm", "slice_index": 30, "description": "ground-glass opacity in left lower lobe"}]}
-
-If no findings: {"findings": []}"""
+PHASE1_SYSTEM_PROMPT = """You are an expert radiologist analyzing a volumetric Chest CT. Your goal is to detect ALL abnormalities, no matter how subtle. Assume the scan contains pathology until proven otherwise."""
 
 
 PHASE1_USER_PROMPT_TEMPLATE = (
-    "Examine these {num_slices} chest CT slices carefully. "
-    "Report every visible abnormality you can identify. "
-    "Respond with a JSON object containing your findings."
+    "Please review these {num_slices} axial chest CT slices (ordered Top to Bottom).\n"
+    "\n"
+    "Perform a systematic 'Visual Inventory' by describing the appearance of these regions:\n"
+    "1. VASCULAR SYSTEM: Describe the caliber and patency of the aorta and subclavian veins. Note any calcifications.\n"
+    "2. LUNGS (AIRWAYS): Describe the bronchial walls. Are they normal, thickened, or dilated?\n"
+    "3. LUNGS (PARENCHYMA): Describe any opacities. specifically looking for consolidation, atelectasis, or nodules.\n"
+    "4. ABDOMEN: Assess the liver, gallbladder, and kidneys. Describe their size and contour.\n"
+    "5. BONES: Describe the thoracic spine alignment and bone quality.\n"
+    "\n"
+    "Only AFTER describing these, provide your FINAL IMPRESSION."
 )
 
 
@@ -43,7 +37,7 @@ def build_phase1_user_prompt(num_slices: int) -> str:
 PHASE2_SYSTEM_PROMPT = """You are an expert clinical reasoning system performing triage Delta Analysis. You will receive two inputs:
 
 1. CLINICAL HISTORY: The patient's full EHR timeline (conditions, medications, labs)
-2. VISUAL FINDINGS: A structured JSON fact sheet of findings detected in a new CT scan
+2. VISUAL FINDINGS: A radiologist's narrative report of findings detected in a new CT scan
 
 YOUR TASK — DELTA ANALYSIS:
 For each visual finding, compare it against the clinical history and classify:
@@ -83,7 +77,7 @@ PHASE2_USER_PROMPT_TEMPLATE = """## CLINICAL HISTORY
 
 ## VISUAL FINDINGS FROM CT SCAN
 
-{visual_fact_sheet_json}
+{visual_narrative}
 
 Perform Delta Analysis. Compare each visual finding against the clinical history. Classify every finding and determine the overall triage priority."""
 
@@ -92,7 +86,7 @@ Perform Delta Analysis. Compare each visual finding against the clinical history
 PHASE2_MAX_NARRATIVE_CHARS = 12_000  # ~3000 tokens
 
 
-def build_phase2_user_prompt(clinical_narrative: str, visual_fact_sheet_json: str) -> str:
+def build_phase2_user_prompt(clinical_narrative: str, visual_narrative: str) -> str:
     """Build Phase 2 user prompt with clinical context and visual findings."""
     if len(clinical_narrative) > PHASE2_MAX_NARRATIVE_CHARS:
         clinical_narrative = (
@@ -101,7 +95,7 @@ def build_phase2_user_prompt(clinical_narrative: str, visual_fact_sheet_json: st
         )
     return PHASE2_USER_PROMPT_TEMPLATE.format(
         clinical_narrative=clinical_narrative,
-        visual_fact_sheet_json=visual_fact_sheet_json,
+        visual_narrative=visual_narrative,
     )
 
 

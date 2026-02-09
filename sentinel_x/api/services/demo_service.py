@@ -291,8 +291,11 @@ class DemoService:
             return
 
         # Combined folder mode
-        # Copy volume (resolve symlink if needed)
-        volume_src = patient_folder / "volume.nii.gz"
+        # Copy first volume (resolve symlink if needed)
+        # Try volume_1.nii.gz (new patient-level layout), fall back to volume.nii.gz (legacy)
+        volume_src = patient_folder / "volume_1.nii.gz"
+        if not (volume_src.exists() or volume_src.is_symlink()):
+            volume_src = patient_folder / "volume.nii.gz"
         if volume_src.exists() or volume_src.is_symlink():
             actual = volume_src.resolve() if volume_src.is_symlink() else volume_src
             shutil.copy2(actual, INBOX_VOLUMES_DIR / f"{patient_id}.nii.gz")

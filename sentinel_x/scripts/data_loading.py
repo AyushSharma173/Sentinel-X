@@ -36,6 +36,19 @@ def parse_volume_name(volume_name: str) -> dict:
         }
     return None
 
+def get_patient_id(volume_name: str) -> str | None:
+    """Extract patient-level ID from a volume name.
+
+    Examples:
+        train_1_a_1.nii.gz → train_1
+        train_2_a_2.nii.gz → train_2
+    """
+    parsed = parse_volume_name(volume_name)
+    if not parsed:
+        return None
+    return f"{parsed['split']}_{parsed['patient_id']}"
+
+
 def get_volume_repo_path(volume_name: str) -> str:
     """Construct the HF repo path for the file."""
     parsed = parse_volume_name(volume_name)

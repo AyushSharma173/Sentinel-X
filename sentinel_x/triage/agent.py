@@ -233,7 +233,7 @@ class TriageAgent:
             )
 
             phase2_user_prompt = build_phase2_user_prompt(
-                context_text, visual_fact_sheet.to_json()
+                context_text, visual_fact_sheet.to_narrative()
             )
             self.session_logger.log_phase2_prompt(
                 system_prompt=PHASE2_SYSTEM_PROMPT,
@@ -243,7 +243,7 @@ class TriageAgent:
             t0 = time.time()
             delta_result = self.reasoner.analyze(
                 clinical_narrative=context_text,
-                visual_fact_sheet=visual_fact_sheet.to_dict(),
+                visual_narrative=visual_fact_sheet.to_narrative(),
             )
             phase2_duration = time.time() - t0
 

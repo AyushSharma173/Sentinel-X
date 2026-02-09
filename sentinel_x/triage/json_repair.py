@@ -36,9 +36,27 @@ def strip_json_decoration(text: str) -> str:
     text = re.sub(r"^```(?:json)?\s*\n?", "", text.strip())
     text = re.sub(r"\n?```\s*$", "", text)
 
+    # Find the first { and first [
+    first_brace = text.find("{")
+    first_bracket = text.find("[")
+
+    # If [ comes before { (or { not found), it's a bare array — extract it
+    if first_bracket != -1 and (first_brace == -1 or first_bracket < first_brace):
+        depth = 0
+        last_bracket = -1
+        for i, char in enumerate(text[first_bracket:], first_bracket):
+            if char == "[":
+                depth += 1
+            elif char == "]":
+                depth -= 1
+                if depth == 0:
+                    last_bracket = i
+                    break
+        if last_bracket != -1:
+            return text[first_bracket : last_bracket + 1]
+
     # Find the JSON object boundaries
     # Look for the first { and last matching }
-    first_brace = text.find("{")
     if first_brace == -1:
         return text.strip()
 
@@ -240,21 +258,30 @@ def parse_json_safely(text: str) -> Optional[Dict[str, Any]]:
 
     # Strategy 1: Try direct parse
     try:
-        return json.loads(text)
+        result = json.loads(text)
+        if isinstance(result, list):
+            return {"findings": result}
+        return result
     except json.JSONDecodeError:
         pass
 
     # Strategy 2: Strip decoration and try again
     cleaned = strip_json_decoration(text)
     try:
-        return json.loads(cleaned)
+        result = json.loads(cleaned)
+        if isinstance(result, list):
+            return {"findings": result}
+        return result
     except json.JSONDecodeError:
         pass
 
     # Strategy 3: Apply repairs
     repaired = repair_json(cleaned)
     try:
-        return json.loads(repaired)
+        result = json.loads(repaired)
+        if isinstance(result, list):
+            return {"findings": result}
+        return result
     except json.JSONDecodeError as e:
         logger.warning(f"Failed to parse JSON after repairs: {e}")
         logger.debug(f"Attempted to parse: {repaired[:200]}...")

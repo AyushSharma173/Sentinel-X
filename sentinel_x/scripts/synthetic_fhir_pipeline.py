@@ -8,6 +8,9 @@ This pipeline:
 3. Merges radiology DiagnosticReport into the FHIR bundle (US Core R4 compliant)
 4. Outputs a unified folder structure with FHIR records and CT volumes together
 
+Reports are grouped by patient ID (e.g. train_1_a_1 + train_1_a_2 → patient train_1).
+Each patient gets one FHIR bundle, one report, and symlinks for all reconstruction volumes.
+
 Usage (run from workspace root):
     # Process all data in raw_ct_rate, output to raw_ct_rate/combined/ (symlinks by default)
     python sentinel_x/scripts/synthetic_fhir_pipeline.py
@@ -18,8 +21,9 @@ Usage (run from workspace root):
     # Custom data directory
     python sentinel_x/scripts/synthetic_fhir_pipeline.py --data-dir /path/to/data
 
-    # Process single report
+    # Process single report or patient
     python sentinel_x/scripts/synthetic_fhir_pipeline.py --report train_1_a_1.json
+    python sentinel_x/scripts/synthetic_fhir_pipeline.py --report train_1
 
 See docs/unified_fhir_pipeline.md for full documentation.
 """
@@ -2113,7 +2117,7 @@ def validate_bundle(
 
 @dataclass
 class ProcessingResult:
-    """Result of processing a single report."""
+    """Result of processing a single patient."""
     report_name: str
     success: bool
     output_path: Optional[Path] = None
@@ -2122,6 +2126,7 @@ class ProcessingResult:
     patient_fhir_id: Optional[str] = None
     conditions_count: int = 0
     validation_metrics: Optional[dict] = None
+    volumes_info: Optional[list[dict]] = None
 
 
 def get_patient_fhir_id(bundle: dict) -> Optional[str]:
@@ -2133,23 +2138,25 @@ def get_patient_fhir_id(bundle: dict) -> Optional[str]:
     return None
 
 
-async def process_single_report(
+async def process_patient(
     client: AsyncOpenAI,
+    patient_id: str,
     report_path: Path,
-    volume_path: Optional[Path],
+    volume_paths: list[Path],
     output_dir: Path,
     semaphore: asyncio.Semaphore,
     copy_volumes: bool = False
 ) -> ProcessingResult:
-    """Process a single radiology report through the pipeline.
+    """Process a patient through the pipeline.
 
-    Creates a per-datapoint folder containing:
-    - fhir.json: The FHIR bundle
-    - volume.nii.gz: Symlink or copy of the CT volume (if volume exists)
+    Takes one representative report (shared across reconstructions) and all
+    volume paths for this patient. Creates a patient-level folder:
+    - fhir.json: The FHIR bundle (with ImagingStudy resources for ALL volumes)
+    - volume_1.nii.gz, volume_2.nii.gz, ...: Symlinks/copies of CT volumes
+    - report.json, report.txt: The radiology report
     """
 
-    report_name = report_path.stem
-    logger.info(f"Processing: {report_name}")
+    logger.info(f"Processing patient: {patient_id} ({len(volume_paths)} volumes)")
 
     async with semaphore:
         try:
@@ -2164,63 +2171,83 @@ async def process_single_report(
                 f"age range: {extraction.demographics.estimated_age_min}-{extraction.demographics.estimated_age_max}"
             )
 
-            # 3. Create Synthea config
-            config = create_synthea_config(extraction, report_name)
+            # 3. Create Synthea config (use patient_id as seed source)
+            config = create_synthea_config(extraction, patient_id)
 
             # 4. Run Synthea (synchronous)
             synthea_bundle = run_synthea(config)
 
             if synthea_bundle is None:
                 return ProcessingResult(
-                    report_name=report_name,
+                    report_name=patient_id,
                     success=False,
                     error="Synthea generation failed"
                 )
 
-            # 5. Merge radiology resources
+            # 5. Merge radiology resources (uses first volume name for report metadata)
             final_bundle = merge_radiology_resources(synthea_bundle, extraction, report)
+
+            # 5b. Create additional ImagingStudy resources for extra volumes
+            patient_ref = get_patient_reference(final_bundle)
+            now = datetime.utcnow().isoformat() + "Z"
+            if patient_ref and len(volume_paths) > 1:
+                for extra_vol in volume_paths[1:]:
+                    extra_study = create_imaging_study(patient_ref, extra_vol.name, now)
+                    final_bundle["entry"].append({
+                        "fullUrl": f"urn:uuid:{extra_study['id']}",
+                        "resource": extra_study,
+                        "request": {"method": "POST", "url": "ImagingStudy"}
+                    })
+                logger.info(f"Added {len(volume_paths) - 1} additional ImagingStudy resources")
 
             # 6. Validate bundle with comprehensive checks
             radiology_condition_names = [c.condition_name for c in extraction.conditions]
             is_valid, validation_metrics = validate_bundle(
                 final_bundle,
                 radiology_conditions=radiology_condition_names,
-                volume_name=report.get("volume_name", report_name)
+                volume_name=report.get("volume_name", patient_id)
             )
             if not is_valid:
-                logger.warning(f"Bundle validation failed for {report_name}")
+                logger.warning(f"Bundle validation failed for {patient_id}")
 
-            # 7. Create per-datapoint folder
-            datapoint_dir = output_dir / report_name
-            datapoint_dir.mkdir(parents=True, exist_ok=True)
+            # 7. Create patient-level folder
+            patient_dir = output_dir / patient_id
+            patient_dir.mkdir(parents=True, exist_ok=True)
 
             # 8. Save FHIR bundle as fhir.json
-            fhir_path = datapoint_dir / "fhir.json"
+            fhir_path = patient_dir / "fhir.json"
             with open(fhir_path, "w") as f:
                 json.dump(final_bundle, f, indent=2)
 
             logger.info(f"Saved FHIR bundle: {fhir_path}")
 
-            # 9. Link or copy volume if it exists
-            if volume_path and volume_path.exists():
-                volume_dest = datapoint_dir / "volume.nii.gz"
-                if volume_dest.exists() or volume_dest.is_symlink():
-                    volume_dest.unlink()
+            # 9. Link or copy volumes as volume_1.nii.gz, volume_2.nii.gz, ...
+            volumes_info = []
+            for i, vol_path in enumerate(volume_paths, start=1):
+                vol_dest_name = f"volume_{i}.nii.gz"
+                vol_dest = patient_dir / vol_dest_name
+                if vol_dest.exists() or vol_dest.is_symlink():
+                    vol_dest.unlink()
 
-                if copy_volumes:
-                    shutil.copy2(volume_path, volume_dest)
-                    logger.info(f"Copied volume: {volume_dest}")
+                if vol_path.exists():
+                    if copy_volumes:
+                        shutil.copy2(vol_path, vol_dest)
+                        logger.info(f"Copied volume: {vol_dest}")
+                    else:
+                        rel_path = os.path.relpath(vol_path, patient_dir)
+                        vol_dest.symlink_to(rel_path)
+                        logger.info(f"Symlinked volume: {vol_dest} -> {rel_path}")
+
+                    volumes_info.append({
+                        "name": vol_dest_name,
+                        "source": vol_path.name
+                    })
                 else:
-                    # Create relative symlink
-                    rel_path = os.path.relpath(volume_path, datapoint_dir)
-                    volume_dest.symlink_to(rel_path)
-                    logger.info(f"Symlinked volume: {volume_dest} -> {rel_path}")
-            elif volume_path:
-                logger.warning(f"Volume not found: {volume_path}")
+                    logger.warning(f"Volume not found: {vol_path}")
 
-            # 10. Copy radiology report files to combined folder
-            report_json_dest = datapoint_dir / "report.json"
-            report_txt_dest = datapoint_dir / "report.txt"
+            # 10. Copy radiology report files to patient folder
+            report_json_dest = patient_dir / "report.json"
+            report_txt_dest = patient_dir / "report.txt"
 
             # Copy the original report JSON
             shutil.copy2(report_path, report_json_dest)
@@ -2246,19 +2273,20 @@ async def process_single_report(
             patient_fhir_id = get_patient_fhir_id(final_bundle)
 
             return ProcessingResult(
-                report_name=report_name,
+                report_name=patient_id,
                 success=True,
-                output_path=datapoint_dir,
+                output_path=patient_dir,
                 extraction=extraction.model_dump(),
                 patient_fhir_id=patient_fhir_id,
                 conditions_count=len(extraction.conditions),
-                validation_metrics=validation_metrics
+                validation_metrics=validation_metrics,
+                volumes_info=volumes_info
             )
 
         except Exception as e:
-            logger.error(f"Error processing {report_name}: {e}")
+            logger.error(f"Error processing patient {patient_id}: {e}")
             return ProcessingResult(
-                report_name=report_name,
+                report_name=patient_id,
                 success=False,
                 error=str(e)
             )
@@ -2275,11 +2303,49 @@ def find_volume_for_report(report_path: Path, volumes_dir: Path) -> Optional[Pat
     return None
 
 
+def group_reports_by_patient(
+    report_paths: list[Path],
+) -> dict[str, list[Path]]:
+    """Group report paths by patient ID.
+
+    E.g. train_1_a_1.json + train_1_a_2.json → patient 'train_1' → [path1, path2]
+    """
+    from data_loading import get_patient_id
+
+    groups: dict[str, list[Path]] = {}
+    for rp in report_paths:
+        # report stem e.g. "train_1_a_1"
+        pid = get_patient_id(rp.stem + ".nii.gz")
+        if pid is None:
+            logger.warning(f"Could not parse patient ID from {rp.name}, skipping")
+            continue
+        groups.setdefault(pid, []).append(rp)
+
+    # Sort reports within each group by reconstruction_id for deterministic ordering
+    for pid in groups:
+        groups[pid].sort(key=lambda p: p.stem)
+
+    return groups
+
+
+def find_volumes_for_patient(
+    report_paths: list[Path],
+    volumes_dir: Path
+) -> list[Path]:
+    """Find all volume files for a patient's report group, sorted by reconstruction_id."""
+    volumes = []
+    for rp in report_paths:
+        vol = find_volume_for_report(rp, volumes_dir)
+        if vol:
+            volumes.append(vol)
+    return volumes
+
+
 def generate_manifest(
     results: list[ProcessingResult],
     output_dir: Path
 ) -> Path:
-    """Generate manifest.json with index of all data points."""
+    """Generate manifest.json with patient-level entries."""
     manifest = {
         "created": datetime.utcnow().isoformat() + "Z",
         "total_patients": sum(1 for r in results if r.success),
@@ -2292,7 +2358,7 @@ def generate_manifest(
                 "id": result.report_name,
                 "folder": result.report_name,
                 "fhir_path": f"{result.report_name}/fhir.json",
-                "volume_path": f"{result.report_name}/volume.nii.gz",
+                "volumes": result.volumes_info or [],
                 "report_json_path": f"{result.report_name}/report.json",
                 "report_txt_path": f"{result.report_name}/report.txt",
                 "patient_fhir_id": result.patient_fhir_id,
@@ -2316,9 +2382,13 @@ async def process_all_reports(
     copy_volumes: bool = False,
     max_concurrent: int = 3
 ) -> list[ProcessingResult]:
-    """Process multiple reports with checkpoint/resume support."""
+    """Process reports grouped by patient with checkpoint/resume support."""
 
-    # Load checkpoint if exists
+    # Group reports by patient
+    patient_groups = group_reports_by_patient(report_paths)
+    logger.info(f"Grouped {len(report_paths)} reports into {len(patient_groups)} patients")
+
+    # Load checkpoint if exists (now tracks patient_ids, not report_names)
     processed = set()
     if checkpoint_path.exists():
         with open(checkpoint_path, "r") as f:
@@ -2326,12 +2396,15 @@ async def process_all_reports(
             processed = set(checkpoint.get("processed", []))
         logger.info(f"Resuming from checkpoint: {len(processed)} already processed")
 
-    # Filter out already processed
-    remaining = [p for p in report_paths if p.stem not in processed]
-    logger.info(f"Processing {len(remaining)} reports ({len(processed)} already done)")
+    # Filter out already processed patients
+    remaining_patients = {
+        pid: paths for pid, paths in patient_groups.items()
+        if pid not in processed
+    }
+    logger.info(f"Processing {len(remaining_patients)} patients ({len(processed)} already done)")
 
-    if not remaining:
-        logger.info("All reports already processed")
+    if not remaining_patients:
+        logger.info("All patients already processed")
         return []
 
     # Initialize OpenAI client
@@ -2345,27 +2418,32 @@ async def process_all_reports(
     # Create semaphore for rate limiting
     semaphore = asyncio.Semaphore(max_concurrent)
 
-    # Process reports (sequentially due to Synthea being synchronous)
+    # Process patients (sequentially due to Synthea being synchronous)
     results = []
-    for report_path in remaining:
-        # Find corresponding volume
-        volume_path = None
-        if volumes_dir and volumes_dir.exists():
-            volume_path = find_volume_for_report(report_path, volumes_dir)
+    for patient_id in sorted(remaining_patients):
+        group_report_paths = remaining_patients[patient_id]
+        # Use first report as representative (all reconstructions share same report)
+        representative_report = group_report_paths[0]
 
-        result = await process_single_report(
+        # Find all volumes for this patient
+        volume_paths = []
+        if volumes_dir and volumes_dir.exists():
+            volume_paths = find_volumes_for_patient(group_report_paths, volumes_dir)
+
+        result = await process_patient(
             client,
-            report_path,
-            volume_path,
+            patient_id,
+            representative_report,
+            volume_paths,
             output_dir,
             semaphore,
             copy_volumes=copy_volumes
         )
         results.append(result)
 
-        # Update checkpoint after each report
+        # Update checkpoint after each patient
         if result.success:
-            processed.add(result.report_name)
+            processed.add(patient_id)
 
         checkpoint_data = {
             "processed": list(processed),
@@ -2449,7 +2527,7 @@ def main():
     parser.add_argument(
         "--report",
         type=str,
-        help="Process a single report (filename, e.g., train_1_a_1.json)"
+        help="Process a single report (filename, e.g., train_1_a_1.json) or patient ID (e.g., train_1)"
     )
     parser.add_argument(
         "--copy-volumes",
@@ -2494,11 +2572,21 @@ def main():
 
     # Determine which reports to process
     if args.report:
+        # Support both exact filename (train_1_a_1.json) and patient ID (train_1)
         report_path = reports_dir / args.report
-        if not report_path.exists():
-            logger.error(f"Report not found: {report_path}")
-            sys.exit(1)
-        report_paths = [report_path]
+        if report_path.exists():
+            report_paths = [report_path]
+        else:
+            # Try as patient ID — find all matching reports
+            from data_loading import get_patient_id
+            target_pid = args.report.replace(".json", "")
+            report_paths = [
+                rp for rp in sorted(reports_dir.glob("*.json"))
+                if get_patient_id(rp.stem + ".nii.gz") == target_pid
+            ]
+            if not report_paths:
+                logger.error(f"No reports found for: {args.report}")
+                sys.exit(1)
     else:
         report_paths = sorted(reports_dir.glob("*.json"))
 
@@ -2546,24 +2634,37 @@ def main():
 
     # Include previously processed results from checkpoint for manifest
     if checkpoint_path.exists():
-        # Re-scan output directory to include all successfully processed datapoints
+        # Re-scan output directory to include all successfully processed patient folders
         all_results = []
-        for datapoint_dir in sorted(output_dir.iterdir()):
-            if datapoint_dir.is_dir() and (datapoint_dir / "fhir.json").exists():
+        for patient_dir in sorted(output_dir.iterdir()):
+            if patient_dir.is_dir() and (patient_dir / "fhir.json").exists():
                 # Load FHIR to get patient ID and conditions count
-                with open(datapoint_dir / "fhir.json") as f:
+                with open(patient_dir / "fhir.json") as f:
                     bundle = json.load(f)
                 patient_fhir_id = get_patient_fhir_id(bundle)
                 conditions_count = sum(
                     1 for entry in bundle.get("entry", [])
                     if entry.get("resource", {}).get("resourceType") == "Condition"
                 )
+
+                # Discover volumes in the patient folder
+                volumes_info = []
+                for vol_file in sorted(patient_dir.glob("volume_*.nii.gz")):
+                    source_name = ""
+                    if vol_file.is_symlink():
+                        source_name = Path(os.readlink(vol_file)).name
+                    volumes_info.append({
+                        "name": vol_file.name,
+                        "source": source_name
+                    })
+
                 all_results.append(ProcessingResult(
-                    report_name=datapoint_dir.name,
+                    report_name=patient_dir.name,
                     success=True,
-                    output_path=datapoint_dir,
+                    output_path=patient_dir,
                     patient_fhir_id=patient_fhir_id,
-                    conditions_count=conditions_count
+                    conditions_count=conditions_count,
+                    volumes_info=volumes_info
                 ))
 
     if all_results:
