@@ -1,0 +1,14 @@
+Volume: train_4_a_1.nii.gz
+==================================================
+
+CLINICAL INFORMATION:
+Not given.
+
+TECHNIQUE:
+Non-contrast images were taken in the axial plane with a section thickness of 1.5 mm.
+
+FINDINGS:
+No occlusive pathology was observed in the trachea and lumen of both main bronchi. In the non-contrast examination, the mediastinal could not be evaluated optimally. As far as can be seen; mediastinal main vascular structures, heart contour, size are normal. Pericardial effusion-thickening was not observed. Thoracic esophagus calibration was normal and no significant pathological wall thickening was detected. No enlarged lymph nodes in prevascular, pre-paratracheal, subcarinal or bilateral hilar-axillary pathological dimensions were detected. When examined in the lung parenchyma window; Pleuroparenchymal sequela fibrotic density increases were observed in the apical and posterior segment of the right lung upper lobe, and in the left lung upper lobe apicoposterior segment, which also causes pleural thickening. In both lungs, nonspecific parenchymal nodules with a diameter of 7.1 mm were observed in the anterobasal subsegment of the lower lobe anterobasal segment, the largest of which was 7.1 mm on the right, and 3 mm in diameter, on the left. No mass lesion-active infiltration with distinguishable borders was detected in the lung parenchyma. As far as can be seen within the sections; upper abdominal organs are normal. No space-occupying lesion was detected in the liver that entered the cross-sectional area. Bilateral adrenal glands were normal and no space-occupying lesion was detected. Osteopenia was observed in the thoracolumbar vertebrae within the sections. Vertebral corpus heights are natural.
+
+IMPRESSIONS:
+ Sequelae changes in the right lung upper lobe and left lung upper lobe apicoposterior segment.  Millimetrically sized nonspecific parenchymal nodules in both lungs.  Osteopenia in the thoracolumbar vertebrae.

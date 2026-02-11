@@ -5,12 +5,16 @@ interface AIAnalysisProps {
   visualFindings: string;
   conditionsConsidered: string[];
   rationale: string;
+  headline?: string;
+  reasoning?: string;
 }
 
 export function AIAnalysis({
   visualFindings,
   conditionsConsidered,
   rationale,
+  headline,
+  reasoning,
 }: AIAnalysisProps) {
   return (
     <div className="space-y-4">
@@ -61,6 +65,21 @@ export function AIAnalysis({
           <p className="text-sm text-muted-foreground">{rationale || 'No rationale available'}</p>
         </CardContent>
       </Card>
+
+      {/* Clinical Reasoning */}
+      {reasoning && (
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base flex items-center gap-2">
+              <Brain className="h-4 w-4 text-primary" />
+              Clinical Reasoning
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground whitespace-pre-line">{reasoning}</p>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

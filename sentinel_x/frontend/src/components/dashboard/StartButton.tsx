@@ -1,4 +1,4 @@
-import { Play, Square, RotateCcw, Loader2 } from 'lucide-react';
+import { Play, Square, RotateCcw, Loader2, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { DemoStatus } from '@/types';
 
@@ -19,11 +19,21 @@ export function StartButton({
 }: StartButtonProps) {
   const isRunning = demoStatus === 'running';
   const isStopped = demoStatus === 'stopped';
+  const isCompleted = demoStatus === 'completed';
   const isTransitioning = demoStatus === 'starting' || demoStatus === 'stopping';
 
   return (
     <div className="flex flex-col items-center gap-4">
-      {isStopped ? (
+      {isCompleted ? (
+        <Button
+          size="xl"
+          disabled
+          className="gap-2 min-w-[200px] bg-routine hover:bg-routine text-white"
+        >
+          <CheckCircle className="h-6 w-6" />
+          Demo Complete
+        </Button>
+      ) : isStopped ? (
         <Button
           size="xl"
           onClick={onStart}
@@ -63,7 +73,7 @@ export function StartButton({
         </Button>
       )}
 
-      {(isStopped || isRunning) && (
+      {(isStopped || isRunning || isCompleted) && (
         <Button
           variant="outline"
           size="sm"

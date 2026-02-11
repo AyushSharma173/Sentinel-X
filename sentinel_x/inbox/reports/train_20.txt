@@ -1,0 +1,14 @@
+Volume: train_20_a_1.nii.gz
+==================================================
+
+CLINICAL INFORMATION:
+Not given.
+
+TECHNIQUE:
+Sections were taken in the axial plane without contrast material and reconstruction was performed at the workstation.
+
+FINDINGS:
+Trachea and both main bronchi are open. There is no obstructive pathology in the trachea and both main bronchi. Peripheral and centrally located ground glass areas and minimal interlobular septal thickenings and enlarged vascular structures accompanying the ground glass areas are observed in the upper and lower lobes of both lungs, more prominently on the right. The described findings are the findings frequently observed in Covid-19 pneumonia. During the pandemic process, these findings were evaluated in favor of Covid-19 pneumonia. No mass was detected in both lungs. Mediastinal structures cannot be evaluated optimally because contrast material is not given. As far as can be observed: Heart contour and size are normal. No pleural or pericardial effusion was detected. The widths of the mediastinal main vascular structures are normal. No pathologically enlarged lymph nodes were detected in the mediastinum and hilar regions. No pathological wall thickness increase was observed in the esophagus within the sections. No upper abdominal free fluid-collection was detected in the sections. In the upper abdominal organs within the sections, no mass with distinguishable borders was detected as far as it can be observed within the borders of non-enhanced CT. Thoracic vertebral corpus heights, alignments and densities are normal. Intervertebral disc distances are preserved. The neural foramina are open. No lytic-destructive lesions were detected in the bone structures within the sections.
+
+IMPRESSIONS:
+ Findings evaluated in favor of viral pneumonia in both lungs.

@@ -7,12 +7,14 @@ import { useDemoControls } from '@/hooks/useDemoControls';
 import { useWorklist } from '@/hooks/useWorklist';
 import { useTriageWebSocket } from '@/hooks/useTriageWebSocket';
 import { usePatient } from '@/hooks/usePatient';
-import type { SystemStatus } from '@/types';
+import type { SystemStatus, QueuedPatient } from '@/types';
 
 function App() {
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
   const [processingPatientId, setProcessingPatientId] = useState<string | null>(null);
   const [newPatientIds, setNewPatientIds] = useState<Set<string>>(new Set());
+  const [queuedPatients, setQueuedPatients] = useState<QueuedPatient[]>([]);
+  const [currentPhase, setCurrentPhase] = useState<string | null>(null);
 
   // Demo controls
   const {
@@ -56,13 +58,60 @@ function App() {
       const newStatus = data.status as SystemStatus;
       if (newStatus) updateStatus(newStatus);
       setProcessingPatientId(null);
+      setCurrentPhase(null);
+    },
+    onPatientArrived: (data) => {
+      const patientId = data.patient_id as string;
+      setQueuedPatients((prev) => {
+        // Deduplicate
+        if (prev.some((qp) => qp.patient_id === patientId)) return prev;
+        return [...prev, {
+          patient_id: patientId,
+          status: 'queued',
+          arrived_at: new Date().toISOString(),
+        }];
+      });
     },
     onProcessingStarted: (data) => {
-      setProcessingPatientId(data.patient_id as string);
+      const patientId = data.patient_id as string;
+      setProcessingPatientId(patientId);
+      setCurrentPhase('phase1');
+      // Update queued patient to analyzing
+      setQueuedPatients((prev) =>
+        prev.map((qp) =>
+          qp.patient_id === patientId
+            ? { ...qp, status: 'analyzing' as const, phase: 'phase1' as const }
+            : qp
+        )
+      );
+    },
+    onPhase1Complete: () => {
+      setCurrentPhase('model_swap');
+      setQueuedPatients((prev) =>
+        prev.map((qp) =>
+          qp.status === 'analyzing'
+            ? { ...qp, phase: 'model_swap' as const }
+            : qp
+        )
+      );
+    },
+    onPhase2Started: () => {
+      setCurrentPhase('phase2');
+      setQueuedPatients((prev) =>
+        prev.map((qp) =>
+          qp.status === 'analyzing'
+            ? { ...qp, phase: 'phase2' as const }
+            : qp
+        )
+      );
     },
     onProcessingComplete: (data) => {
       const patientId = data.patient_id as string;
       setProcessingPatientId(null);
+      setCurrentPhase(null);
+
+      // Remove from queued patients
+      setQueuedPatients((prev) => prev.filter((qp) => qp.patient_id !== patientId));
 
       // Add to new patients set for highlight animation
       setNewPatientIds((prev) => new Set(prev).add(patientId));
@@ -82,6 +131,12 @@ function App() {
     onWorklistUpdated: () => {
       refreshWorklist();
     },
+    onDemoComplete: (data) => {
+      const newStatus = data.status as SystemStatus;
+      if (newStatus) updateStatus(newStatus);
+      setProcessingPatientId(null);
+      setCurrentPhase(null);
+    },
   });
 
   // Handle patient selection
@@ -100,10 +155,12 @@ function App() {
   const handleReset = useCallback(async () => {
     await resetDemo();
     refreshWorklist();
+    setQueuedPatients([]);
+    setCurrentPhase(null);
   }, [resetDemo, refreshWorklist]);
 
   // Determine if we should show the worklist view
-  const showWorklist = status?.demo_status === 'running' || entries.length > 0;
+  const showWorklist = status?.demo_status === 'running' || status?.demo_status === 'completed' || entries.length > 0 || queuedPatients.length > 0;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -153,6 +210,7 @@ function App() {
               onRowClick={handlePatientClick}
               counts={stats.byPriority}
               newPatientIds={newPatientIds}
+              queuedPatients={queuedPatients}
             />
           </div>
         )}
@@ -174,6 +232,7 @@ function App() {
             error={patientError}
             onClose={handleCloseDetail}
             getSliceUrl={getSliceUrl}
+            selectedPatientId={selectedPatientId}
           />
         </>
       )}
@@ -182,6 +241,7 @@ function App() {
       <ProcessingIndicator
         patientId={processingPatientId}
         visible={!!processingPatientId}
+        currentPhase={currentPhase}
       />
     </div>
   );

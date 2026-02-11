@@ -263,32 +263,19 @@ class SessionLogger:
         self.log_delta_analysis_table(delta_result)
 
     def log_delta_analysis_table(self, delta_result) -> None:
-        """Log formatted table of finding classifications."""
+        """Log Phase 2 analysis results."""
         header = " STEP 5: DELTA ANALYSIS RESULTS"
         self._write("=" * 80 + "\n" + header + "\n" + "=" * 80 + "\n\n")
 
-        if delta_result.delta_analysis:
-            self._write(
-                f"{'#':<4}{'Finding':<25}{'Classification':<18}{'Pri':<5}"
-                f"{'History Match':<25}Reasoning\n"
-            )
-            self._write(
-                f"{'—'*3:<4}{'—'*23:<25}{'—'*16:<18}{'—'*3:<5}"
-                f"{'—'*23:<25}{'—'*30}\n"
-            )
-            for i, de in enumerate(delta_result.delta_analysis, 1):
-                hm = str(de.history_match or "—")[:23]
-                self._write(
-                    f"{i:<4}{de.finding[:23]:<25}{de.classification:<18}"
-                    f"{de.priority:<5}{hm:<25}{de.reasoning[:40]}\n"
-                )
-        else:
-            self._write("No delta entries produced.\n")
-
-        self._write(f"\nOverall Priority: {delta_result.overall_priority} "
+        self._write(f"Overall Priority: {delta_result.overall_priority} "
                      f"({self._priority_name(delta_result.overall_priority)})\n")
-        self._write(f"Rationale: {delta_result.priority_rationale}\n")
-        self._write(f"Summary: {delta_result.findings_summary}\n\n")
+
+        headline = getattr(delta_result, 'headline', '') or delta_result.findings_summary
+        self._write(f"Headline: {headline}\n\n")
+
+        self._write("--- CLINICAL REASONING ---\n\n")
+        self._write(f"{delta_result.priority_rationale}\n\n")
+        self._write("--- END CLINICAL REASONING ---\n\n")
 
     # ------------------------------------------------------------------
     # Step 6: Output saved

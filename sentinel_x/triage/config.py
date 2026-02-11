@@ -1,17 +1,25 @@
 """Configuration constants for the Sentinel-X Triage Agent."""
 
+import os
 from pathlib import Path
 
 # Base paths
 BASE_DIR = Path(__file__).parent.parent
+
+# Data root: defaults to /runpod-volume/sentinel_x_data when available,
+# falls back to BASE_DIR / "data".  Override with SENTINEL_DATA_ROOT env var.
+_RUNPOD_DATA = Path("/runpod-volume/sentinel_x_data")
+_DEFAULT_DATA_ROOT = _RUNPOD_DATA if _RUNPOD_DATA.exists() else BASE_DIR / "data"
+DATA_ROOT = Path(os.getenv("SENTINEL_DATA_ROOT", str(_DEFAULT_DATA_ROOT)))
+
 INBOX_DIR = BASE_DIR / "inbox"
 INBOX_VOLUMES_DIR = INBOX_DIR / "volumes"
 INBOX_REPORTS_DIR = INBOX_DIR / "reports"
-OUTPUT_DIR = BASE_DIR / "output" / "triage_results"
-LOG_DIR = BASE_DIR / "logs"
+OUTPUT_DIR = DATA_ROOT / "triage_results"
+LOG_DIR = DATA_ROOT / "logs"
 
 # Combined folder paths (unified structure for all patient data)
-DATA_DIR = BASE_DIR / "data" / "raw_ct_rate"
+DATA_DIR = DATA_ROOT / "raw_ct_rate"
 COMBINED_DIR = DATA_DIR / "combined"
 COMBINED_MANIFEST = COMBINED_DIR / "manifest.json"
 
@@ -45,7 +53,7 @@ CT_WINDOW_SOFT = (-135, 215)     # G channel: soft tissue (fat to start of bone)
 CT_WINDOW_BRAIN = (0, 80)        # B channel: brain (water to brain density)
 
 # Inbox watcher configuration
-INBOX_POLL_INTERVAL = 5  # Seconds between inbox scans
+INBOX_POLL_INTERVAL = 2  # Seconds between inbox scans
 
 # Priority levels
 PRIORITY_CRITICAL = 1  # Acute pathology (PE, aortic dissection, pneumothorax)

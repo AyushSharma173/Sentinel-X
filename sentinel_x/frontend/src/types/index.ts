@@ -2,7 +2,7 @@
  * TypeScript type definitions for Sentinel-X frontend
  */
 
-export type DemoStatus = 'stopped' | 'starting' | 'running' | 'stopping';
+export type DemoStatus = 'stopped' | 'starting' | 'running' | 'stopping' | 'completed';
 
 export interface SystemStatus {
   demo_status: DemoStatus;
@@ -63,6 +63,8 @@ export interface TriageResult {
   conditions_considered: string[];
   findings_summary: string;
   visual_findings: string;
+  headline?: string;
+  reasoning?: string;
 }
 
 export interface DemoControlResponse {
@@ -79,7 +81,13 @@ export type WSEventType =
   | 'processing_progress'
   | 'processing_complete'
   | 'worklist_updated'
-  | 'error';
+  | 'error'
+  | 'phase1_started'
+  | 'phase1_complete'
+  | 'model_swapping'
+  | 'phase2_started'
+  | 'phase2_complete'
+  | 'demo_complete';
 
 export interface WSEvent {
   event: WSEventType;
@@ -91,4 +99,11 @@ export interface VolumeInfo {
   patient_id: string;
   total_slices: number;
   dimensions: number[];
+}
+
+export interface QueuedPatient {
+  patient_id: string;
+  status: 'queued' | 'analyzing';
+  phase?: 'phase1' | 'model_swap' | 'phase2';
+  arrived_at: string;
 }

@@ -36,29 +36,12 @@ def _get_key_slice_index(
     delta_result: DeltaAnalysisResult,
     num_images: int,
 ) -> int:
-    """Determine the most diagnostically important slice index.
-
-    Picks the slice_index from the highest-priority finding. Falls back
-    to the middle slice if no findings exist.
-    """
-    best_priority = 4
-    best_slice = num_images // 2  # fallback: middle slice
-
-    for vf in visual_fact_sheet.findings:
-        # Find matching delta entry for this finding's priority
-        finding_priority = 3
-        for de in delta_result.delta_analysis:
-            if de.finding and vf.finding and vf.finding.lower() in de.finding.lower():
-                finding_priority = de.priority
-                break
-
-        if finding_priority < best_priority:
-            best_priority = finding_priority
-            idx = vf.slice_index
-            if 0 <= idx < num_images:
-                best_slice = idx
-
-    return best_slice
+    """Pick the most diagnostically important slice from Phase 1 findings."""
+    if visual_fact_sheet.findings:
+        idx = visual_fact_sheet.findings[0].slice_index
+        if 0 <= idx < num_images:
+            return idx
+    return num_images // 2
 
 
 def generate_triage_result(
@@ -107,7 +90,7 @@ def generate_triage_result(
     rationale = f"Visual analysis: {visual_findings_text}"
     if conditions_from_context:
         rationale += f" EHR Context: Patient has {', '.join(conditions_from_context)}."
-    rationale += f" {delta_result.priority_rationale}"
+    rationale += f" Delta: {delta_result.headline}"
 
     # Build delta_analysis serializable list
     delta_analysis_list = [
@@ -136,6 +119,8 @@ def generate_triage_result(
         "delta_analysis": delta_analysis_list,
         "phase1_raw": visual_fact_sheet.raw_response,
         "phase2_raw": delta_result.raw_response,
+        "headline": delta_result.headline,
+        "reasoning": delta_result.priority_rationale,
     }
 
     return result

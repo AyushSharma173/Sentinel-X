@@ -1,0 +1,14 @@
+Volume: train_17_a_1.nii.gz
+==================================================
+
+CLINICAL INFORMATION:
+Not given.
+
+TECHNIQUE:
+Non-contrast images were taken in the axial plane with a section thickness of 1.5 mm.
+
+FINDINGS:
+Trachea, both main bronchi are open. Mediastinal main vascular structures, heart contour, size are normal. Thoracic aorta diameter is normal. Pericardial effusion-thickening was not observed. Thoracic esophagus calibration was normal and no significant tumoral wall thickening was detected. No enlarged lymph nodes in prevascular, pre-paratracheal, subcarinal or bilateral hilar-axillary pathological dimensions were detected. When examined in the lung parenchyma window; Slight patchy ground glass densities with pleural location are observed at the posterior levels of the lower lobes of both lungs. The findings were evaluated in favor of the infectious process. Clinical, laboratory correlation is recommended for the differential diagnosis of Covid-19 viral pneumonia due to the current pandemic. There is an appearance compatible with hepatosteatosis in the liver parenchyma entering the section area. Other upper abdominal organs included in the sections are normal. Bilateral adrenal glands were normal and no space-occupying lesion was detected. Bone structures in the study area are natural. Vertebral corpus heights are preserved.
+
+IMPRESSIONS:
+ Suspicious findings in terms of Covid-19 viral pneumonia. Clinical and laboratory correlation is recommended.  Hepatosteatosis.

@@ -1,0 +1,14 @@
+Volume: train_12_a_1.nii.gz
+==================================================
+
+CLINICAL INFORMATION:
+Not given.
+
+TECHNIQUE:
+Non-contrast images were taken in the axial plane with a section thickness of 1.5 mm.
+
+FINDINGS:
+Trachea and both main bronchi were in the midline and no obstructive pathology was observed in the lumen. In the non-contrast examination, the mediastinal could not be evaluated optimally. As far as can be seen; The anterior-posterior diameter of the ascending aorta is 39 mm, above normal. Calibration of other vascular structures of the mediastinum is natural. Heart contour, size is normal. Pericardial effusion-thickening was not observed. Millimetric calcific atheroma plaques were observed in the aorta. Thoracic esophagus calibration was normal and no significant pathological wall thickening was detected. No enlarged lymph nodes in prevascular, pre-paratracheal, subcarinal or bilateral hilar-axillary pathological dimensions were detected. When examined in the lung parenchyma window; Minimal emphysematous changes were observed in both lungs. Pleuroparenchymal fibroatelectatic sequelae changes were observed in the right lung middle lobe and left lung upper lobe lingular segment and in both lung lower lobe basal segments. No mass lesion-active infiltration with distinguishable borders was detected in both lungs. As far as can be seen within the sections; upper abdominal organs are normal. No space-occupying lesion was detected in the liver that entered the cross-sectional area. Bilateral adrenal glands were normal and no space-occupying lesion was detected. Bone structures in the study area are natural. Vertebral corpus heights are preserved.
+
+IMPRESSIONS:
+ Calcific atheroma plaque in the aorta.  Emphysematous changes in both lungs.  Atelectatic sequelae changes in both lungs.

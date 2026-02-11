@@ -12,6 +12,11 @@ interface UseTriageWebSocketOptions {
   onProcessingComplete?: EventCallback;
   onWorklistUpdated?: EventCallback;
   onError?: EventCallback;
+  onPhase1Complete?: EventCallback;
+  onModelSwapping?: EventCallback;
+  onPhase2Started?: EventCallback;
+  onPhase2Complete?: EventCallback;
+  onDemoComplete?: EventCallback;
 }
 
 export function useTriageWebSocket(options: UseTriageWebSocketOptions = {}) {
@@ -60,7 +65,7 @@ export function useTriageWebSocket(options: UseTriageWebSocketOptions = {}) {
         setLastEvent(wsEvent);
 
         // Route to appropriate callback
-        const callbacks: Record<WSEventType, EventCallback | undefined> = {
+        const callbacks: Record<string, EventCallback | undefined> = {
           demo_started: optionsRef.current.onDemoStarted,
           demo_stopped: optionsRef.current.onDemoStopped,
           patient_arrived: optionsRef.current.onPatientArrived,
@@ -69,6 +74,11 @@ export function useTriageWebSocket(options: UseTriageWebSocketOptions = {}) {
           processing_complete: optionsRef.current.onProcessingComplete,
           worklist_updated: optionsRef.current.onWorklistUpdated,
           error: optionsRef.current.onError,
+          phase1_complete: optionsRef.current.onPhase1Complete,
+          model_swapping: optionsRef.current.onModelSwapping,
+          phase2_started: optionsRef.current.onPhase2Started,
+          phase2_complete: optionsRef.current.onPhase2Complete,
+          demo_complete: optionsRef.current.onDemoComplete,
         };
 
         const callback = callbacks[wsEvent.event];

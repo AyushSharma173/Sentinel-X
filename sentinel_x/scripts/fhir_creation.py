@@ -20,7 +20,11 @@ SYNTHEA_VERSION = "v3.3.0"
 SYNTHEA_JAR_NAME = "synthea-with-dependencies.jar"
 SYNTHEA_JAR = PROJECT_DIR / "lib" / SYNTHEA_JAR_NAME
 SYNTHEA_URL = f"https://github.com/synthetichealth/synthea/releases/download/{SYNTHEA_VERSION}/{SYNTHEA_JAR_NAME}"
-OUTPUT_DIR = PROJECT_DIR / "data" / "synthea_output"
+
+# Default to /runpod-volume when available (root disk is small).
+_RUNPOD_DATA = Path("/runpod-volume/sentinel_x_data/synthea_output")
+_DEFAULT_OUTPUT = _RUNPOD_DATA if _RUNPOD_DATA.parent.exists() else PROJECT_DIR / "data" / "synthea_output"
+OUTPUT_DIR = Path(os.getenv("SYNTHEA_OUTPUT_DIR", str(_DEFAULT_OUTPUT)))
 
 
 def check_java():

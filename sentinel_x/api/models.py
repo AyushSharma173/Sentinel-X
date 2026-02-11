@@ -33,6 +33,7 @@ class DemoStatus(str, Enum):
     STARTING = "starting"
     RUNNING = "running"
     STOPPING = "stopping"
+    COMPLETED = "completed"
 
 
 class SystemStatus(BaseModel):
@@ -114,6 +115,8 @@ class TriageResult(BaseModel):
     delta_analysis: List[DeltaAnalysisEntry] = Field(default_factory=list)
     phase1_raw: str = ""
     phase2_raw: str = ""
+    headline: str = ""
+    reasoning: str = ""
 
 
 class DemoControlResponse(BaseModel):
@@ -139,6 +142,7 @@ class WSEventType(str, Enum):
     MODEL_SWAPPING = "model_swapping"
     PHASE2_STARTED = "phase2_started"
     PHASE2_COMPLETE = "phase2_complete"
+    DEMO_COMPLETE = "demo_complete"
 
 
 class WSEvent(BaseModel):

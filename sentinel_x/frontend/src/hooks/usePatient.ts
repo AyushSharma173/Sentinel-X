@@ -22,12 +22,13 @@ export function usePatient() {
         fetch(`${API_BASE}/patients/${patientId}/volume-info`),
       ]);
 
-      if (!triageResponse.ok) {
-        throw new Error('Failed to fetch triage result');
+      // Triage result may not exist yet (queued patient)
+      if (triageResponse.ok) {
+        const triage: TriageResult = await triageResponse.json();
+        setTriageResult(triage);
+      } else {
+        setTriageResult(null);
       }
-
-      const triage: TriageResult = await triageResponse.json();
-      setTriageResult(triage);
 
       if (fhirResponse.ok) {
         const fhir: PatientFHIRContext = await fhirResponse.json();

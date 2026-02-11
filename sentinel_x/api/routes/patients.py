@@ -85,6 +85,8 @@ async def get_patient_triage(patient_id: str):
         delta_analysis=result.get("delta_analysis", []),
         phase1_raw=result.get("phase1_raw", ""),
         phase2_raw=result.get("phase2_raw", ""),
+        headline=result.get("headline", ""),
+        reasoning=result.get("reasoning", ""),
     )
 
 

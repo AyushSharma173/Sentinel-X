@@ -40,6 +40,8 @@ class DemoService:
         self._agent_running = False
         self._model_loaded = False
         self._patients_processed = 0
+        self._total_patients: int = 0
+        self._current_patient_id: Optional[str] = None
         self._loop: Optional[asyncio.AbstractEventLoop] = None
 
         # Source data - using combined folder (unified structure)
@@ -90,7 +92,7 @@ class DemoService:
 
     async def start_demo(self) -> bool:
         """Start the demo (simulator + agent)."""
-        if self._status != DemoStatus.STOPPED:
+        if self._status not in (DemoStatus.STOPPED, DemoStatus.COMPLETED):
             logger.warning("Demo already running or starting")
             return False
 
@@ -136,7 +138,7 @@ class DemoService:
 
     async def stop_demo(self) -> bool:
         """Stop the demo."""
-        if self._status != DemoStatus.RUNNING:
+        if self._status not in (DemoStatus.RUNNING, DemoStatus.COMPLETED):
             logger.warning("Demo not running")
             return False
 
@@ -192,6 +194,8 @@ class DemoService:
 
         # Reset counters
         self._patients_processed = 0
+        self._total_patients = 0
+        self._current_patient_id = None
 
         logger.info("Demo reset complete")
         return True
@@ -212,6 +216,7 @@ class DemoService:
             self._simulator_running = False
             return
 
+        self._total_patients = len(patient_folders)
         remaining = patient_folders.copy()
         random.shuffle(remaining)
 
@@ -226,11 +231,15 @@ class DemoService:
 
             self._run_async(ws_manager.send_event(
                 WSEventType.PATIENT_ARRIVED,
-                {"patient_id": patient_id, "remaining": len(remaining)}
+                {
+                    "patient_id": patient_id,
+                    "remaining": len(remaining),
+                    "total_patients": self._total_patients,
+                }
             ))
 
             if remaining and self._simulator_running:
-                time.sleep(10)
+                time.sleep(2)
 
         self._simulator_running = False
         logger.info("Simulator thread finished")
@@ -326,11 +335,44 @@ class DemoService:
         # Create agent (models loaded on-demand per-phase)
         agent = TriageAgent()
 
+        # Monkey-patch model methods to emit phase WS events
+        if hasattr(agent, 'vision_analyzer'):
+            original_unload = agent.vision_analyzer.unload
+
+            def patched_unload():
+                pid = self._current_patient_id
+                self._run_async(ws_manager.send_event(
+                    WSEventType.PHASE1_COMPLETE,
+                    {"patient_id": pid}
+                ))
+                self._run_async(ws_manager.send_event(
+                    WSEventType.MODEL_SWAPPING,
+                    {"patient_id": pid}
+                ))
+                return original_unload()
+
+            agent.vision_analyzer.unload = patched_unload
+
+        if hasattr(agent, 'reasoner'):
+            original_load = agent.reasoner.load_model
+
+            def patched_load(*args, **kwargs):
+                result = original_load(*args, **kwargs)
+                pid = self._current_patient_id
+                self._run_async(ws_manager.send_event(
+                    WSEventType.PHASE2_STARTED,
+                    {"patient_id": pid}
+                ))
+                return result
+
+            agent.reasoner.load_model = patched_load
+
         # Set up callback wrappers
         original_process = agent.process_patient
 
         def process_with_callbacks(patient_data: PatientData) -> None:
             patient_id = patient_data.patient_id
+            self._current_patient_id = patient_id
 
             # Notify processing started
             self._run_async(ws_manager.send_event(
@@ -347,6 +389,12 @@ class DemoService:
             try:
                 # Run actual processing (both phases happen inside)
                 original_process(patient_data)
+
+                # Notify Phase 2 complete
+                self._run_async(ws_manager.send_event(
+                    WSEventType.PHASE2_COMPLETE,
+                    {"patient_id": patient_id}
+                ))
 
                 # Reload worklist from disk to get the entry added by agent
                 self._worklist.reload()
@@ -371,11 +419,13 @@ class DemoService:
                     ))
 
                 self._patients_processed += 1
+                self._current_patient_id = None
                 # Models are transient — loaded/unloaded per patient
                 self._model_loaded = True
 
             except Exception as e:
                 logger.error(f"Agent processing failed for {patient_id}: {e}")
+                self._current_patient_id = None
                 self._run_async(ws_manager.send_event(
                     WSEventType.ERROR,
                     {"patient_id": patient_id, "error": str(e)}
@@ -396,6 +446,20 @@ class DemoService:
                     agent.inbox_watcher.mark_processed(patient_data.patient_id)
                 except Exception as e:
                     logger.error(f"Error processing {patient_data.patient_id}: {e}")
+
+            # Check for demo completion
+            if (not self._simulator_running
+                    and self._total_patients > 0
+                    and self._patients_processed >= self._total_patients):
+                self._status = DemoStatus.COMPLETED
+                self._run_async(ws_manager.send_event(
+                    WSEventType.DEMO_COMPLETE,
+                    {
+                        "status": self.get_status().model_dump(),
+                        "patients_processed": self._patients_processed,
+                    }
+                ))
+                break
 
             time.sleep(agent.inbox_watcher.poll_interval)
 

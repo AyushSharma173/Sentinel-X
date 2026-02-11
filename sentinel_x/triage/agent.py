@@ -51,6 +51,22 @@ from .session_logger import SessionLogger
 from .vram_manager import get_vram_free_mb, get_vram_total_mb, log_vram_status, verify_clean_state
 from .worklist import Worklist
 
+try:
+    from utils.disk_monitor import check_disk_space, log_disk_status
+except ImportError:
+    # Fallback: no-op if utils package isn't on the import path
+    import shutil as _shutil
+
+    def check_disk_space(path="/", min_free_gb=2.0, raise_on_fail=True):
+        stat = _shutil.disk_usage(path)
+        free_gb = stat.free / (1024 ** 3)
+        if free_gb < min_free_gb and raise_on_fail:
+            raise RuntimeError(f"Low disk: {free_gb:.1f}GB free at {path}")
+        return free_gb >= min_free_gb
+
+    def log_disk_status(label=""):
+        pass
+
 # Minimum total GPU memory (MB) to run the full pipeline.
 # Phase 2 (27B NF4) peaks at ~17GB — need at least ~22GB total for safety.
 MIN_GPU_TOTAL_MB = 22_000
@@ -113,6 +129,11 @@ class TriageAgent:
     def _preflight_gpu_check(self) -> None:
         """Verify GPU has enough total memory and nothing else is using it."""
         import torch
+
+        # Disk space pre-flight (fail early before loading any model)
+        log_disk_status("pre-flight")
+        check_disk_space(str(self.output_dir), min_free_gb=1.0, raise_on_fail=False)
+
         if not torch.cuda.is_available():
             self.logger.warning("CUDA not available — pipeline will fail at model load")
             return

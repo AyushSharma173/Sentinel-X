@@ -16,8 +16,12 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from .config import REASONER_MODEL_ID, REASONER_USE_DOUBLE_QUANT, PRIORITY_ROUTINE
-from .json_repair import parse_json_safely
-from .prompts import PHASE2_SYSTEM_PROMPT, build_phase2_user_prompt
+from .prompts import (
+    PHASE2_MAX_NARRATIVE_CHARS,
+    PHASE2_SYSTEM_PROMPT,
+    build_phase2_user_prompt,
+    parse_phase2_response,
+)
 from .vram_manager import (
     VRAM_MIN_FREE_PHASE2_MB,
     assert_vram_available,
@@ -49,6 +53,7 @@ class DeltaAnalysisResult:
     overall_priority: int = PRIORITY_ROUTINE
     priority_rationale: str = ""
     findings_summary: str = ""
+    headline: str = ""
     raw_response: str = ""
 
 
@@ -122,43 +127,19 @@ class ClinicalReasoner:
         return messages
 
     def _parse_response(self, response: str) -> DeltaAnalysisResult:
-        """Parse JSON response into a DeltaAnalysisResult."""
-        parsed = parse_json_safely(response)
+        """Parse text-based Phase 2 response into DeltaAnalysisResult."""
+        parsed = parse_phase2_response(response)
 
-        if parsed is None:
-            logger.warning(
-                "Failed to parse Phase 2 response as JSON, returning default result"
-            )
-            return DeltaAnalysisResult(
-                delta_analysis=[],
-                overall_priority=PRIORITY_ROUTINE,
-                priority_rationale="Unable to parse model response",
-                findings_summary="Analysis parsing failed — manual review recommended",
-                raw_response=response,
-            )
-
-        delta_entries = []
-        for item in parsed.get("delta_analysis", []):
-            try:
-                delta_entries.append(DeltaEntry(
-                    finding=str(item.get("finding", "")),
-                    classification=str(item.get("classification", "ACUTE_NEW")),
-                    priority=int(item.get("priority", 2)),
-                    history_match=item.get("history_match"),
-                    reasoning=str(item.get("reasoning", "")),
-                ))
-            except (ValueError, TypeError) as e:
-                logger.warning(f"Skipping malformed delta entry: {e}")
-
-        overall_priority = int(parsed.get("overall_priority", PRIORITY_ROUTINE))
-        if overall_priority not in (1, 2, 3):
-            overall_priority = PRIORITY_ROUTINE
+        priority = parsed["priority"]
+        if priority not in (1, 2, 3):
+            priority = PRIORITY_ROUTINE
 
         return DeltaAnalysisResult(
-            delta_analysis=delta_entries,
-            overall_priority=overall_priority,
-            priority_rationale=str(parsed.get("priority_rationale", "")),
-            findings_summary=str(parsed.get("findings_summary", "")),
+            delta_analysis=[],
+            overall_priority=priority,
+            priority_rationale=parsed["reasoning"],
+            findings_summary=parsed["headline"],
+            headline=parsed["headline"],
             raw_response=response,
         )
 
@@ -166,7 +147,7 @@ class ClinicalReasoner:
         self,
         clinical_narrative: str,
         visual_narrative: str,
-        max_new_tokens: int = 512,
+        max_new_tokens: int = 1024,
     ) -> DeltaAnalysisResult:
         """Run Phase 2 Delta Analysis: compare visual findings against clinical history.
 
@@ -184,7 +165,7 @@ class ClinicalReasoner:
         logger.info(
             "Phase 2: Running delta analysis (text-only) | "
             f"narrative_chars={len(clinical_narrative)}, "
-            f"truncated={len(clinical_narrative) > 12_000}"
+            f"truncated={len(clinical_narrative) > PHASE2_MAX_NARRATIVE_CHARS}"
         )
         messages = self._build_messages(clinical_narrative, visual_narrative)
 

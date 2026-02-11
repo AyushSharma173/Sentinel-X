@@ -40,6 +40,7 @@ export function SystemStatus({ status }: SystemStatusProps) {
 
   const isStarting = status.demo_status === 'starting';
   const isStopping = status.demo_status === 'stopping';
+  const isCompleted = status.demo_status === 'completed';
 
   return (
     <div className="flex flex-col gap-4">
@@ -60,13 +61,21 @@ export function SystemStatus({ status }: SystemStatusProps) {
           loading={isStarting && !status.model_loaded}
         />
         <div className="flex items-center gap-2">
-          {status.demo_status === 'running' ? (
+          {isCompleted ? (
+            <CheckCircle className="h-4 w-4 text-routine" />
+          ) : status.demo_status === 'running' ? (
             <AlertCircle className="h-4 w-4 text-primary" />
           ) : (
             <div className="h-4 w-4 rounded-full bg-gray-200" />
           )}
-          <span className={status.demo_status === 'running' ? 'text-primary font-medium' : 'text-muted-foreground'}>
-            {status.demo_status === 'running' ? 'Demo Active' : 'Demo Inactive'}
+          <span className={
+            isCompleted
+              ? 'text-routine font-medium'
+              : status.demo_status === 'running'
+                ? 'text-primary font-medium'
+                : 'text-muted-foreground'
+          }>
+            {isCompleted ? 'Demo Complete' : status.demo_status === 'running' ? 'Demo Active' : 'Demo Inactive'}
           </span>
         </div>
       </div>

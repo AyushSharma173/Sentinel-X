@@ -1,0 +1,14 @@
+Volume: train_15_a_1.nii.gz
+==================================================
+
+CLINICAL INFORMATION:
+Not given.
+
+TECHNIQUE:
+Non-contrast images were taken in the axial plane with a section thickness of 3 mm.
+
+FINDINGS:
+Trachea, both main bronchi are open. No occlusive pathology was detected in the lumen. The mediastinum could not be evaluated optimally in the non-contrast examination. As far as can be seen; Mediastinal main vascular structures, heart contour, size are normal. Thoracic aorta diameter is normal. Pericardial effusion-thickening was not observed. Thoracic esophagus calibration was normal and no significant tumoral wall thickening was detected. No enlarged lymph nodes in prevascular, pre-paratracheal, subcarinal or bilateral hilar-axillary pathological dimensions were detected. When examined in the lung parenchyma window; pleuroparenchymal sequelae density increases were observed in both lung apical segments. Ground-glass opacities extending along the peribronchial area and focal thickening of the pleura were observed in the posterior segment of the right lung upper lobe. Appearance is nonspecific. In the first plan, it was evaluated in favor of sequelae. However, the outlook is risky for early viral pneumonia, albeit low. Clinic and lab. correlation is recommended. Apart from this, no mass lesion-active infiltration with distinguishable borders was detected in both lungs. When the upper abdominal organs included in the sections were evaluated; Accessory spleen with a diameter of 12 mm was observed in the inferior of the splenic hilus. No space-occupying lesion was detected in the liver that entered the cross-sectional area. Bilateral adrenal glands were normal and no space-occupying lesion was detected. Bone structures in the study area are natural. Vertebral corpus heights are preserved.
+
+IMPRESSIONS:
+Ground-glass dasity extending along the peribronchial area in the posterior segment of the right lung upper lobe and focal thickening of the visceral pleura in the periphery were initially evaluated in favor of sequelae changes. However, the appearance is risky in terms of early viral pneumonia, albeit low. Clinical and laboratory correlation is recommended . Spleen hilus accessory spleen inferiorly.

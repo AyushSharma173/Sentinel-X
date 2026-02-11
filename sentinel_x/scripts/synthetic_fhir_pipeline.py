@@ -61,8 +61,21 @@ SCRIPT_DIR = Path(__file__).parent.resolve()
 PROJECT_DIR = SCRIPT_DIR.parent  # sentinel_x/
 
 SYNTHEA_JAR = PROJECT_DIR / "lib" / "synthea-with-dependencies.jar"
-DEFAULT_DATA_DIR = PROJECT_DIR / "data" / "raw_ct_rate"
-SYNTHEA_TEMP_OUTPUT = PROJECT_DIR / "data" / ".synthea_temp"
+
+# Default to /runpod-volume when available (root disk is small).
+# Override with SENTINEL_DATA_DIR env var.
+_RUNPOD_DATA = Path("/runpod-volume/sentinel_x_data/raw_ct_rate")
+_DEFAULT_DIR = _RUNPOD_DATA if _RUNPOD_DATA.parent.exists() else PROJECT_DIR / "data" / "raw_ct_rate"
+DEFAULT_DATA_DIR = Path(os.getenv("SENTINEL_DATA_DIR", str(_DEFAULT_DIR)))
+SYNTHEA_TEMP_OUTPUT = DEFAULT_DATA_DIR.parent / ".synthea_temp"
+
+# Diverse US states for Synthea demographic variety
+US_STATES = [
+    "Massachusetts", "California", "Texas", "New York", "Florida",
+    "Illinois", "Pennsylvania", "Ohio", "Georgia", "North Carolina",
+    "Michigan", "New Jersey", "Virginia", "Washington", "Arizona",
+    "Tennessee", "Minnesota", "Colorado", "Alabama", "Louisiana",
+]
 
 logging.basicConfig(
     level=logging.INFO,
@@ -778,7 +791,7 @@ Impressions: {report.get('impressions', 'Not provided')}
 
     try:
         response = await client.beta.chat.completions.parse(
-            model="gpt-4o",
+            model="gpt-5",
             messages=[
                 {"role": "system", "content": EXTRACTION_SYSTEM_PROMPT},
                 {"role": "user", "content": f"Extract clinical data from this radiology report:\n\n{report_text}"}
@@ -844,11 +857,15 @@ def create_synthea_config(extraction: RadiologyExtraction, report_name: str) -> 
     hash_obj = hashlib.sha256(report_name.encode('utf-8'))
     seed = int.from_bytes(hash_obj.digest()[:4], byteorder='big') & 0x7FFFFFFF  # Positive 32-bit integer
 
+    # Pick a state deterministically from the seed
+    state = US_STATES[seed % len(US_STATES)]
+
     return SyntheaConfig(
         age_min=extraction.demographics.estimated_age_min,
         age_max=extraction.demographics.estimated_age_max,
         gender=extraction.demographics.gender_hint,
         modules=extraction.synthea_modules,
+        state=state,
         seed=seed
     )
 
@@ -2537,8 +2554,8 @@ def main():
     parser.add_argument(
         "--max-concurrent",
         type=int,
-        default=3,
-        help="Maximum concurrent OpenAI requests (default: 3)"
+        default=20,
+        help="Maximum concurrent OpenAI requests (default: 20)"
     )
 
     args = parser.parse_args()

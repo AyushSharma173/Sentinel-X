@@ -1,0 +1,14 @@
+Volume: train_21_a_1.nii.gz
+==================================================
+
+CLINICAL INFORMATION:
+Not given.
+
+TECHNIQUE:
+Axial sections of 1.5 mm thickness were taken without contrast material and reconstructed at the workstation.
+
+FINDINGS:
+It could not be evaluated optimally due to the lack of contrast of mediastinal vascular structures and cardiac examination. As far as can be observed, there are calcified atheroma plaques on the walls of the thoracic aorta and coronary vascular structures. An increase in heart size is observed. There is pericardial effusion. No pleural effusion or increased thickness was detected. Trachea, both main bronchi are open and no obstructive pathology is observed. No pathological increase in wall thickness was detected in the thoracic esophagus. In the mediastinum, no lymph nodes were detected in pathological size and appearance in both axillary regions. In the examination made in the lung parenchyma window; No active infiltration or mass lesion was detected in both lungs. There are minimal ectasia and diffuse peribronchial thickness increases in the bronchial structures of both lungs, which are evident in the center. A millimetric nonspecific nodule was observed in the anterior segment of the upper lobe of the right lung. No free fluid or loculated collection was detected in the upper abdominal sections within the image. In the corpus of the left adrenal gland, a lesion measuring approximately 40x30 mm and evaluated in favor of a low-density adenoma was observed. No lytic or destructive lesions were observed in the bone structures within the image. There are osteophytic degenerative changes in the vertebral corpus corners that tend to merge in the right anterolateral.
+
+IMPRESSIONS:
+ Increased heart size, thoracic aorta, calcified atheroma plaques in the wall of coronary vascular structures, and pericardial effusion.  Diffuse mild ectasia and diffuse peribronchial diffuse minimal thickness increase in the central bronchial structures of both lungs, a millimetric nodule in the anterior segment of the right lung upper lobe.  A lesion evaluated in favor of adenoma in the corpus of the left adrenal gland.

@@ -1,0 +1,14 @@
+Volume: train_5_a_1.nii.gz
+==================================================
+
+CLINICAL INFORMATION:
+Cough, weakness, shortness of breath
+
+TECHNIQUE:
+Non-contrast images were taken in the axial plane with a section thickness of 1.5 mm.
+
+FINDINGS:
+Trachea and both main bronchi are open and no obstructive pathology is detected. Mediastinal vascular structures could not be evaluated optimally because the cardiac examination was without IV contrast. Calcified atheroma plaques are observed in the thoracic aortic wall. No pericardial, pleural effusion or increased thickness was detected. Calibration of mediastinal vascular structures, heart contour, its size is natural. No pathological increase in wall thickness is observed in the thoracic esophagus. Sliding type mild hiatal hernia was observed at the lower end. In the mediastinum, in the supracalvicular fossa, in both axillary regions, no lymph nodes are observed in pathological size and appearance. When examined in the lung parenchyma window; No active infiltration or mass lesion was observed in both lungs. There is diffuse mild ectasia and minimal peribronchial thickness increase in bronchial structures. Sequela parenchymal changes are observed in bilateral apex, left upper lobe inferior lingular segment and right lung middle lobe medial segment. Millimetrically sized nonspecific nodules are observed in both lungs. No active infiltration or mass lesion was detected. Ventilation of both lungs is natural. In the upper abdominal sections within the image, no solid mass was detected as far as can be observed within the borders of non-contrast CT. No free fluid or loculated collection is observed. No lytic or destructive lesions were observed in the bone structures within the image, and the vertebral corpus heights were preserved.
+
+IMPRESSIONS:
+There is no finding in favor of pneumonic infiltration in both lung parenchyma, and sequela parenchymal changes are observed in bilateral apex, left upper lobe inferior lingular segment and middle lobe medial segment, and nonspecific nodules in millimetric sizes are observed in both lung parenchyma. There are calcified atheroma plaques in millimetric sizes in the wall of the thoracic aorta.

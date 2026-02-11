@@ -1,6 +1,7 @@
 import os
 import re
 import json
+import shutil
 from pathlib import Path
 from datasets import load_dataset
 from huggingface_hub import hf_hub_download
@@ -9,16 +10,39 @@ from tqdm import tqdm
 
 # --- CONFIGURATION ---
 DATASET_ID = "ibrahimhamamci/CT-RATE"
-NUM_SAMPLES = 5  # How many patients to download
+NUM_SAMPLES = 50  # How many patients to download
 
 # Use relative paths based on script location
 SCRIPT_DIR = Path(__file__).parent.resolve()
 PROJECT_DIR = SCRIPT_DIR.parent  # sentinel_x/
-OUTPUT_DIR = PROJECT_DIR / "data" / "raw_ct_rate"
+
+# Default to /runpod-volume when available (root disk is small).
+# Override with SENTINEL_DATA_DIR env var.
+_RUNPOD_DATA = Path("/runpod-volume/sentinel_x_data/raw_ct_rate")
+_DEFAULT_OUTPUT = _RUNPOD_DATA if _RUNPOD_DATA.parent.exists() else PROJECT_DIR / "data" / "raw_ct_rate"
+OUTPUT_DIR = Path(os.getenv("SENTINEL_DATA_DIR", str(_DEFAULT_OUTPUT)))
+
+# Minimum free disk space (GB) required before starting downloads
+MIN_FREE_DISK_GB = float(os.getenv("SENTINEL_MIN_FREE_GB", "2"))
+
+def check_disk_space(path: Path, min_free_gb: float = MIN_FREE_DISK_GB) -> None:
+    """Raise if insufficient disk space at the target path."""
+    target = path if path.exists() else path.parent
+    stat = shutil.disk_usage(str(target))
+    free_gb = stat.free / (1024 ** 3)
+    if free_gb < min_free_gb:
+        raise RuntimeError(
+            f"Insufficient disk space at {target}: {free_gb:.1f}GB free, "
+            f"need at least {min_free_gb}GB. Free up space or set "
+            f"SENTINEL_DATA_DIR to a volume with more room."
+        )
+    print(f"   Disk check OK: {free_gb:.1f}GB free at {target}")
+
 
 def setup_directories():
     """Create output directories."""
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    check_disk_space(OUTPUT_DIR)
     print(f"Output directory: {OUTPUT_DIR}")
 
 def parse_volume_name(volume_name: str) -> dict:
@@ -122,6 +146,9 @@ def download_volume_and_report(row, output_dir: Path):
     out_path = volumes_dir / vol_name
     if not out_path.exists():
         try:
+            # Pre-flight: check disk space before each download
+            check_disk_space(output_dir, min_free_gb=1.0)
+
             hf_hub_download(
                 repo_id=DATASET_ID,
                 filename=repo_path,
@@ -131,9 +158,13 @@ def download_volume_and_report(row, output_dir: Path):
             # Fix nested folder structure from HF download
             nested_path = output_dir / repo_path
             if nested_path.exists() and nested_path != out_path:
-                import shutil
                 shutil.move(str(nested_path), str(out_path))
                 shutil.rmtree(output_dir / "dataset", ignore_errors=True)
+
+            # Clean up HF download cache to reclaim space
+            hf_cache = output_dir / ".cache"
+            if hf_cache.exists():
+                shutil.rmtree(hf_cache, ignore_errors=True)
 
         except Exception as e:
             print(f"Failed to download {vol_name}: {e}")

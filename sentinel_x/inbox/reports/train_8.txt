@@ -1,0 +1,14 @@
+Volume: train_8_a_1.nii.gz
+==================================================
+
+CLINICAL INFORMATION:
+Infection?
+
+TECHNIQUE:
+Non-contrast images were taken in the axial plane with a section thickness of 1.5 mm.
+
+FINDINGS:
+ Trachea is in the midline and both main bronchi are open. The mediastinum could not be evaluated optimally in the non-contrast examination. As far as can be observed: A port catheter extending to the right atrium is observed. Calcific plaques were observed in the aortic walls. Heart sizes increased and minimal pericardial effusion was observed. Thoracic esophagus calibration was normal and no significant tumoral wall thickening was detected. Several lymph nodes with a short axis of 9 mm are observed in the pre-tracheal area. When examined in the lung parenchyma window; Interseptal thickness increases and fibrotic densities are observed in the apical anterior part of the upper lobe of the right lung, and in the anterior part of the upper lobe of the left lung, which is considered primarily in favor of a sequelae change. Several pulmonary nodules were observed in both lungs, the largest of which was 5 mm in diameter, located laterally in the upper lobe of the right lung. Pleural effusion reaching a thickness of 4 cm on the left and 4.5 cm on the right and atelectasis in the accompanying parenchyma are observed in both lungs. Effusion is observed in the fissures. The upper abdominal organs included in the examination appear natural. No fractures, lytic or sclerotic lesions were detected in the bones.
+
+IMPRESSIONS:
+Pleural effusion and concomitant compression atelectasis in both lungs. Nonspecific nodules in both lungs.  Cardiomegaly and minimal pericardial effusion. Patient 14.10.

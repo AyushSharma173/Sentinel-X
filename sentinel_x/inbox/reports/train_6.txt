@@ -1,0 +1,14 @@
+Volume: train_6_a_1.nii.gz
+==================================================
+
+CLINICAL INFORMATION:
+Metastatic breast Ca, pneumonia?
+
+TECHNIQUE:
+Non-contrast images were taken in the axial plane with a section thickness of 1.5 mm.
+
+FINDINGS:
+Heart sizes are of normal width. Pericardial effusion was not detected. The diameters of the main mediastinal vascular structures are normal. Diffuse septal thickness increase and parenchymal ground glass densities in all segments of both lungs are observed in parenchymal infiltration areas. Radiological findings primarily suggest viral pneumonia. The radiological involvement pattern shows a pattern compatible with Covid pneumonia. Although it does not rule out CMV pneumonia, the expected nodular infiltration or consolidation areas in CMV pneumonia were not observed. Mediastinal lymph node is not accompanied. Pleural effusion is not threshold. No new lesion was observed.
+
+IMPRESSIONS:
+Not given.

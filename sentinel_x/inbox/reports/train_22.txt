@@ -1,0 +1,14 @@
+Volume: train_22_a_1.nii.gz
+==================================================
+
+CLINICAL INFORMATION:
+right flank pain
+
+TECHNIQUE:
+Non-contrast images were taken in the axial plane with a section thickness of 1.5 mm.
+
+FINDINGS:
+Trachea, both main bronchi are open. Mediastinal main vascular structures, heart contour, size are normal. Thoracic aorta diameter is normal. Pericardial effusion-thickening was not observed. Postoperative changes are observed in the mediastinum. There are minimal calcific atheromatous plaques in the coronary arteries. Thoracic esophageal calibration was normal and no significant tumoral wall thickening was detected. No enlarged lymph nodes in prevascular, pre-paratracheal, subcarinal or bilateral hilar-axillary pathological dimensions were detected. When examined in the lung parenchyma window; A consolidated lesion with a size of up to 33x28 mm, which is located subpleural in the superior right lung lower lobe, and causes parenchymal recessions around it, is observed. Upper abdominal organs included in the sections are normal. No space-occupying lesion was detected in the liver that entered the cross-sectional area. Bilateral adrenal glands were normal and no space-occupying lesion was detected. Degenerative changes are observed in the end plates of the vertebral corpuscles.
+
+IMPRESSIONS:
+Consolidated mass lesion in the superior right lung lower lobe, infectious process mass lesion? Clinical laboratory correlation and close follow-up are recommended for the differential diagnosis of a carcinomatous process.

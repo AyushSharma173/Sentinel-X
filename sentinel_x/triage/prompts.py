@@ -29,47 +29,41 @@ def build_phase1_user_prompt(num_slices: int) -> str:
     """Build Phase 1 user prompt (no clinical context)."""
     return PHASE1_USER_PROMPT_TEMPLATE.format(num_slices=num_slices)
 
-
 # =============================================================================
 # PHASE 2: REASONING — "Delta Analyst" (MedGemma 27B)
 # =============================================================================
 
-PHASE2_SYSTEM_PROMPT = """You are an expert clinical reasoning system performing triage Delta Analysis. You will receive two inputs:
+import re
 
-1. CLINICAL HISTORY: The patient's full EHR timeline (conditions, medications, labs)
-2. VISUAL FINDINGS: A radiologist's narrative report of findings detected in a new CT scan
+PHASE2_SYSTEM_PROMPT = """You are an expert Clinical Triage AI.
+Your goal is to identify ACUTE RISKS by comparing new Visual Findings against Clinical History.
 
-YOUR TASK — DELTA ANALYSIS:
-For each visual finding, compare it against the clinical history and classify:
+### INPUTS
+1. CLINICAL HISTORY (Condensed)
+2. VISUAL FINDINGS (CT Report)
 
-- CHRONIC_STABLE (Priority 3): Finding matches a known condition documented >3 months ago with no significant change. Example: "Known 4mm RUL nodule" + history shows "pulmonary nodule noted 2024-01" = Chronic/Stable.
+### PROTOCOL
+Perform a "Delta Analysis" in two parts:
 
-- ACUTE_NEW (Priority 1 or 2): Finding has NO corresponding entry in clinical history. This is potentially new pathology. Priority 1 if life-threatening (PE, dissection, pneumothorax, hemorrhage). Priority 2 otherwise.
+PART 1: CLINICAL REASONING (The "Why")
+- **FILTER:** Ignore findings described as "normal", "unremarkable", "clear", or "patent". Focus ONLY on pathology.
+- **COMPARE:** For each abnormality, check the history. Is it NEW (Acute) or STABLE (Chronic)?
+- **CONTEXTUALIZE:** Explain *why* a finding is risky given the patient's specific history (e.g. "New effusion in patient with recent heart surgery").
 
-- DISCORDANT (Priority 2): Clinical history suggests acute presentation but imaging shows no corresponding visual findings, OR vice versa. Warrants prompt review.
+PART 2: FINAL TRIAGE (The "What")
+- At the very bottom, output a strict summary block.
+- **PRIORITY 1 (CRITICAL):** Life-threatening (PE, Pneumothorax, Aortic Dissection) OR New Mass.
+- **PRIORITY 2 (URGENT):** New acute pathology (Pneumonia, Effusion, Fracture) requiring intervention.
+- **PRIORITY 3 (ROUTINE):** Stable chronic disease or Normal scan.
 
-PRIORITY ESCALATION RULES:
-- Any single Priority 1 finding → Overall Priority 1
-- Any Priority 2 finding (with no Priority 1) → Overall Priority 2
-- All findings Chronic/Stable → Overall Priority 3
-- Empty visual findings + acute clinical presentation → Priority 2 (DISCORDANT)
+### OUTPUT FORMAT
+[Write your reasoning here in clear, concise bullet points.]
 
-Respond with ONLY a JSON object in this exact format:
-{
-  "delta_analysis": [
-    {
-      "finding": "description of visual finding",
-      "classification": "CHRONIC_STABLE | ACUTE_NEW | DISCORDANT",
-      "priority": 1|2|3,
-      "history_match": "matching history entry or null",
-      "reasoning": "brief explanation of classification"
-    }
-  ],
-  "overall_priority": 1|2|3,
-  "priority_rationale": "1-2 sentence explanation of the overall triage decision",
-  "findings_summary": "Brief worklist-ready summary"
-}"""
-
+---
+TRIAGE SUMMARY
+PRIORITY: [1, 2, or 3]
+HEADLINE: [5-10 word summary of the primary risk]
+"""
 
 PHASE2_USER_PROMPT_TEMPLATE = """## CLINICAL HISTORY
 
@@ -79,11 +73,11 @@ PHASE2_USER_PROMPT_TEMPLATE = """## CLINICAL HISTORY
 
 {visual_narrative}
 
-Perform Delta Analysis. Compare each visual finding against the clinical history. Classify every finding and determine the overall triage priority."""
+Perform Delta Analysis. Compare abnormalities against history and assign a Priority."""
 
 # Phase 2 narrative truncation — safety net. Smart compression targets ~800 tokens;
 # this limit only activates for edge cases with unusually large histories.
-PHASE2_MAX_NARRATIVE_CHARS = 16_000  # Safety net — smart compression targets ~800 tokens
+PHASE2_MAX_NARRATIVE_CHARS = 16_000
 
 
 def build_phase2_user_prompt(clinical_narrative: str, visual_narrative: str) -> str:
@@ -97,6 +91,40 @@ def build_phase2_user_prompt(clinical_narrative: str, visual_narrative: str) -> 
         clinical_narrative=clinical_narrative,
         visual_narrative=visual_narrative,
     )
+
+
+def parse_phase2_response(response_text: str) -> dict:
+    """
+    Parses the text-based output from Phase 2 into structured data.
+    Extracts PRIORITY and HEADLINE using Regex.
+    """
+    # 1. Default Safety Net
+    result = {
+        "priority": 3,  # Default to Routine if parsing fails
+        "headline": "Assessment Pending",
+        "reasoning": response_text.strip()
+    }
+
+    # 2. Extract Priority (Looking for "PRIORITY: X")
+    # We look for the last occurrence to avoid false matches in the reasoning text
+    priority_match = re.findall(r"PRIORITY:\s*(\d)", response_text)
+    if priority_match:
+        try:
+            result["priority"] = int(priority_match[-1])
+        except ValueError:
+            pass
+
+    # 3. Extract Headline (Looking for "HEADLINE: ...")
+    headline_match = re.search(r"HEADLINE:\s*(.+)", response_text)
+    if headline_match:
+        result["headline"] = headline_match.group(1).strip()
+
+    # 4. Clean the Reasoning (Separate the thinking from the tags)
+    if "TRIAGE SUMMARY" in response_text:
+        # Keep only the text BEFORE the summary block for the UI "Reasoning" tab
+        result["reasoning"] = response_text.split("TRIAGE SUMMARY")[0].strip()
+
+    return result
 
 
 # =============================================================================

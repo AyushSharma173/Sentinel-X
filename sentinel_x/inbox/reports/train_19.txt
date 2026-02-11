@@ -1,0 +1,14 @@
+Volume: train_19_a_1.nii.gz
+==================================================
+
+CLINICAL INFORMATION:
+covid?
+
+TECHNIQUE:
+Non-contrast images were taken in the axial plane with a section thickness of 1.5 mm.
+
+FINDINGS:
+No lymph node was observed in the supraclavicular fossa, axilla and mediastinum in pathological size and appearance. Heart dimensions and compartments are of normal width. Pericardial effusion was not detected. Calibrations of mediastinal major vascular structures are natural. The air passages of the trachea, both main bronchi, lobar and segmental bronchi are open. Wall thickness increases are observed in segmental bronchi. When examined in the lung parenchyma window; There is no pneumonic infiltration or consolidation area in the lung parenchyma. Slight parenchymal distortion and linear atelectasis area are observed in the right lung upper lobe anterior segment, lower lobe anterobasal and left lung lower lobe posterobasal segment. No loculated or free fluid was observed in the upper abdominal sections. Thinning of the parenchyma thickness of both kidneys and dilatation in the collecting system are observed. Both kidneys are partially sectioned. No lytic-destructive lesions were detected in bone structures.
+
+IMPRESSIONS:
+ Areas of mild parenchymal distortion and linear atelectasis in both lungs.  Thinning of both kidney parenchyma thickness and dilatation in both kidney collecting systems.

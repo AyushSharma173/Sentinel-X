@@ -1,0 +1,14 @@
+Volume: train_18_a_1.nii.gz
+==================================================
+
+CLINICAL INFORMATION:
+covid?
+
+TECHNIQUE:
+Non-contrast images were taken in the axial plane with a section thickness of 1.5 mm.
+
+FINDINGS:
+Trachea, both main bronchi are open. Mediastinal main vascular structures, heart contour, size are normal. Thoracic aorta diameter is normal. Pericardial effusion-thickening was not observed. Thoracic esophagus calibration was normal and no significant tumoral wall thickening was detected. A few small millimetric lymph nodes are observed in the mediastinum. No enlarged lymph nodes in pathological dimensions were detected. When examined in the lung parenchyma window; A few millimetric non-specific nodules are observed in both lungs. Both lung parenchyma aeration is normal and no infiltrative lesion is detected in the lung parenchyma. Pleural effusion-thickening was not detected. Upper abdominal organs included in the sections are normal. Small lymph nodes are observed in the vicinity of the small-great curvature of the stomach. No space-occupying lesion was detected in the liver that entered the cross-sectional area. Bilateral adrenal glands were normal and no space-occupying lesion was detected. Density reduction and degenerative changes are observed in the bone structures in the study area. At some levels, there are schmourl nodules and narrowing of the disc spaces. Vertebral corpus heights are preserved.
+
+IMPRESSIONS:
+ A few millimetric non-specific nodules are observed in both lungs.  A few small millimetric lymph nodes in the mediastinum  Small lymph nodes are observed in the vicinity of the small-great curvature of the stomach.  Density reduction, degenerative changes in bone structures.

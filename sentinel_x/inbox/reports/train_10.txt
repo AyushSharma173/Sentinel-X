@@ -1,0 +1,14 @@
+Volume: train_10_a_1.nii.gz
+==================================================
+
+CLINICAL INFORMATION:
+Not given.
+
+TECHNIQUE:
+Non-contrast images were taken in the axial plane with a section thickness of 1.5 mm.
+
+FINDINGS:
+Trachea, both main bronchi are open. Mediastinal main vascular structures, heart contour, size are normal. Pericardial effusion-thickening was not observed. Calcific plaques are present in the coronary arteries. Thoracic esophagus calibration was normal and no significant pathological wall thickening was detected. Millimetric lymph nodes with a short axis not exceeding 1 cm are observed in the mediastinum. When examined in the lung parenchyma window; Widespread ground glass densities are observed in both lung parenchyma showing a tendency to central and peripheral fusion. A 5 mm calcific nodule was observed in the posterobasal region of the lower lobe of the right lung. A millimetric hypodense lesion was observed in segment 2 of the liver in the upper abdominal organs included in the sections. Bone structures in the study area are natural. Osteodegenerative changes are observed in the vertebrae.
+
+IMPRESSIONS:
+ Findings compatible with Covid pneumonia  Aortic and coronary artery atherosclerosis  Hypodense lesion (cyst?) in liver segment 2

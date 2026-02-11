@@ -1,0 +1,14 @@
+Volume: train_14_a_1.nii.gz
+==================================================
+
+CLINICAL INFORMATION:
+Not given.
+
+TECHNIQUE:
+Non-contrast images were taken in the axial plane with a section thickness of 1.5 mm.
+
+FINDINGS:
+Trachea is in the midline of both main bronchi and no obstructive parotology is observed in the lumen. The mediastinum could not be evaluated optimally in the non-contrast examination. As far as can be seen; Calibration of mediastinal major vascular structures is natural. Heart contour, size is normal. Pericardial effusion-thickening was not observed. In the mediastinum, lymph nodes with short axes below 1 cm that did not reach pathological dimensions were observed. Thoracic esophagus calibration was normal and no significant tumoral wall thickening was detected. Sliding type hiatal hernia was observed at the lower end of the esophagus. When examined in the lung parenchyma window; Aeration of both lung parenchyma is normal and no nodular or infiltrative lesion is detected in the lung parenchyma. Pleural effusion-thickening was not detected. Upper abdominal organs included in the sections are normal. No space-occupying lesion was detected in the liver that entered the cross-sectional area. Bilateral adrenal glands were normal and no space-occupying lesion was detected. At the thoracic level, mild scoliosis with right-facing scoliosis was observed. Vertebral corpus heights are preserved.
+
+IMPRESSIONS:
+Hiatal hernia . Mild scoliosis with right thoracic opening

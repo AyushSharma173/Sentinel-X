@@ -1,0 +1,14 @@
+Volume: train_11_a_1.nii.gz
+==================================================
+
+CLINICAL INFORMATION:
+Corona?
+
+TECHNIQUE:
+Non-contrast images were taken in the axial plane with a section thickness of 1.5 mm.
+
+FINDINGS:
+Trachea, both main bronchi are open. The mediastinum could not be evaluated optimally in the non-contrast examination. As far as can be observed: Mediastinal main vascular structures, heart contour, size are normal. Pericardial effusion-thickening was not observed. Thoracic esophageal calibration was normal and no significant tumoral wall thickening was detected. No enlarged lymph nodes were detected in prevascular, pre-paratracheal, subcarinal or bilateral hilar-axillary pathological dimensions. When examined in the lung parenchyma window; Widespread patchy ground glass areas are observed in both lungs, which are more prominent in the right lung, usually subpleural, forming consolidation from place to place. The outlook is consistent with typical-probable Covid. No nodular or infiltrative lesion was detected in the lung parenchyma. Upper abdominal organs included in the sections are normal. No space-occupying lesion was detected in the liver that entered the cross-sectional area. Bilateral adrenal glands were normal and no space-occupying lesion was detected. Bone structures in the study area are natural. Vertebral corpus heights are preserved.
+
+IMPRESSIONS:
+Typical-probable Covid-19 pneumonia
