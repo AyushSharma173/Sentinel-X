@@ -2,11 +2,11 @@
 
 import io
 import sys
+from functools import lru_cache
 from pathlib import Path
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Response
-from fastapi.responses import StreamingResponse
 
 # Ensure the project root is in path for imports
 PROJECT_ROOT = Path(__file__).parent.parent.parent
@@ -16,7 +16,7 @@ if str(PROJECT_ROOT) not in sys.path:
 import json
 
 from triage.config import INBOX_REPORTS_DIR, INBOX_VOLUMES_DIR, OUTPUT_DIR
-from triage.ct_processor import apply_window, extract_slice_as_image, load_nifti_volume
+from triage.ct_processor import extract_slice_as_multiwindow_image, load_nifti_volume
 from triage.fhir_janitor import FHIRJanitor
 from triage.output_generator import load_triage_result
 from api.models import (
@@ -30,6 +30,37 @@ from api.models import (
 from api.services.demo_service import demo_service
 
 router = APIRouter(prefix="/api/patients", tags=["patients"])
+
+_volume_cache: dict[str, tuple] = {}
+_VOLUME_CACHE_MAX = 2
+
+
+def _get_cached_volume(path: Path):
+    """Return (volume_hu, metadata) from cache, loading if necessary."""
+    key = str(path.resolve())
+    if key in _volume_cache:
+        return _volume_cache[key]
+    volume, metadata = load_nifti_volume(path)
+    if len(_volume_cache) >= _VOLUME_CACHE_MAX:
+        oldest_key = next(iter(_volume_cache))
+        del _volume_cache[oldest_key]
+    _volume_cache[key] = (volume, metadata)
+    return volume, metadata
+
+
+@lru_cache(maxsize=512)
+def _encode_slice_jpeg(volume_path_str: str, slice_index: int) -> bytes:
+    """Encode a CT slice as JPEG bytes with caching (~512 entries × ~40KB = ~20MB)."""
+    volume, _metadata = _get_cached_volume(Path(volume_path_str))
+    image = extract_slice_as_multiwindow_image(volume, slice_index)
+    buf = io.BytesIO()
+    image.save(buf, format="JPEG", quality=90)
+    return buf.getvalue()
+
+
+def _clear_slice_cache():
+    """Invalidate the slice JPEG cache (call if volume data changes)."""
+    _encode_slice_jpeg.cache_clear()
 
 
 def _find_report_path(patient_id: str) -> Optional[Path]:
@@ -142,8 +173,8 @@ async def get_patient_slice(patient_id: str, slice_index: int):
         raise HTTPException(status_code=404, detail="Patient volume not found")
 
     try:
-        # Load volume
-        volume, metadata = load_nifti_volume(volume_path)
+        # Load volume (cached) for bounds check
+        volume, metadata = _get_cached_volume(volume_path)
 
         # Check slice index bounds
         total_slices = volume.shape[2]
@@ -153,25 +184,17 @@ async def get_patient_slice(patient_id: str, slice_index: int):
                 detail=f"Slice index out of range. Valid range: 0-{total_slices - 1}"
             )
 
-        # Apply windowing
-        from triage.config import CT_WINDOW_CENTER, CT_WINDOW_WIDTH
-        windowed = apply_window(volume, CT_WINDOW_CENTER, CT_WINDOW_WIDTH)
+        # Get JPEG bytes from LRU cache (or encode + cache on miss)
+        jpeg_bytes = _encode_slice_jpeg(str(volume_path.resolve()), slice_index)
 
-        # Extract slice as image
-        image = extract_slice_as_image(windowed, slice_index)
-
-        # Convert to PNG bytes
-        img_buffer = io.BytesIO()
-        image.save(img_buffer, format="PNG")
-        img_buffer.seek(0)
-
-        return StreamingResponse(
-            img_buffer,
-            media_type="image/png",
+        return Response(
+            content=jpeg_bytes,
+            media_type="image/jpeg",
             headers={
                 "X-Total-Slices": str(total_slices),
                 "X-Current-Slice": str(slice_index),
-            }
+                "Cache-Control": "private, max-age=3600, immutable",
+            },
         )
 
     except HTTPException:
@@ -189,7 +212,7 @@ async def get_patient_volume_info(patient_id: str):
         raise HTTPException(status_code=404, detail="Patient volume not found")
 
     try:
-        volume, metadata = load_nifti_volume(volume_path)
+        volume, metadata = _get_cached_volume(volume_path)
 
         return {
             "patient_id": patient_id,

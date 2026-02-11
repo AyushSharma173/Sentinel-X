@@ -81,9 +81,17 @@ def generate_triage_result(
     )
 
     # Build visual findings text from fact sheet
+    def _format_finding(f):
+        parts = [f.finding]
+        if f.location and f.location != "unspecified":
+            parts.append(f"in {f.location}")
+        if f.size:
+            parts.append(f"({f.size})")
+        parts.append(f"\u2014 {f.description}")
+        return " ".join(parts)
+
     visual_findings_text = "; ".join(
-        f"{f.finding} ({f.location}, {f.size}): {f.description}"
-        for f in visual_fact_sheet.findings
+        _format_finding(f) for f in visual_fact_sheet.findings
     ) or "No abnormalities detected"
 
     # Build rationale combining both phases

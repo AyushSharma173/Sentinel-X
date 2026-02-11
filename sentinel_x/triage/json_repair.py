@@ -186,6 +186,16 @@ def extract_findings_from_narrative(text: str) -> Optional[Dict[str, Any]]:
         if not finding_match:
             continue
 
+        # Skip negative findings — the keyword appears but is negated
+        negation_patterns = [
+            "no evidence of", "no ", "without evidence of", "without ",
+            "not ", "absent", "negative for", "rules out", "ruled out",
+        ]
+        finding_pos = finding_match.start()
+        prefix = sentence_lower[:finding_pos]
+        if any(neg in prefix for neg in negation_patterns):
+            continue
+
         finding_type = finding_match.group(0).strip()
 
         # Normalize finding type

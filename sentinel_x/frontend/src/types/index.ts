@@ -63,6 +63,8 @@ export interface TriageResult {
   conditions_considered: string[];
   findings_summary: string;
   visual_findings: string;
+  phase1_raw?: string;
+  phase2_raw?: string;
   headline?: string;
   reasoning?: string;
 }

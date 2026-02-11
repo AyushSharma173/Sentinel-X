@@ -108,10 +108,8 @@ export function PatientDetail({
               <TabsContent value="analysis" className="mt-4">
                 {triageResult ? (
                   <AIAnalysis
-                    visualFindings={triageResult.visual_findings}
+                    phase1Raw={triageResult.phase1_raw}
                     conditionsConsidered={triageResult.conditions_considered}
-                    rationale={triageResult.rationale}
-                    headline={triageResult.headline}
                     reasoning={triageResult.reasoning}
                   />
                 ) : (

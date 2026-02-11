@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Wifi, WifiOff } from 'lucide-react';
 import { Dashboard } from '@/components/dashboard';
-import { WorklistTable, ProcessingIndicator } from '@/components/worklist';
+import { WorklistTable } from '@/components/worklist';
 import { PatientDetail } from '@/components/patient';
 import { useDemoControls } from '@/hooks/useDemoControls';
 import { useWorklist } from '@/hooks/useWorklist';
@@ -11,10 +11,8 @@ import type { SystemStatus, QueuedPatient } from '@/types';
 
 function App() {
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
-  const [processingPatientId, setProcessingPatientId] = useState<string | null>(null);
   const [newPatientIds, setNewPatientIds] = useState<Set<string>>(new Set());
   const [queuedPatients, setQueuedPatients] = useState<QueuedPatient[]>([]);
-  const [currentPhase, setCurrentPhase] = useState<string | null>(null);
 
   // Demo controls
   const {
@@ -57,8 +55,6 @@ function App() {
     onDemoStopped: (data) => {
       const newStatus = data.status as SystemStatus;
       if (newStatus) updateStatus(newStatus);
-      setProcessingPatientId(null);
-      setCurrentPhase(null);
     },
     onPatientArrived: (data) => {
       const patientId = data.patient_id as string;
@@ -74,8 +70,6 @@ function App() {
     },
     onProcessingStarted: (data) => {
       const patientId = data.patient_id as string;
-      setProcessingPatientId(patientId);
-      setCurrentPhase('phase1');
       // Update queued patient to analyzing
       setQueuedPatients((prev) =>
         prev.map((qp) =>
@@ -86,7 +80,6 @@ function App() {
       );
     },
     onPhase1Complete: () => {
-      setCurrentPhase('model_swap');
       setQueuedPatients((prev) =>
         prev.map((qp) =>
           qp.status === 'analyzing'
@@ -96,7 +89,6 @@ function App() {
       );
     },
     onPhase2Started: () => {
-      setCurrentPhase('phase2');
       setQueuedPatients((prev) =>
         prev.map((qp) =>
           qp.status === 'analyzing'
@@ -107,9 +99,6 @@ function App() {
     },
     onProcessingComplete: (data) => {
       const patientId = data.patient_id as string;
-      setProcessingPatientId(null);
-      setCurrentPhase(null);
-
       // Remove from queued patients
       setQueuedPatients((prev) => prev.filter((qp) => qp.patient_id !== patientId));
 
@@ -134,8 +123,6 @@ function App() {
     onDemoComplete: (data) => {
       const newStatus = data.status as SystemStatus;
       if (newStatus) updateStatus(newStatus);
-      setProcessingPatientId(null);
-      setCurrentPhase(null);
     },
   });
 
@@ -156,7 +143,6 @@ function App() {
     await resetDemo();
     refreshWorklist();
     setQueuedPatients([]);
-    setCurrentPhase(null);
   }, [resetDemo, refreshWorklist]);
 
   // Determine if we should show the worklist view
@@ -237,12 +223,6 @@ function App() {
         </>
       )}
 
-      {/* Processing indicator */}
-      <ProcessingIndicator
-        patientId={processingPatientId}
-        visible={!!processingPatientId}
-        currentPhase={currentPhase}
-      />
     </div>
   );
 }
