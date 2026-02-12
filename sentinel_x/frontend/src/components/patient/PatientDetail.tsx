@@ -84,6 +84,7 @@ export function PatientDetail({
               <TabsContent value="imaging" className="mt-4">
                 {triageResult ? (
                   <CTViewer
+                    key={`${triageResult.patient_id}-triage`}
                     patientId={triageResult.patient_id}
                     keySliceIndex={triageResult.key_slice_index}
                     totalSlices={volumeInfo?.total_slices || 85}
@@ -92,6 +93,7 @@ export function PatientDetail({
                   />
                 ) : patientId && volumeInfo ? (
                   <CTViewer
+                    key={`${patientId}-queued`}
                     patientId={patientId}
                     keySliceIndex={Math.floor(volumeInfo.total_slices / 2)}
                     totalSlices={volumeInfo.total_slices}

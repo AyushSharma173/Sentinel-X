@@ -13,6 +13,9 @@ export function usePatient() {
   const fetchPatient = useCallback(async (patientId: string) => {
     setLoading(true);
     setError(null);
+    setTriageResult(null);
+    setFhirContext(null);
+    setVolumeInfo(null);
 
     try {
       // Fetch triage result and FHIR context in parallel
@@ -33,11 +36,15 @@ export function usePatient() {
       if (fhirResponse.ok) {
         const fhir: PatientFHIRContext = await fhirResponse.json();
         setFhirContext(fhir);
+      } else {
+        setFhirContext(null);
       }
 
       if (volumeResponse.ok) {
         const volume: VolumeInfo = await volumeResponse.json();
         setVolumeInfo(volume);
+      } else {
+        setVolumeInfo(null);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch patient data');
