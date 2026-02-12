@@ -4,13 +4,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface AIAnalysisProps {
   phase1Raw?: string;
-  conditionsConsidered: string[];
   reasoning?: string;
 }
 
 export function AIAnalysis({
   phase1Raw,
-  conditionsConsidered,
   reasoning,
 }: AIAnalysisProps) {
   return (
@@ -33,28 +31,6 @@ export function AIAnalysis({
           )}
         </CardContent>
       </Card>
-
-      {/* Conditions Considered */}
-      {conditionsConsidered.length > 0 && (
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base flex items-center gap-2">
-              <Brain className="h-4 w-4 text-primary" />
-              Conditions Considered
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ul className="text-sm text-muted-foreground space-y-1">
-              {conditionsConsidered.map((condition, index) => (
-                <li key={index} className="flex items-start gap-2">
-                  <span className="text-primary">•</span>
-                  {condition}
-                </li>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Clinical Reasoning */}
       {reasoning && (

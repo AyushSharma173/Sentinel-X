@@ -77,7 +77,7 @@ export function PatientDetail({
             <Tabs defaultValue="imaging" className="w-full">
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="imaging">CT Imaging</TabsTrigger>
-                <TabsTrigger value="analysis">AI Analysis</TabsTrigger>
+                <TabsTrigger value="analysis">Risk Assessment</TabsTrigger>
                 <TabsTrigger value="patient">Patient Info</TabsTrigger>
               </TabsList>
 
@@ -111,7 +111,6 @@ export function PatientDetail({
                 {triageResult ? (
                   <AIAnalysis
                     phase1Raw={triageResult.phase1_raw}
-                    conditionsConsidered={triageResult.conditions_considered}
                     reasoning={triageResult.reasoning}
                   />
                 ) : (

@@ -21,6 +21,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 
 from .age_utils import extract_age_from_patient_resource
 from .config import (
+    DROP_DISPLAY_KEYWORDS,
     DROP_ICD10_PREFIXES,
     DROP_OBSERVATION_CATEGORIES,
     DROP_PROCEDURE_SYSTEMS,
@@ -35,6 +36,7 @@ from .config import (
     LAB_DELTA_THRESHOLD_PERCENT,
     LAB_WHITELIST_LOINC,
     RELEVANCE_THRESHOLD,
+    SNOMED_DISPLAY_SUFFIXES,
     TIME_DECAY_HALF_LIVES,
     VITAL_SIGNS_LOINC,
 )
@@ -265,6 +267,54 @@ class ChestCTRelevanceFilter:
             if system in DROP_PROCEDURE_SYSTEMS:
                 return False
         return True
+
+
+# =============================================================================
+# DisplayNameFilter
+# =============================================================================
+
+
+class DisplayNameFilter:
+    """Filters and cleans condition display names."""
+
+    def should_keep(self, display: str) -> bool:
+        """Return False if the display name matches any junk keyword."""
+        lower = display.lower()
+        return not any(kw in lower for kw in DROP_DISPLAY_KEYWORDS)
+
+    def clean_display(self, display: str) -> str:
+        """Strip SNOMED terminology suffixes from display text."""
+        for suffix in SNOMED_DISPLAY_SUFFIXES:
+            if display.endswith(suffix):
+                display = display[: -len(suffix)]
+                break
+        return display.strip()
+
+
+# =============================================================================
+# ConditionDeduplicator
+# =============================================================================
+
+
+class ConditionDeduplicator:
+    """Deduplicates condition lists while preserving first-seen order."""
+
+    def deduplicate(self, conditions: List[str]) -> List[str]:
+        seen: Set[str] = set()
+        result: List[str] = []
+        for c in conditions:
+            key = self._normalize(c)
+            if key not in seen:
+                seen.add(key)
+                result.append(c)
+        return result
+
+    def _normalize(self, text: str) -> str:
+        # Lowercase, strip parenthetical suffixes, collapse whitespace
+        key = text.lower()
+        key = re.sub(r"\s*\(.*?\)\s*", " ", key)
+        key = re.sub(r"\s+", " ", key).strip()
+        return key
 
 
 # =============================================================================
@@ -1208,6 +1258,8 @@ class FHIRJanitor:
     def __init__(self) -> None:
         self.garbage_collector = GarbageCollector()
         self.relevance_filter = ChestCTRelevanceFilter()
+        self.display_name_filter = DisplayNameFilter()
+        self.condition_deduplicator = ConditionDeduplicator()
         self.lab_compressor = LabCompressor()
         self.time_decay_scorer = TimeDecayScorer()
         self.narrative_decoder = NarrativeDecoder()
@@ -1273,10 +1325,12 @@ class FHIRJanitor:
             entries, condition_codes
         )
 
-        # Add historical diagnoses to conditions list
+        # Add historical diagnoses to conditions list (with display-name filtering)
         for hd in historical_diagnoses:
-            conditions.append(hd.display)
-            condition_strings.append(f"{hd.display} (historical)")
+            cleaned = self.display_name_filter.clean_display(hd.display)
+            if self.display_name_filter.should_keep(cleaned):
+                conditions.append(cleaned)
+                condition_strings.append(f"{cleaned} (historical)")
 
         # Process each resource type with Stage 1 relevance filtering
         for entry in cleaned_entries:
@@ -1298,6 +1352,9 @@ class FHIRJanitor:
                     resource
                 )
                 if display_name:
+                    display_name = self.display_name_filter.clean_display(display_name)
+                    if not self.display_name_filter.should_keep(display_name):
+                        continue
                     conditions.append(display_name)
                     # Build formatted condition string
                     clinical_status = "unknown"
@@ -1390,6 +1447,18 @@ class FHIRJanitor:
                         seen_procedures[name] = e.date_label
         for name, date_label in seen_procedures.items():
             procedure_strings.append(f"{name} ({date_label})")
+
+        # Deduplicate conditions and condition_strings
+        conditions = self.condition_deduplicator.deduplicate(conditions)
+        seen_condition_names: Set[str] = set()
+        deduped_condition_strings: List[str] = []
+        for cs in condition_strings:
+            # Extract the name portion before the parenthetical status suffix
+            name_part = re.sub(r"\s*\([^)]*\)\s*$", "", cs).strip().lower()
+            if name_part not in seen_condition_names:
+                seen_condition_names.add(name_part)
+                deduped_condition_strings.append(cs)
+        condition_strings = deduped_condition_strings
 
         # Identify risk factors from conditions
         risk_factors = self._identify_risk_factors(conditions)

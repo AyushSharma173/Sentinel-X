@@ -213,3 +213,55 @@ TIME_DECAY_HALF_LIVES = {
 }
 
 RELEVANCE_THRESHOLD = 0.1
+
+# =============================================================================
+# Display Name Filtering (safety net for text-based junk removal)
+# =============================================================================
+
+# Lowercase keyword fragments — if any appears in the display name, drop the condition
+DROP_DISPLAY_KEYWORDS = {
+    # Social determinants
+    "unemploy",
+    "not in labor force",
+    "high school",
+    "housing",
+    "violence in the environment",
+    "transport problem",
+    "lack of access to transportation",
+    "risk activity involvement",
+    "criminal record",
+    "refugee",
+    "social isolation",
+    # Dental
+    "dental",
+    "tooth",
+    "teeth",
+    "caries",
+    "periodonti",
+    "gingivit",
+    "eruption disorder",
+    # Reproductive
+    "pregnancy",
+    "pregnant",
+    "miscarriage",
+    "tubal ligation",
+    "sterilization requested",
+    # Non-thoracic
+    "sprain of ankle",
+    "sprain of wrist",
+    "osteoarthritis of the hand",
+    "burn injury",
+    "second degree burn",
+    # Admin
+    "examination and cleaning",
+}
+
+# SNOMED terminology suffixes to strip from display names
+SNOMED_DISPLAY_SUFFIXES = [
+    " (disorder)",
+    " (finding)",
+    " (situation)",
+    " (morphologic abnormality)",
+    " (observable entity)",
+    " (body structure)",
+]
