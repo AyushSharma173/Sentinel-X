@@ -23,7 +23,7 @@ from triage.config import (
     OUTPUT_DIR,
 )
 from triage.worklist import Worklist
-from api.models import DemoStatus, SystemStatus, WSEventType
+from api.models import DemoStatus, QueuedPatientResponse, QueueStateResponse, SystemStatus, WSEventType
 from api.services.ws_manager import ws_manager
 
 logger = logging.getLogger(__name__)
@@ -42,6 +42,7 @@ class DemoService:
         self._patients_processed = 0
         self._total_patients: int = 0
         self._current_patient_id: Optional[str] = None
+        self._current_phase: Optional[str] = None
         self._loop: Optional[asyncio.AbstractEventLoop] = None
 
         # Source data - using combined folder (unified structure)
@@ -90,6 +91,83 @@ class DemoService:
         """Get the worklist instance."""
         return self._worklist
 
+    def get_queue_state(self) -> QueueStateResponse:
+        """Get current patient queue state for UI recovery after page refresh.
+
+        Derives queue from:
+        1. Inbox volumes (all patients the simulator has delivered)
+        2. Completed worklist entries (patients done processing)
+        3. Currently processing patient
+        """
+        # All patients delivered to inbox
+        inbox_patient_ids: set[str] = set()
+        if INBOX_VOLUMES_DIR.exists():
+            for volume in INBOX_VOLUMES_DIR.glob("*.nii.gz"):
+                # Extract patient_id: "train_14.nii.gz" -> "train_14"
+                patient_id = volume.name.replace(".nii.gz", "")
+                inbox_patient_ids.add(patient_id)
+
+        # Completed patients (in worklist)
+        self._worklist.reload()
+        completed_ids = {e.patient_id for e in self._worklist.get_entries()}
+
+        # Currently processing patient
+        current_id = self._current_patient_id
+
+        # Build queue list
+        patients: list[QueuedPatientResponse] = []
+
+        # Add currently processing patient first
+        if current_id and current_id in inbox_patient_ids:
+            patients.append(QueuedPatientResponse(
+                patient_id=current_id,
+                status="processing",
+                phase=self._current_phase,
+            ))
+
+        # Add queued patients (in inbox but not completed and not currently processing)
+        queued_ids = inbox_patient_ids - completed_ids - ({current_id} if current_id else set())
+        for pid in sorted(queued_ids):
+            patients.append(QueuedPatientResponse(
+                patient_id=pid,
+                status="queued",
+            ))
+
+        return QueueStateResponse(patients=patients)
+
+    def _clear_session_data(self) -> None:
+        """Clear all data from the previous session.
+
+        This ensures a clean slate when starting a new demo, preventing
+        stale worklist entries, inbox files, and output results from
+        bleeding across sessions.
+        """
+        # Clear worklist (removes worklist.json entries)
+        self._worklist.clear()
+
+        # Clear inbox directories
+        if INBOX_VOLUMES_DIR.exists():
+            for f in INBOX_VOLUMES_DIR.glob("*"):
+                f.unlink()
+
+        if INBOX_REPORTS_DIR.exists():
+            for f in INBOX_REPORTS_DIR.glob("*"):
+                f.unlink()
+
+        # Clear output directory (patient result folders)
+        if OUTPUT_DIR.exists():
+            for patient_dir in OUTPUT_DIR.iterdir():
+                if patient_dir.is_dir():
+                    shutil.rmtree(patient_dir)
+
+        # Reset counters
+        self._patients_processed = 0
+        self._total_patients = 0
+        self._current_patient_id = None
+        self._current_phase = None
+
+        logger.info("Cleared previous session data")
+
     async def start_demo(self) -> bool:
         """Start the demo (simulator + agent)."""
         if self._status not in (DemoStatus.STOPPED, DemoStatus.COMPLETED):
@@ -100,6 +178,10 @@ class DemoService:
         logger.info("Starting demo...")
 
         try:
+            # Clear previous session data to prevent stale results from
+            # appearing when the frontend fetches worklist on mount/refresh
+            self._clear_session_data()
+
             # Ensure inbox directories exist
             INBOX_VOLUMES_DIR.mkdir(parents=True, exist_ok=True)
             INBOX_REPORTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -173,30 +255,8 @@ class DemoService:
             await self.stop_demo()
 
         logger.info("Resetting demo...")
-
-        # Clear inbox directories
-        if INBOX_VOLUMES_DIR.exists():
-            for f in INBOX_VOLUMES_DIR.glob("*"):
-                f.unlink()
-
-        if INBOX_REPORTS_DIR.exists():
-            for f in INBOX_REPORTS_DIR.glob("*"):
-                f.unlink()
-
-        # Clear worklist
-        self._worklist.clear()
-
-        # Clear output directory (keep structure)
-        if OUTPUT_DIR.exists():
-            for patient_dir in OUTPUT_DIR.iterdir():
-                if patient_dir.is_dir():
-                    shutil.rmtree(patient_dir)
-
-        # Reset counters
-        self._patients_processed = 0
-        self._total_patients = 0
-        self._current_patient_id = None
-
+        self._clear_session_data()
+        self._status = DemoStatus.STOPPED
         logger.info("Demo reset complete")
         return True
 
@@ -341,6 +401,7 @@ class DemoService:
 
             def patched_unload():
                 pid = self._current_patient_id
+                self._current_phase = "model_swap"
                 self._run_async(ws_manager.send_event(
                     WSEventType.PHASE1_COMPLETE,
                     {"patient_id": pid}
@@ -359,6 +420,7 @@ class DemoService:
             def patched_load(*args, **kwargs):
                 result = original_load(*args, **kwargs)
                 pid = self._current_patient_id
+                self._current_phase = "phase2"
                 self._run_async(ws_manager.send_event(
                     WSEventType.PHASE2_STARTED,
                     {"patient_id": pid}
@@ -373,6 +435,7 @@ class DemoService:
         def process_with_callbacks(patient_data: PatientData) -> None:
             patient_id = patient_data.patient_id
             self._current_patient_id = patient_id
+            self._current_phase = "phase1"
 
             # Notify processing started
             self._run_async(ws_manager.send_event(
@@ -420,12 +483,14 @@ class DemoService:
 
                 self._patients_processed += 1
                 self._current_patient_id = None
+                self._current_phase = None
                 # Models are transient — loaded/unloaded per patient
                 self._model_loaded = True
 
             except Exception as e:
                 logger.error(f"Agent processing failed for {patient_id}: {e}")
                 self._current_patient_id = None
+                self._current_phase = None
                 self._run_async(ws_manager.send_event(
                     WSEventType.ERROR,
                     {"patient_id": patient_id, "error": str(e)}

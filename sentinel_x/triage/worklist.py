@@ -214,7 +214,29 @@ class Worklist:
             logger.info("Cleared worklist")
 
     def reload(self) -> None:
-        """Reload worklist from disk."""
+        """Reload worklist from disk.
+
+        Loads into a temporary list first, then swaps under the lock
+        to avoid a window where get_entries() sees an empty list.
+        """
+        new_entries: List[WorklistEntry] = []
+        if self.worklist_path.exists():
+            try:
+                with open(self.worklist_path, "r") as f:
+                    data = json.load(f)
+                for entry_data in data.get("entries", []):
+                    entry = WorklistEntry(
+                        patient_id=entry_data["patient_id"],
+                        priority_level=entry_data["priority_level"],
+                        findings_summary=entry_data["findings_summary"],
+                        processed_at=entry_data["processed_at"],
+                        result_path=entry_data["result_path"],
+                    )
+                    new_entries.append(entry)
+            except Exception as e:
+                logger.error(f"Failed to reload worklist: {e}")
+                return  # Keep existing entries on error
+
         with self._lock:
-            self._entries.clear()
-        self._load()
+            self._entries = new_entries
+        logger.debug(f"Reloaded worklist with {len(new_entries)} entries")

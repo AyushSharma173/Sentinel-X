@@ -1,10 +1,12 @@
 """Worklist endpoints."""
 
+import logging
 import sys
 from pathlib import Path
 from typing import Optional
 
 from fastapi import APIRouter, Query
+from fastapi.responses import JSONResponse
 
 # Ensure the project root is in path for imports
 PROJECT_ROOT = Path(__file__).parent.parent.parent
@@ -13,6 +15,8 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from api.models import PRIORITY_COLORS, PRIORITY_NAMES, WorklistEntryResponse, WorklistResponse
 from api.services.demo_service import demo_service
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/worklist", tags=["worklist"])
 
@@ -24,8 +28,13 @@ async def get_worklist(
     """Get all worklist entries, sorted by priority."""
     worklist = demo_service.get_worklist()
 
+    # Reload from disk to ensure we have the latest entries written by agent
+    worklist.reload()
+
     entries = worklist.get_entries(priority_filter=priority)
     stats = worklist.get_statistics()
+
+    logger.info(f"GET /api/worklist -> {len(entries)} entries (priority_filter={priority})")
 
     # Convert entries to response format
     entry_responses = []
@@ -40,9 +49,15 @@ async def get_worklist(
             result_path=entry.result_path,
         ))
 
-    return WorklistResponse(
+    response_data = WorklistResponse(
         entries=entry_responses,
         total=stats["total"],
         by_priority=stats["by_priority"],
         priority_names=stats["priority_names"],
+    )
+
+    # Prevent browser caching so page refresh always gets fresh data
+    return JSONResponse(
+        content=response_data.model_dump(),
+        headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"},
     )

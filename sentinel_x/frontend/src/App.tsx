@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Wifi, WifiOff } from 'lucide-react';
 import { Dashboard } from '@/components/dashboard';
 import { WorklistTable } from '@/components/worklist';
@@ -7,7 +7,7 @@ import { useDemoControls } from '@/hooks/useDemoControls';
 import { useWorklist } from '@/hooks/useWorklist';
 import { useTriageWebSocket } from '@/hooks/useTriageWebSocket';
 import { usePatient } from '@/hooks/usePatient';
-import type { SystemStatus, QueuedPatient } from '@/types';
+import type { SystemStatus, QueuedPatient, QueueStateResponse } from '@/types';
 
 function App() {
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
@@ -126,6 +126,25 @@ function App() {
     },
   });
 
+  // Recover queue state after page refresh
+  useEffect(() => {
+    if (status?.demo_status !== 'running') return;
+    if (queuedPatients.length > 0) return; // Already have state from WebSocket
+
+    fetch('/api/demo/queue', { cache: 'no-store' })
+      .then(r => r.json())
+      .then((data: QueueStateResponse) => {
+        if (data.patients.length === 0) return;
+        setQueuedPatients(data.patients.map(p => ({
+          patient_id: p.patient_id,
+          status: p.status === 'processing' ? 'analyzing' as const : 'queued' as const,
+          phase: p.phase,
+          arrived_at: new Date().toISOString(),
+        })));
+      })
+      .catch(console.error);
+  }, [status?.demo_status]);
+
   // Handle patient selection
   const handlePatientClick = useCallback((patientId: string) => {
     setSelectedPatientId(patientId);
@@ -146,7 +165,13 @@ function App() {
   }, [resetDemo, refreshWorklist]);
 
   // Determine if we should show the worklist view
-  const showWorklist = status?.demo_status === 'running' || status?.demo_status === 'completed' || entries.length > 0 || queuedPatients.length > 0;
+  // Show when demo is active OR when entries/queued patients exist.
+  // Stale data from previous sessions is handled by the backend
+  // (_clear_session_data on start_demo), so entries here are always current.
+  const demoActive = status?.demo_status === 'starting'
+    || status?.demo_status === 'running'
+    || status?.demo_status === 'completed';
+  const showWorklist = demoActive || entries.length > 0 || queuedPatients.length > 0;
 
   return (
     <div className="min-h-screen bg-gray-50">

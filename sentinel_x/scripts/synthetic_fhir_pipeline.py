@@ -158,15 +158,21 @@ CONDITION_TO_MODULE = {
     "copd": "copd",
     "chronic bronchitis": "copd",
     "pulmonary fibrosis": "lung_cancer",  # closest available
+    "lung cancer": "lung_cancer",
+    "lung mass": "lung_cancer",
 
-    # Cardiovascular conditions
-    "atheroma": "cardiovascular_disease",
-    "atherosclerosis": "cardiovascular_disease",
-    "calcification": "cardiovascular_disease",
-    "coronary artery disease": "cardiovascular_disease",
+    # Cardiovascular conditions — NOTE: "cardiovascular_disease" is a hard-coded
+    # Java module and CANNOT be used as a module override target.
+    "atheroma": "stable_ischemic_heart_disease",
+    "atherosclerosis": "stable_ischemic_heart_disease",
+    "calcification": "stable_ischemic_heart_disease",
+    "coronary artery disease": "stable_ischemic_heart_disease",
     "cardiomegaly": "congestive_heart_failure",
     "heart failure": "congestive_heart_failure",
     "enlarged heart": "congestive_heart_failure",
+    "atrial fibrillation": "atrial_fibrillation",
+    "stroke": "stroke",
+    "myocardial infarction": "myocardial_infarction",
 
     # Renal conditions
     "renal cyst": "chronic_kidney_disease",
@@ -179,10 +185,246 @@ CONDITION_TO_MODULE = {
     "osteoarthritis": "osteoarthritis",
     "osteophytes": "osteoarthritis",
 
-    # Other
-    "diabetes": "diabetes",
-    "hypertension": "metabolic_syndrome_disease",
+    # Metabolic
+    "diabetes": "metabolic_syndrome_disease",
+    "hypertension": "hypertension",
 }
+
+# Hard-coded Java modules that always run and CANNOT be overridden via
+# --module_override or disabled via -m. These are compiled into the Synthea JAR.
+HARDCODED_JAVA_MODULES: set[str] = {
+    "cardiovascular_disease",  # CardiovascularDiseaseModule.java
+    "lifecycle",               # LifecycleModule.java
+    "encounter",               # EncounterModule.java
+    "immunizations",           # Immunizations (always runs)
+    "quality_of_life",         # QualityOfLifeModule.java
+}
+
+
+# -----------------------------------------------------------------------------
+# Ground Truth Control: Finding Classification and Tier System
+# -----------------------------------------------------------------------------
+
+@dataclass
+class FindingGroundTruth:
+    """Ground truth classification for a single finding."""
+    condition_name: str
+    snomed_code: Optional[str]
+    classification: Literal["CHRONIC_STABLE", "ACUTE_NEW"]
+    tier: Literal[1, 2, 3]  # 1=Synthea native, 2=Custom module, 3=Manual injection
+    module: Optional[str]  # Synthea module name (None for tier 3)
+    override_probability: float  # 1.0 = force, 0.0 = suppress
+    temporal_class: str  # degenerative, chronic, subacute, acute, incidental
+
+
+@dataclass
+class PatientGroundTruth:
+    """Collection of ground truth classifications for a patient."""
+    patient_id: str
+    seed: int
+    findings: list[FindingGroundTruth] = field(default_factory=list)
+    chronic_probability: float = 0.5
+
+    @property
+    def chronic_count(self) -> int:
+        return sum(1 for f in self.findings if f.classification == "CHRONIC_STABLE")
+
+    @property
+    def acute_count(self) -> int:
+        return sum(1 for f in self.findings if f.classification == "ACUTE_NEW")
+
+    def to_dict(self) -> dict:
+        return {
+            "patient_id": self.patient_id,
+            "seed": self.seed,
+            "chronic_probability": self.chronic_probability,
+            "chronic_count": self.chronic_count,
+            "acute_count": self.acute_count,
+            "findings": [
+                {
+                    "condition_name": f.condition_name,
+                    "snomed_code": f.snomed_code,
+                    "classification": f.classification,
+                    "tier": f.tier,
+                    "module": f.module,
+                    "override_probability": f.override_probability,
+                    "temporal_class": f.temporal_class,
+                }
+                for f in self.findings
+            ],
+        }
+
+
+# Three-tier finding classification map
+# tier 1: Synthea native JSON modules with known override paths
+# tier 2: Custom modules created for Sentinel-X (in synthea_custom_modules/)
+# tier 3: Manual FHIR injection (no Synthea module available)
+FINDING_TIER_MAP: dict[str, tuple[int, Optional[str]]] = {
+    # Tier 1 — Synthea native modules
+    "emphysema": (1, "copd"),
+    "copd": (1, "copd"),
+    "chronic bronchitis": (1, "copd"),
+    "bronchiectasis": (1, "copd"),
+    "cardiomegaly": (1, "congestive_heart_failure"),
+    "heart failure": (1, "congestive_heart_failure"),
+    "enlarged heart": (1, "congestive_heart_failure"),
+    "atherosclerosis": (1, "stable_ischemic_heart_disease"),
+    "atheroma": (1, "stable_ischemic_heart_disease"),
+    "coronary artery disease": (1, "stable_ischemic_heart_disease"),
+    "calcification": (1, "stable_ischemic_heart_disease"),
+    "osteoarthritis": (1, "osteoarthritis"),
+    "spondylosis": (1, "osteoarthritis"),
+    "degenerative changes": (1, "osteoarthritis"),
+    "osteophytes": (1, "osteoarthritis"),
+    "chronic kidney disease": (1, "chronic_kidney_disease"),
+    "renal cyst": (1, "chronic_kidney_disease"),
+    "atrophic kidney": (1, "chronic_kidney_disease"),
+    "atrial fibrillation": (1, "atrial_fibrillation"),
+    "hypertension": (1, "hypertension"),
+    "diabetes": (1, "metabolic_syndrome_disease"),
+    "lung cancer": (1, "lung_cancer"),
+    "lung mass": (1, "lung_cancer"),
+    "stroke": (1, "stroke"),
+    "myocardial infarction": (1, "myocardial_infarction"),
+
+    # Tier 2 — Custom Sentinel-X modules (sentinel_x/data/synthea_custom_modules/)
+    "pulmonary nodule": (2, "sentinel_pulmonary_nodule"),
+    "lung nodule": (2, "sentinel_pulmonary_nodule"),
+    "pleural effusion": (2, "sentinel_pleural_effusion"),
+    "pulmonary embolism": (2, "sentinel_pulmonary_embolism"),
+    "pneumothorax": (2, "sentinel_pneumothorax"),
+    "aortic aneurysm": (2, "sentinel_aortic_aneurysm"),
+    "thoracic aortic aneurysm": (2, "sentinel_aortic_aneurysm"),
+    "pericardial effusion": (2, "sentinel_pericardial_effusion"),
+
+    # Tier 3 — Manual injection (no module, handled by FHIR resource creation)
+    "atelectasis": (3, None),
+    "pulmonary fibrosis": (3, None),
+    "ground glass": (3, None),
+    "consolidation": (3, None),
+    "pneumonia": (3, None),
+    "thyroid nodule": (3, None),
+    "granuloma": (3, None),
+    "scoliosis": (3, None),
+    "kyphosis": (3, None),
+    "compression fracture": (3, None),
+    "hepatomegaly": (3, None),
+    "splenomegaly": (3, None),
+    "cholelithiasis": (3, None),
+    "fatty liver": (3, None),
+    "hiatal hernia": (3, None),
+    "lymphadenopathy": (3, None),
+    "adrenal nodule": (3, None),
+    "renal atrophy": (3, None),
+    "osteopenia": (3, None),
+}
+
+# Conditions that are ALWAYS ACUTE_NEW (regardless of probability)
+ALWAYS_ACUTE_CONDITIONS: set[str] = {
+    "pulmonary embolism", "pneumothorax", "pneumonia", "fracture",
+    "compression fracture", "abscess", "dissection", "hemorrhage",
+}
+
+# Conditions that are ALWAYS CHRONIC_STABLE (regardless of probability)
+ALWAYS_CHRONIC_CONDITIONS: set[str] = {
+    "spondylosis", "osteoarthritis", "degenerative changes", "osteophytes",
+    "atherosclerosis", "atheroma", "scoliosis", "kyphosis",
+}
+
+
+def classify_finding_tier(condition_name: str) -> tuple[int, Optional[str]]:
+    """Classify a finding into its tier and map to a Synthea module.
+
+    Args:
+        condition_name: The condition name from extraction
+
+    Returns:
+        Tuple of (tier, module_name) where module_name is None for tier 3
+    """
+    name_lower = condition_name.lower().strip()
+
+    # Try exact match first
+    if name_lower in FINDING_TIER_MAP:
+        return FINDING_TIER_MAP[name_lower]
+
+    # Try partial match (longest keyword first for specificity)
+    sorted_keywords = sorted(FINDING_TIER_MAP.keys(), key=len, reverse=True)
+    for keyword in sorted_keywords:
+        if keyword in name_lower:
+            return FINDING_TIER_MAP[keyword]
+
+    # Default: tier 3 (manual injection)
+    return (3, None)
+
+
+def generate_patient_ground_truth(
+    patient_id: str,
+    extraction: "RadiologyExtraction",
+    seed: int,
+    chronic_probability: float = 0.5,
+) -> PatientGroundTruth:
+    """Generate deterministic ground truth classifications for a patient's findings.
+
+    For each finding, decides CHRONIC_STABLE vs ACUTE_NEW using:
+    - Always-acute conditions → ACUTE_NEW
+    - Always-chronic conditions → CHRONIC_STABLE
+    - Others → seeded RNG with chronic_probability
+
+    Args:
+        patient_id: Patient identifier
+        extraction: Extracted radiology data
+        seed: Deterministic seed for RNG
+        chronic_probability: Probability of CHRONIC_STABLE for non-forced findings
+
+    Returns:
+        PatientGroundTruth with per-finding classifications
+    """
+    import random
+    rng = random.Random(seed)
+
+    ground_truth = PatientGroundTruth(
+        patient_id=patient_id,
+        seed=seed,
+        chronic_probability=chronic_probability,
+    )
+
+    for condition in extraction.conditions:
+        name_lower = condition.condition_name.lower().strip()
+        tier, module = classify_finding_tier(condition.condition_name)
+        temporal_class = classify_condition_temporality(condition.condition_name)
+
+        # Determine classification
+        if any(kw in name_lower for kw in ALWAYS_ACUTE_CONDITIONS):
+            classification = "ACUTE_NEW"
+        elif any(kw in name_lower for kw in ALWAYS_CHRONIC_CONDITIONS):
+            classification = "CHRONIC_STABLE"
+        elif temporal_class == "acute":
+            # Acute temporal class → heavily biased toward ACUTE_NEW
+            classification = "CHRONIC_STABLE" if rng.random() < 0.1 else "ACUTE_NEW"
+        elif temporal_class == "degenerative":
+            # Degenerative → heavily biased toward CHRONIC_STABLE
+            classification = "CHRONIC_STABLE" if rng.random() < 0.9 else "ACUTE_NEW"
+        elif temporal_class == "incidental":
+            # Incidental → 70% ACUTE_NEW (newly discovered), 30% CHRONIC_STABLE
+            classification = "CHRONIC_STABLE" if rng.random() < 0.3 else "ACUTE_NEW"
+        else:
+            # Chronic/subacute → use configured probability
+            classification = "CHRONIC_STABLE" if rng.random() < chronic_probability else "ACUTE_NEW"
+
+        # Set override probability: 1.0 forces condition, 0.0 suppresses it
+        override_probability = 1.0 if classification == "CHRONIC_STABLE" else 0.0
+
+        ground_truth.findings.append(FindingGroundTruth(
+            condition_name=condition.condition_name,
+            snomed_code=condition.snomed_code,
+            classification=classification,
+            tier=tier,
+            module=module,
+            override_probability=override_probability,
+            temporal_class=temporal_class,
+        ))
+
+    return ground_truth
 
 
 # Valid Synthea module names (verified against Synthea repository)
@@ -283,13 +525,73 @@ MODULE_OVERRIDE_PATHS: dict[str, list[str]] = {
     "atrial_fibrillation": [
         "$['states']['Chance_of_AFib']['distributed_transition'][1]['distribution']",
     ],
+
+    # Hypertension - entry via Chance_of_Hypertension state (complex_transition)
+    # Branch [1] (default path, no condition): distributions[0] → Onset_Hypertension
+    # Uses attribute risk_of_hypertension with default 0.05
+    "hypertension": [
+        "$['states']['Chance_of_Hypertension']['complex_transition'][1]['distributions'][0]['distribution']",
+    ],
+
+    # Lung Cancer - entry via "Lung Cancer Probabilities" state (distributed_transition)
+    # Index 0 → Onset_Lung_Cancer (attribute probability_of_lung_cancer, default 0.0645)
+    "lung_cancer": [
+        "$['states']['Lung Cancer Probabilities']['distributed_transition'][0]['distribution']",
+    ],
+
+    # Stroke - entry via Chance_of_Stroke state (distributed_transition)
+    # Index 0 → Stroke (attribute stroke_risk, default 0 — set by CardiovascularDiseaseModule)
+    "stroke": [
+        "$['states']['Chance_of_Stroke']['distributed_transition'][0]['distribution']",
+    ],
+
+    # Myocardial Infarction - entry via Chance_of_MI state (distributed_transition)
+    # Index 0 → MI_Onset (attribute mi_risk, default 0 — set by CardiovascularDiseaseModule)
+    "myocardial_infarction": [
+        "$['states']['Chance_of_MI']['distributed_transition'][0]['distribution']",
+    ],
+
+    # Metabolic Syndrome / Diabetes - entry via Non_Veteran/Veteran prevalence states
+    # Non-veteran has 6 race-based branches, each distributions[0] → Eventual_Diabetes
+    # Veteran has direct distributed_transition[0] → Eventual_Diabetes
+    "metabolic_syndrome_disease": [
+        "$['states']['Non_Veteran_Diabetes_Prevalence']['complex_transition'][0]['distributions'][0]['distribution']",
+        "$['states']['Non_Veteran_Diabetes_Prevalence']['complex_transition'][1]['distributions'][0]['distribution']",
+        "$['states']['Non_Veteran_Diabetes_Prevalence']['complex_transition'][2]['distributions'][0]['distribution']",
+        "$['states']['Non_Veteran_Diabetes_Prevalence']['complex_transition'][3]['distributions'][0]['distribution']",
+        "$['states']['Non_Veteran_Diabetes_Prevalence']['complex_transition'][4]['distributions'][0]['distribution']",
+        "$['states']['Non_Veteran_Diabetes_Prevalence']['complex_transition'][5]['distributions'][0]['distribution']",
+        "$['states']['Veteran_Diabetes_Prevalence']['distributed_transition'][0]['distribution']",
+    ],
+
+    # --- Custom Sentinel-X modules (Tier 2) ---
+    # All use the same structure: Incidence_Check state with distributed_transition
+    "sentinel_pulmonary_nodule": [
+        "$['states']['Incidence_Check']['distributed_transition'][0]['distribution']",
+    ],
+    "sentinel_pleural_effusion": [
+        "$['states']['Incidence_Check']['distributed_transition'][0]['distribution']",
+    ],
+    "sentinel_pulmonary_embolism": [
+        "$['states']['Incidence_Check']['distributed_transition'][0]['distribution']",
+    ],
+    "sentinel_pneumothorax": [
+        "$['states']['Incidence_Check']['distributed_transition'][0]['distribution']",
+    ],
+    "sentinel_aortic_aneurysm": [
+        "$['states']['Incidence_Check']['distributed_transition'][0]['distribution']",
+    ],
+    "sentinel_pericardial_effusion": [
+        "$['states']['Incidence_Check']['distributed_transition'][0]['distribution']",
+    ],
 }
 
 
 def validate_synthea_modules(modules: list[str]) -> list[str]:
     """Validate and normalize Synthea module names.
 
-    Filters to only valid module names and normalizes formatting.
+    Filters to only valid module names, rejects hard-coded Java modules,
+    and normalizes formatting.
 
     Args:
         modules: List of module names to validate
@@ -302,17 +604,19 @@ def validate_synthea_modules(modules: list[str]) -> list[str]:
         # Normalize: lowercase, replace spaces/hyphens with underscores
         normalized = module.lower().strip().replace(" ", "_").replace("-", "_")
 
+        # Reject hard-coded Java modules that cannot be overridden
+        if normalized in HARDCODED_JAVA_MODULES:
+            logger.warning(
+                f"Rejected '{module}': hard-coded Java module that cannot be "
+                f"overridden. Use the corresponding JSON module instead "
+                f"(e.g., stable_ischemic_heart_disease instead of cardiovascular_disease)."
+            )
+            continue
+
         if normalized in VALID_SYNTHEA_MODULES:
             valid.append(normalized)
         else:
-            # Try partial matching for common mappings
-            if "cardiovascular" in normalized:
-                # Synthea doesn't have a generic "cardiovascular_disease" module
-                # Use stable_ischemic_heart_disease as the closest match
-                valid.append("stable_ischemic_heart_disease")
-                logger.info(f"Mapped '{module}' to 'stable_ischemic_heart_disease'")
-            else:
-                logger.warning(f"Unknown Synthea module: '{module}' (normalized: '{normalized}')")
+            logger.warning(f"Unknown Synthea module: '{module}' (normalized: '{normalized}')")
 
     # Remove duplicates while preserving order
     seen = set()
@@ -325,20 +629,24 @@ def validate_synthea_modules(modules: list[str]) -> list[str]:
     return unique
 
 
-def generate_module_overrides(modules: list[str], output_dir: Path) -> Optional[Path]:
+def generate_module_overrides(
+    module_probabilities: dict[str, float],
+    output_dir: Path,
+) -> Optional[Path]:
     """
-    Generate a .properties file to force disease transitions to 100%.
+    Generate a .properties file with per-module transition probabilities.
 
-    Uses multi-path override strategy: ALL possible paths for each disease
-    are set to 100% to guarantee the condition regardless of Synthea's
-    random attribute assignments (smoker status, gender, age bracket, etc.)
+    Supports bidirectional control:
+    - probability=1.0: Force disease condition (CHRONIC_STABLE)
+    - probability=0.0: Suppress disease condition (ACUTE_NEW)
+    - probability=0.5: 50/50 chance (default Synthea-like behavior)
 
     The output format follows Synthea's ModuleOverrides format:
     - Module filename prefix: "module.json\\:\\:"
     - JSONPath with escaped colons and spaces
 
     Args:
-        modules: List of validated Synthea module names
+        module_probabilities: Dict of module_name → override probability
         output_dir: Directory to write the override file
 
     Returns:
@@ -346,27 +654,27 @@ def generate_module_overrides(modules: list[str], output_dir: Path) -> Optional[
     """
     lines = [
         "# Auto-generated Synthea module overrides",
-        "# Forces disease transition probabilities to 100%",
+        "# Per-module transition probabilities for ground truth control",
         "# Generated by Sentinel-X synthetic_fhir_pipeline",
         ""
     ]
 
     overrides_added = 0
 
-    for module in modules:
+    for module, probability in module_probabilities.items():
         if module not in MODULE_OVERRIDE_PATHS:
             logger.warning(f"No override paths defined for module: {module}")
             continue
 
         paths = MODULE_OVERRIDE_PATHS[module]
-        lines.append(f"# {module}")
+        lines.append(f"# {module} (probability={probability})")
 
         for json_path in paths:
             # Format: module.json\:\:JSONPath = value
             # Escape colons with backslashes and spaces in state names
             escaped_path = json_path.replace(" ", "\\ ")
             full_path = f"{module}.json\\:\\:{escaped_path}"
-            lines.append(f"{full_path} = 1.0")
+            lines.append(f"{full_path} = {probability}")
             overrides_added += 1
 
         lines.append("")
@@ -378,7 +686,10 @@ def generate_module_overrides(modules: list[str], output_dir: Path) -> Optional[
     override_file = output_dir / "module_overrides.properties"
     override_file.write_text("\n".join(lines))
 
-    logger.info(f"Generated module overrides: {overrides_added} paths for {len(modules)} modules")
+    logger.info(
+        f"Generated module overrides: {overrides_added} paths for "
+        f"{len(module_probabilities)} modules"
+    )
     return override_file
 
 
@@ -760,12 +1071,21 @@ Other:
 
 If you cannot find an exact SNOMED code, leave snomed_code as null.
 
-Synthea module mapping:
+Synthea module mapping (use ONLY these module names):
 - Pulmonary conditions (emphysema, bronchiectasis, COPD) → "copd"
-- Atherosclerosis, calcifications → "cardiovascular_disease"
+- Lung cancer, lung mass → "lung_cancer"
+- Atherosclerosis, calcifications, coronary artery disease → "stable_ischemic_heart_disease"
 - Cardiomegaly, heart failure → "congestive_heart_failure"
+- Atrial fibrillation → "atrial_fibrillation"
+- Stroke → "stroke"
+- Myocardial infarction → "myocardial_infarction"
+- Hypertension → "hypertension"
+- Diabetes → "metabolic_syndrome_disease"
 - Kidney conditions → "chronic_kidney_disease"
 - Degenerative spine/joint changes → "osteoarthritis"
+
+IMPORTANT: Do NOT use "cardiovascular_disease" as a module name — it is a hard-coded
+Java module and cannot be overridden. Use "stable_ischemic_heart_disease" instead.
 
 Demographic inference guidelines:
 - Degenerative changes, spondylosis, emphysema suggest older age (55-85)
@@ -838,6 +1158,9 @@ Impressions: {report.get('impressions', 'Not provided')}
 # Synthea Configuration and Execution
 # -----------------------------------------------------------------------------
 
+CUSTOM_MODULES_DIR = PROJECT_DIR / "data" / "synthea_custom_modules"
+
+
 @dataclass
 class SyntheaConfig:
     """Configuration for running Synthea."""
@@ -848,6 +1171,10 @@ class SyntheaConfig:
     state: str = "Massachusetts"
     output_dir: Path = SYNTHEA_TEMP_OUTPUT
     seed: Optional[int] = None
+    years_of_history: int = 10
+    excluded_resources: list[str] = field(
+        default_factory=lambda: ["CarePlan", "CareTeam", "Coverage", "DocumentReference"]
+    )
 
 
 def create_synthea_config(extraction: RadiologyExtraction, report_name: str) -> SyntheaConfig:
@@ -870,8 +1197,115 @@ def create_synthea_config(extraction: RadiologyExtraction, report_name: str) -> 
     )
 
 
-def run_synthea(config: SyntheaConfig) -> Optional[dict]:
-    """Run Synthea to generate a base FHIR bundle."""
+def generate_keep_module(
+    ground_truth: PatientGroundTruth,
+    output_dir: Path,
+) -> Optional[Path]:
+    """Generate a Synthea keep module that requires CHRONIC_STABLE conditions.
+
+    The keep module tells Synthea to discard and regenerate patients that don't
+    have at least one of the required conditions. This ensures CHRONIC_STABLE
+    findings appear in the generated FHIR history.
+
+    Args:
+        ground_truth: Patient ground truth with classifications
+        output_dir: Directory to write the keep module JSON
+
+    Returns:
+        Path to the generated keep module, or None if no CHRONIC_STABLE findings
+    """
+    # Collect SNOMED codes for CHRONIC_STABLE tier 1/2 findings
+    chronic_conditions = []
+    for finding in ground_truth.findings:
+        if (
+            finding.classification == "CHRONIC_STABLE"
+            and finding.tier in (1, 2)
+            and finding.snomed_code
+        ):
+            chronic_conditions.append({
+                "code": finding.snomed_code,
+                "name": finding.condition_name,
+            })
+
+    if not chronic_conditions:
+        logger.debug("No CHRONIC_STABLE tier 1/2 findings — skipping keep module")
+        return None
+
+    # Build an Or condition requiring at least ONE of the required conditions
+    if len(chronic_conditions) == 1:
+        allow_condition = {
+            "condition_type": "Active Condition",
+            "codes": [{
+                "system": "SNOMED-CT",
+                "code": chronic_conditions[0]["code"],
+                "display": chronic_conditions[0]["name"],
+            }],
+        }
+    else:
+        allow_condition = {
+            "condition_type": "Or",
+            "conditions": [
+                {
+                    "condition_type": "Active Condition",
+                    "codes": [{
+                        "system": "SNOMED-CT",
+                        "code": c["code"],
+                        "display": c["name"],
+                    }],
+                }
+                for c in chronic_conditions
+            ],
+        }
+
+    keep_module = {
+        "name": "Sentinel Keep Module",
+        "remarks": [
+            "Auto-generated keep module for ground truth control.",
+            "Requires at least one CHRONIC_STABLE condition to be active.",
+        ],
+        "states": {
+            "Initial": {
+                "type": "Initial",
+                "direct_transition": "Keep_Guard",
+            },
+            "Keep_Guard": {
+                "type": "Guard",
+                "allow": allow_condition,
+                "direct_transition": "Keep",
+            },
+            "Keep": {
+                "type": "Terminal",
+            },
+        },
+        "gmf_version": 2,
+    }
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    keep_path = output_dir / "sentinel_keep_module.json"
+    with open(keep_path, "w") as f:
+        json.dump(keep_module, f, indent=2)
+
+    logger.info(
+        f"Generated keep module with {len(chronic_conditions)} CHRONIC_STABLE conditions"
+    )
+    return keep_path
+
+
+def run_synthea(
+    config: SyntheaConfig,
+    ground_truth: Optional[PatientGroundTruth] = None,
+    keep_module_path: Optional[Path] = None,
+) -> Optional[dict]:
+    """Run Synthea to generate a base FHIR bundle.
+
+    Args:
+        config: Synthea configuration
+        ground_truth: Optional ground truth for per-module probability overrides
+        keep_module_path: Optional path to a keep module JSON
+
+    Returns:
+        Generated FHIR bundle dict, or None on failure
+    """
 
     if not SYNTHEA_JAR.exists():
         logger.error(f"Synthea JAR not found: {SYNTHEA_JAR}")
@@ -901,36 +1335,76 @@ def run_synthea(config: SyntheaConfig) -> Optional[dict]:
         "--exporter.hospital.fhir.export=false",
         "--exporter.practitioner.fhir.export=false",
         "--generate.only_alive_patients=true",
+        f"--exporter.years_of_history={config.years_of_history}",
     ]
+
+    # Add excluded resources for noise reduction
+    if config.excluded_resources:
+        excluded_csv = ",".join(config.excluded_resources)
+        cmd.append(f"--exporter.fhir.excluded_resources={excluded_csv}")
 
     # Add gender if specified
     if config.gender:
         cmd.extend(["-g", config.gender])
 
-    # Add seed if specified (use -ps for single person seed)
+    # Add seed if specified (Synthea's documented flag is -s)
     if config.seed is not None:
-        cmd.extend(["-ps", str(config.seed)])
+        cmd.extend(["-s", str(config.seed)])
 
-    # Generate module overrides to force disease conditions
-    # This replaces the -m flag approach which broke base patient generation
+    # Build module probability overrides from ground truth
     override_file = None
-    validated_modules = []
-    if config.modules:
-        validated_modules = validate_synthea_modules(config.modules)
-        if validated_modules:
+    module_probabilities: dict[str, float] = {}
+
+    if ground_truth:
+        # Collect per-module probabilities from ground truth findings
+        for finding in ground_truth.findings:
+            if finding.module and finding.tier in (1, 2):
+                # If multiple findings map to same module, use max probability
+                # (if ANY finding wants the condition, force it)
+                current = module_probabilities.get(finding.module, 0.0)
+                module_probabilities[finding.module] = max(current, finding.override_probability)
+
+        if module_probabilities:
             override_file = generate_module_overrides(
-                modules=validated_modules,
-                output_dir=config.output_dir
+                module_probabilities=module_probabilities,
+                output_dir=config.output_dir,
             )
-            if override_file:
-                cmd.extend(["--module_override", str(override_file)])
-                logger.info(f"Using module overrides: {override_file}")
+    else:
+        # Legacy path: force all modules to 1.0 (pre-ground-truth behavior)
+        if config.modules:
+            validated_modules = validate_synthea_modules(config.modules)
+            if validated_modules:
+                module_probabilities = {m: 1.0 for m in validated_modules}
+                override_file = generate_module_overrides(
+                    module_probabilities=module_probabilities,
+                    output_dir=config.output_dir,
+                )
+
+    if override_file:
+        cmd.extend(["--module_override", str(override_file)])
+        logger.info(f"Using module overrides: {override_file}")
+
+    # Add custom module directory if any tier 2 findings exist
+    has_tier2 = ground_truth and any(f.tier == 2 for f in ground_truth.findings)
+    if has_tier2 and CUSTOM_MODULES_DIR.exists():
+        cmd.extend(["-d", str(CUSTOM_MODULES_DIR)])
+        logger.info(f"Loading custom modules from: {CUSTOM_MODULES_DIR}")
+
+    # Add keep module if provided
+    if keep_module_path and keep_module_path.exists():
+        cmd.extend(["-k", str(keep_module_path)])
+        cmd.append("--generate.max_attempts_to_keep_patient=100")
+        logger.info(f"Using keep module: {keep_module_path}")
 
     # Add state
     cmd.append(config.state)
 
-    override_str = f", overrides={len(validated_modules)} modules" if override_file else ""
-    logger.info(f"Running Synthea: age={config.age_min}-{config.age_max}, gender={config.gender or 'any'}, seed={config.seed}{override_str}")
+    n_overrides = len(module_probabilities)
+    override_str = f", overrides={n_overrides} modules" if override_file else ""
+    logger.info(
+        f"Running Synthea: age={config.age_min}-{config.age_max}, "
+        f"gender={config.gender or 'any'}, seed={config.seed}{override_str}"
+    )
     logger.debug(f"Synthea command: {' '.join(cmd)}")
 
     try:
@@ -1663,12 +2137,66 @@ def filter_future_events(bundle: dict, scan_date: str, volume_name: str) -> dict
     return bundle
 
 
+def _synthea_bundle_has_condition(bundle: dict, condition_name: str) -> bool:
+    """Check if the Synthea-generated portion of a bundle already contains a condition.
+
+    Uses keyword matching against Condition resource code.text and coding.display fields.
+
+    Args:
+        bundle: FHIR bundle to search
+        condition_name: Condition name to look for
+
+    Returns:
+        True if a matching condition was found in Synthea-generated resources
+    """
+    keywords = condition_name.lower().split()
+    for entry in bundle.get("entry", []):
+        resource = entry.get("resource", {})
+        if resource.get("resourceType") != "Condition":
+            continue
+
+        # Skip pipeline-created conditions (they have encounter-diagnosis category)
+        is_pipeline = False
+        for cat in resource.get("category", []):
+            for coding in cat.get("coding", []):
+                if coding.get("code") == "encounter-diagnosis":
+                    is_pipeline = True
+                    break
+        if is_pipeline:
+            continue
+
+        # Check code.text and coding.display
+        code = resource.get("code", {})
+        text_fields = [code.get("text", "").lower()]
+        for coding in code.get("coding", []):
+            text_fields.append(coding.get("display", "").lower())
+
+        for text in text_fields:
+            if text and all(kw in text for kw in keywords):
+                return True
+
+    return False
+
+
 def merge_radiology_resources(
     synthea_bundle: dict,
     extraction: RadiologyExtraction,
-    report: dict
+    report: dict,
+    ground_truth: Optional[PatientGroundTruth] = None,
 ) -> dict:
-    """Merge radiology-specific resources into the Synthea bundle."""
+    """Merge radiology-specific resources into the Synthea bundle.
+
+    When ground_truth is provided, uses classification-aware injection:
+    - CHRONIC_STABLE tier1/2: Skip injection if Synthea already generated the condition
+    - ACUTE_NEW: Always inject with recent onset (0-14 days)
+    - Tier 3: Always inject (no Synthea module exists)
+
+    Args:
+        synthea_bundle: Base FHIR bundle from Synthea
+        extraction: Extracted radiology data
+        report: Original report dict
+        ground_truth: Optional ground truth classifications
+    """
 
     patient_ref = get_patient_reference(synthea_bundle)
     if not patient_ref:
@@ -1679,12 +2207,17 @@ def merge_radiology_resources(
     now = datetime.utcnow().isoformat() + "Z"
     volume_name = report.get("volume_name", "unknown.nii.gz")
 
+    # Build ground truth lookup by condition name
+    gt_lookup: dict[str, FindingGroundTruth] = {}
+    if ground_truth:
+        for f in ground_truth.findings:
+            gt_lookup[f.condition_name.lower()] = f
+
     # Create ImagingStudy
     imaging_study = create_imaging_study(patient_ref, volume_name, now)
     imaging_study_ref = f"ImagingStudy/{imaging_study['id']}"
 
     # Step 1: Create Finding Observations for each extracted condition
-    # These will be linked from DiagnosticReport.result and to Condition.evidence
     finding_observations = []
     finding_obs_refs = []
     for condition in extraction.conditions:
@@ -1692,124 +2225,147 @@ def merge_radiology_resources(
             patient_ref,
             condition,
             now,
-            diagnostic_report_ref=None  # Will be updated after DiagnosticReport is created
+            diagnostic_report_ref=None,
         )
         finding_observations.append(obs)
         finding_obs_refs.append(f"Observation/{obs['id']}")
 
-    # Step 2: Create DiagnosticReport with result references to finding observations
+    # Step 2: Create DiagnosticReport
     diagnostic_report = create_diagnostic_report(
         patient_ref,
         imaging_study_ref,
         report,
         extraction,
         now,
-        result_refs=finding_obs_refs
+        result_refs=finding_obs_refs,
     )
     diagnostic_report_ref = f"DiagnosticReport/{diagnostic_report['id']}"
 
-    # Step 3: Update Finding Observations with derivedFrom reference to DiagnosticReport
+    # Step 3: Update Finding Observations with derivedFrom reference
     for obs in finding_observations:
         obs["derivedFrom"] = [{"reference": diagnostic_report_ref}]
 
-    # Step 4: Create Condition resources with realistic onset dates and evidence links
-    # Parse scan datetime for temporal calculations
+    # Step 4: Create Condition resources with ground-truth-aware injection
     scan_dt = datetime.fromisoformat(now.replace("Z", "+00:00"))
 
     conditions = []
-    condition_refs = []  # Track refs for risk assessment basis
-    for i, condition in enumerate(extraction.conditions):
-        # Calculate realistic onset date based on condition type
-        temporal_class = classify_condition_temporality(condition.condition_name)
+    condition_refs = []
+    skipped_chronic = 0
 
-        # Generate deterministic seed from volume_name and condition name
+    for i, condition in enumerate(extraction.conditions):
+        gt_finding = gt_lookup.get(condition.condition_name.lower())
+
+        # Ground-truth-aware injection logic
+        if gt_finding and gt_finding.classification == "CHRONIC_STABLE" and gt_finding.tier in (1, 2):
+            # For CHRONIC_STABLE tier 1/2: check if Synthea already generated it
+            if _synthea_bundle_has_condition(synthea_bundle, condition.condition_name):
+                skipped_chronic += 1
+                logger.debug(
+                    f"Skipping injection of '{condition.condition_name}' — "
+                    f"already generated by Synthea (CHRONIC_STABLE tier {gt_finding.tier})"
+                )
+                # Still need a ref for evidence linking
+                condition_refs.append(None)
+                continue
+
+        # Determine temporal class and onset
+        if gt_finding and gt_finding.classification == "ACUTE_NEW":
+            # ACUTE_NEW: always use acute onset (0-14 days before scan)
+            temporal_class = "acute"
+        elif gt_finding:
+            temporal_class = gt_finding.temporal_class
+        else:
+            temporal_class = classify_condition_temporality(condition.condition_name)
+
         seed_str = f"{volume_name}_{condition.condition_name}_{i}"
-        seed = hash(seed_str) & 0x7FFFFFFF  # Positive 32-bit integer
+        seed = hash(seed_str) & 0x7FFFFFFF
 
         onset_dt, onset_note = calculate_onset_date(scan_dt, temporal_class, seed)
         onset_datetime_str = onset_dt.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-        # Link condition to its corresponding finding observation
         evidence_ref = finding_obs_refs[i] if i < len(finding_obs_refs) else None
         condition_resource = create_condition_resource(
             patient_ref,
             condition,
             onset_datetime_str,
             evidence_ref=evidence_ref,
-            recorded_datetime=now,  # Documented at scan time
-            onset_note=onset_note
+            recorded_datetime=now,
+            onset_note=onset_note,
         )
         conditions.append(condition_resource)
         condition_refs.append(f"Condition/{condition_resource['id']}")
 
         logger.debug(
-            f"Condition '{condition.condition_name}': temporal_class={temporal_class}, "
-            f"onset={onset_datetime_str}"
+            f"Condition '{condition.condition_name}': "
+            f"temporal_class={temporal_class}, onset={onset_datetime_str}"
+            + (f", gt={gt_finding.classification}" if gt_finding else "")
         )
 
-    # Create Smoking Status Observation (uses extracted smoking_history_likely)
+    if skipped_chronic > 0:
+        logger.info(
+            f"Skipped {skipped_chronic} CHRONIC_STABLE conditions "
+            f"already present in Synthea bundle"
+        )
+
+    # Create Smoking Status Observation
     smoking_observation = create_smoking_observation(
         patient_ref,
         extraction.smoking_history_likely,
-        now
+        now,
     )
 
-    # Create Cardiovascular Risk Assessment (uses extracted cardiovascular_risk)
-    # Link to cardiovascular-related conditions as basis
+    # Create Cardiovascular Risk Assessment
     cv_related_keywords = ["atheroma", "atherosclerosis", "calcif", "cardio", "coronary", "aortic"]
     cv_basis_refs = [
         ref for ref, cond in zip(condition_refs, extraction.conditions)
-        if any(kw in cond.condition_name.lower() for kw in cv_related_keywords)
+        if ref and any(kw in cond.condition_name.lower() for kw in cv_related_keywords)
     ]
 
     cardiovascular_risk_assessment = create_cardiovascular_risk_assessment(
         patient_ref,
         extraction.cardiovascular_risk,
         now,
-        basis_condition_refs=cv_basis_refs if cv_basis_refs else None
+        basis_condition_refs=cv_basis_refs if cv_basis_refs else None,
     )
 
-    # Add new resources to bundle
+    # Build new entries
     new_entries = [
         {
             "fullUrl": f"urn:uuid:{imaging_study['id']}",
             "resource": imaging_study,
-            "request": {"method": "POST", "url": "ImagingStudy"}
+            "request": {"method": "POST", "url": "ImagingStudy"},
         },
         {
             "fullUrl": f"urn:uuid:{diagnostic_report['id']}",
             "resource": diagnostic_report,
-            "request": {"method": "POST", "url": "DiagnosticReport"}
+            "request": {"method": "POST", "url": "DiagnosticReport"},
         },
         {
             "fullUrl": f"urn:uuid:{smoking_observation['id']}",
             "resource": smoking_observation,
-            "request": {"method": "POST", "url": "Observation"}
+            "request": {"method": "POST", "url": "Observation"},
         },
         {
             "fullUrl": f"urn:uuid:{cardiovascular_risk_assessment['id']}",
             "resource": cardiovascular_risk_assessment,
-            "request": {"method": "POST", "url": "RiskAssessment"}
-        }
+            "request": {"method": "POST", "url": "RiskAssessment"},
+        },
     ]
 
-    # Add finding observations (linked to DiagnosticReport.result)
     for obs in finding_observations:
         new_entries.append({
             "fullUrl": f"urn:uuid:{obs['id']}",
             "resource": obs,
-            "request": {"method": "POST", "url": "Observation"}
+            "request": {"method": "POST", "url": "Observation"},
         })
 
-    # Add conditions (linked to observations via evidence)
     for condition in conditions:
         new_entries.append({
             "fullUrl": f"urn:uuid:{condition['id']}",
             "resource": condition,
-            "request": {"method": "POST", "url": "Condition"}
+            "request": {"method": "POST", "url": "Condition"},
         })
 
-    # Add to bundle
     if "entry" not in synthea_bundle:
         synthea_bundle["entry"] = []
 
@@ -1822,8 +2378,7 @@ def merge_radiology_resources(
     )
 
     # Apply temporal filtering to enforce simulation boundary
-    # This removes any Synthea-generated resources with dates after the scan
-    scan_date = now  # Use the scan date we just created
+    scan_date = now
     filtered_bundle = filter_future_events(synthea_bundle, scan_date, volume_name)
 
     return filtered_bundle
@@ -2038,6 +2593,73 @@ def validate_synthea_radiology_overlap(
     }
 
 
+def validate_ground_truth_concordance(
+    bundle: dict,
+    ground_truth: PatientGroundTruth,
+) -> dict:
+    """Validate that the FHIR bundle is concordant with ground truth.
+
+    For each tier 1/2 CHRONIC_STABLE finding: verify condition exists in bundle.
+    For each tier 1/2 ACUTE_NEW finding: verify condition is NOT in the
+    Synthea-generated portion of the bundle.
+
+    Args:
+        bundle: FHIR bundle to validate
+        ground_truth: Patient ground truth classifications
+
+    Returns:
+        Dict with concordance metrics and mismatches
+    """
+    mismatches = []
+    checked = 0
+    concordant = 0
+
+    for finding in ground_truth.findings:
+        if finding.tier not in (1, 2):
+            continue
+
+        checked += 1
+        has_condition = _synthea_bundle_has_condition(bundle, finding.condition_name)
+
+        if finding.classification == "CHRONIC_STABLE":
+            if has_condition:
+                concordant += 1
+            else:
+                mismatches.append({
+                    "condition": finding.condition_name,
+                    "expected": "CHRONIC_STABLE (should be in bundle)",
+                    "actual": "not found in Synthea-generated conditions",
+                })
+        else:  # ACUTE_NEW
+            if not has_condition:
+                concordant += 1
+            else:
+                mismatches.append({
+                    "condition": finding.condition_name,
+                    "expected": "ACUTE_NEW (should NOT be in Synthea bundle)",
+                    "actual": "found in Synthea-generated conditions",
+                })
+
+    rate = (concordant / checked * 100) if checked > 0 else 100.0
+
+    if mismatches:
+        logger.warning(
+            f"Ground truth concordance: {concordant}/{checked} ({rate:.0f}%), "
+            f"{len(mismatches)} mismatches"
+        )
+        for m in mismatches[:3]:
+            logger.warning(f"  - {m['condition']}: {m['expected']} / {m['actual']}")
+    else:
+        logger.info(f"Ground truth concordance: {concordant}/{checked} ({rate:.0f}%)")
+
+    return {
+        "checked": checked,
+        "concordant": concordant,
+        "concordance_rate": round(rate, 1),
+        "mismatches": mismatches,
+    }
+
+
 def validate_bundle(
     bundle: dict,
     radiology_conditions: list[str] | None = None,
@@ -2144,6 +2766,7 @@ class ProcessingResult:
     conditions_count: int = 0
     validation_metrics: Optional[dict] = None
     volumes_info: Optional[list[dict]] = None
+    ground_truth_path: Optional[Path] = None
 
 
 def get_patient_fhir_id(bundle: dict) -> Optional[str]:
@@ -2162,13 +2785,16 @@ async def process_patient(
     volume_paths: list[Path],
     output_dir: Path,
     semaphore: asyncio.Semaphore,
-    copy_volumes: bool = False
+    copy_volumes: bool = False,
+    chronic_probability: float = 0.5,
+    years_of_history: int = 10,
 ) -> ProcessingResult:
     """Process a patient through the pipeline.
 
     Takes one representative report (shared across reconstructions) and all
     volume paths for this patient. Creates a patient-level folder:
     - fhir.json: The FHIR bundle (with ImagingStudy resources for ALL volumes)
+    - ground_truth.json: Ground truth classifications for Delta Analysis
     - volume_1.nii.gz, volume_2.nii.gz, ...: Symlinks/copies of CT volumes
     - report.json, report.txt: The radiology report
     """
@@ -2185,26 +2811,53 @@ async def process_patient(
             extraction = await extract_with_openai(client, report)
             logger.info(
                 f"Extracted {len(extraction.conditions)} conditions, "
-                f"age range: {extraction.demographics.estimated_age_min}-{extraction.demographics.estimated_age_max}"
+                f"age range: {extraction.demographics.estimated_age_min}-"
+                f"{extraction.demographics.estimated_age_max}"
             )
 
-            # 3. Create Synthea config (use patient_id as seed source)
+            # 3. Create Synthea config
             config = create_synthea_config(extraction, patient_id)
+            config.years_of_history = years_of_history
 
-            # 4. Run Synthea (synchronous)
-            synthea_bundle = run_synthea(config)
+            # 4. Generate ground truth classifications
+            ground_truth = generate_patient_ground_truth(
+                patient_id=patient_id,
+                extraction=extraction,
+                seed=config.seed,
+                chronic_probability=chronic_probability,
+            )
+            logger.info(
+                f"Ground truth: {ground_truth.chronic_count} CHRONIC_STABLE, "
+                f"{ground_truth.acute_count} ACUTE_NEW"
+            )
+
+            # 5. Generate keep module for CHRONIC_STABLE findings
+            keep_module_path = generate_keep_module(
+                ground_truth=ground_truth,
+                output_dir=config.output_dir,
+            )
+
+            # 6. Run Synthea with ground truth control
+            synthea_bundle = run_synthea(
+                config,
+                ground_truth=ground_truth,
+                keep_module_path=keep_module_path,
+            )
 
             if synthea_bundle is None:
                 return ProcessingResult(
                     report_name=patient_id,
                     success=False,
-                    error="Synthea generation failed"
+                    error="Synthea generation failed",
                 )
 
-            # 5. Merge radiology resources (uses first volume name for report metadata)
-            final_bundle = merge_radiology_resources(synthea_bundle, extraction, report)
+            # 7. Merge radiology resources with ground-truth-aware injection
+            final_bundle = merge_radiology_resources(
+                synthea_bundle, extraction, report,
+                ground_truth=ground_truth,
+            )
 
-            # 5b. Create additional ImagingStudy resources for extra volumes
+            # 7b. Create additional ImagingStudy resources for extra volumes
             patient_ref = get_patient_reference(final_bundle)
             now = datetime.utcnow().isoformat() + "Z"
             if patient_ref and len(volume_paths) > 1:
@@ -2213,32 +2866,44 @@ async def process_patient(
                     final_bundle["entry"].append({
                         "fullUrl": f"urn:uuid:{extra_study['id']}",
                         "resource": extra_study,
-                        "request": {"method": "POST", "url": "ImagingStudy"}
+                        "request": {"method": "POST", "url": "ImagingStudy"},
                     })
                 logger.info(f"Added {len(volume_paths) - 1} additional ImagingStudy resources")
 
-            # 6. Validate bundle with comprehensive checks
+            # 8. Validate bundle
             radiology_condition_names = [c.condition_name for c in extraction.conditions]
             is_valid, validation_metrics = validate_bundle(
                 final_bundle,
                 radiology_conditions=radiology_condition_names,
-                volume_name=report.get("volume_name", patient_id)
+                volume_name=report.get("volume_name", patient_id),
             )
+
+            # 8b. Ground truth concordance validation
+            concordance = validate_ground_truth_concordance(
+                final_bundle, ground_truth,
+            )
+            validation_metrics["ground_truth_concordance"] = concordance
+
             if not is_valid:
                 logger.warning(f"Bundle validation failed for {patient_id}")
 
-            # 7. Create patient-level folder
+            # 9. Create patient-level folder
             patient_dir = output_dir / patient_id
             patient_dir.mkdir(parents=True, exist_ok=True)
 
-            # 8. Save FHIR bundle as fhir.json
+            # 10. Save FHIR bundle as fhir.json
             fhir_path = patient_dir / "fhir.json"
             with open(fhir_path, "w") as f:
                 json.dump(final_bundle, f, indent=2)
-
             logger.info(f"Saved FHIR bundle: {fhir_path}")
 
-            # 9. Link or copy volumes as volume_1.nii.gz, volume_2.nii.gz, ...
+            # 11. Save ground truth sidecar
+            gt_path = patient_dir / "ground_truth.json"
+            with open(gt_path, "w") as f:
+                json.dump(ground_truth.to_dict(), f, indent=2)
+            logger.info(f"Saved ground truth: {gt_path}")
+
+            # 12. Link or copy volumes
             volumes_info = []
             for i, vol_path in enumerate(volume_paths, start=1):
                 vol_dest_name = f"volume_{i}.nii.gz"
@@ -2257,26 +2922,23 @@ async def process_patient(
 
                     volumes_info.append({
                         "name": vol_dest_name,
-                        "source": vol_path.name
+                        "source": vol_path.name,
                     })
                 else:
                     logger.warning(f"Volume not found: {vol_path}")
 
-            # 10. Copy radiology report files to patient folder
+            # 13. Copy radiology report files
             report_json_dest = patient_dir / "report.json"
             report_txt_dest = patient_dir / "report.txt"
 
-            # Copy the original report JSON
             shutil.copy2(report_path, report_json_dest)
             logger.info(f"Copied report.json: {report_json_dest}")
 
-            # Copy or generate report.txt
             report_txt_source = report_path.with_suffix('.txt')
             if report_txt_source.exists():
                 shutil.copy2(report_txt_source, report_txt_dest)
                 logger.info(f"Copied report.txt: {report_txt_dest}")
             else:
-                # Generate from JSON
                 with open(report_txt_dest, 'w') as f:
                     f.write(f"Volume: {report.get('volume_name', 'Unknown')}\n")
                     f.write("=" * 50 + "\n\n")
@@ -2286,7 +2948,6 @@ async def process_patient(
                     f.write(f"IMPRESSIONS:\n{report.get('impressions', 'N/A')}\n")
                 logger.info(f"Generated report.txt: {report_txt_dest}")
 
-            # Extract patient FHIR ID for manifest
             patient_fhir_id = get_patient_fhir_id(final_bundle)
 
             return ProcessingResult(
@@ -2297,7 +2958,8 @@ async def process_patient(
                 patient_fhir_id=patient_fhir_id,
                 conditions_count=len(extraction.conditions),
                 validation_metrics=validation_metrics,
-                volumes_info=volumes_info
+                volumes_info=volumes_info,
+                ground_truth_path=gt_path,
             )
 
         except Exception as e:
@@ -2305,7 +2967,7 @@ async def process_patient(
             return ProcessingResult(
                 report_name=patient_id,
                 success=False,
-                error=str(e)
+                error=str(e),
             )
 
 
@@ -2375,11 +3037,12 @@ def generate_manifest(
                 "id": result.report_name,
                 "folder": result.report_name,
                 "fhir_path": f"{result.report_name}/fhir.json",
+                "ground_truth_path": f"{result.report_name}/ground_truth.json",
                 "volumes": result.volumes_info or [],
                 "report_json_path": f"{result.report_name}/report.json",
                 "report_txt_path": f"{result.report_name}/report.txt",
                 "patient_fhir_id": result.patient_fhir_id,
-                "conditions_count": result.conditions_count
+                "conditions_count": result.conditions_count,
             }
             manifest["patients"].append(patient_entry)
 
@@ -2397,7 +3060,9 @@ async def process_all_reports(
     output_dir: Path,
     checkpoint_path: Path,
     copy_volumes: bool = False,
-    max_concurrent: int = 3
+    max_concurrent: int = 3,
+    chronic_probability: float = 0.5,
+    years_of_history: int = 10,
 ) -> list[ProcessingResult]:
     """Process reports grouped by patient with checkpoint/resume support."""
 
@@ -2454,7 +3119,9 @@ async def process_all_reports(
             volume_paths,
             output_dir,
             semaphore,
-            copy_volumes=copy_volumes
+            copy_volumes=copy_volumes,
+            chronic_probability=chronic_probability,
+            years_of_history=years_of_history,
         )
         results.append(result)
 
@@ -2557,6 +3224,18 @@ def main():
         default=20,
         help="Maximum concurrent OpenAI requests (default: 20)"
     )
+    parser.add_argument(
+        "--chronic-probability",
+        type=float,
+        default=0.5,
+        help="Probability of CHRONIC_STABLE classification per finding (default: 0.5)"
+    )
+    parser.add_argument(
+        "--years-of-history",
+        type=int,
+        default=10,
+        help="Synthea patient history depth in years (default: 10)"
+    )
 
     args = parser.parse_args()
 
@@ -2642,7 +3321,9 @@ def main():
             output_dir,
             checkpoint_path,
             copy_volumes=args.copy_volumes,
-            max_concurrent=args.max_concurrent
+            max_concurrent=args.max_concurrent,
+            chronic_probability=args.chronic_probability,
+            years_of_history=args.years_of_history,
         )
     )
 

@@ -26,7 +26,7 @@ export function useWorklist() {
         ? `${API_BASE}/worklist?priority=${priority}`
         : `${API_BASE}/worklist`;
 
-      const response = await fetch(url);
+      const response = await fetch(url, { cache: 'no-store' });
       if (!response.ok) throw new Error('Failed to fetch worklist');
 
       const data: WorklistResponse = await response.json();

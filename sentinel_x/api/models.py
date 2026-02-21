@@ -119,6 +119,18 @@ class TriageResult(BaseModel):
     reasoning: str = ""
 
 
+class QueuedPatientResponse(BaseModel):
+    """A single patient in the queue."""
+    patient_id: str
+    status: str  # "queued" | "processing"
+    phase: Optional[str] = None  # "phase1" | "model_swap" | "phase2"
+
+
+class QueueStateResponse(BaseModel):
+    """Current queue state for UI recovery after page refresh."""
+    patients: List[QueuedPatientResponse]
+
+
 class DemoControlResponse(BaseModel):
     """Response for demo control operations."""
     success: bool

@@ -109,3 +109,13 @@ export interface QueuedPatient {
   phase?: 'phase1' | 'model_swap' | 'phase2';
   arrived_at: string;
 }
+
+export interface QueuedPatientResponse {
+  patient_id: string;
+  status: 'queued' | 'processing';
+  phase?: 'phase1' | 'model_swap' | 'phase2';
+}
+
+export interface QueueStateResponse {
+  patients: QueuedPatientResponse[];
+}

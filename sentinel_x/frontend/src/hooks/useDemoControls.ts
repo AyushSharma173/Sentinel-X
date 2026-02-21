@@ -10,7 +10,7 @@ export function useDemoControls() {
 
   const fetchStatus = useCallback(async () => {
     try {
-      const response = await fetch(`${API_BASE}/demo/status`);
+      const response = await fetch(`${API_BASE}/demo/status`, { cache: 'no-store' });
       if (!response.ok) throw new Error('Failed to fetch status');
       const data: SystemStatus = await response.json();
       setStatus(data);
